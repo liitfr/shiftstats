@@ -1,0 +1,7 @@
+<template name="appAdminUsers">
+  {{#if isInRole 'admin'}}
+    {{> listUsers ""}}
+  {{else}}
+    {{> forbidden ""}}
+  {{/if}}
+</template>

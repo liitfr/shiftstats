@@ -1,0 +1,40 @@
+@mobile-width: 600px;
+@adapt-menu-threshold: 1346px;
+
+.has-error .help-block,
+.warning {
+  color: #e53935;
+}
+
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+main {
+  flex: 1 0 auto;
+  padding: 3em 0;
+
+  @media only screen and (max-device-width: @mobile-width) {
+    padding: 0;
+  }
+}
+
+// HACK: https://github.com/Dogfalo/materialize/issues/3844
+// HACK: https://github.com/Dogfalo/materialize/issues/2879
+#sidenav-overlay {
+  z-index: 996;
+}
+
+h2 {
+  @media only screen and (max-device-width: @mobile-width) {
+    font-size: 2em;
+  }
+}
+
+.hide-on-med-and-down .full-text-nav {
+  @media only screen and (max-width: @adapt-menu-threshold) {
+    display: none;
+  }
+}

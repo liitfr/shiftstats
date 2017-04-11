@@ -1,0 +1,322 @@
+{
+  "presentation": "Register <b>for free</b> to share your stats <b>anonymously</b> with the courier community. This information will generate statistics that will help you and all the couriers to choose the customer that will allow you, for example, to earn the most money, as fast as possible, and to ride as little as possible ! Help us ! The more users there are, the more accurate the data will be.",
+  "daysoftheweek": {
+    "0": "Monday",
+    "1": "Tuesday",
+    "2": "Wednesday",
+    "3": "Thursday",
+    "4": "Friday",
+    "5": "Saturday",
+    "6": "Sunday"
+  },
+  "components": {
+    "formNewCustomer": {
+      "title": "Create a new customer",
+      "buttonContent": "Submit"
+    },
+    "formNewShift": {
+      "title": "Declare a new shift",
+      "courier": "Courier",
+      "buttonContent": "Submit"
+    },
+    "listCustomers": {
+      "warning": "Warning: modifying or deleting a client involves updating the base of the shifts. This treatment can be very long depending on the size of the base! Attention also, the removal of a customer implies the removal of all the shifts attached to it!",
+      "emptymessage": "This list is empty, please create new customers !",
+      "title": "Customers list",
+      "badgeshift": "shift(s)",
+      "badgeshifter": "courier(s)",
+      "modifycontract": "Change contract name: ",
+      "deletecontract": "Permanently delete this contract (and all related shifts): ",
+      "deleteButtonContent": "Delete",
+      "updateButtonContent": "Update",
+      "confirmationTitle": "Confirm",
+      "confirmationLabel": "Are you sure you want to delete this customer and all its related shifts ?",
+      "confirmationYes": "Yes",
+      "confirmationNo": "No"
+    },
+    "listShifts": {
+      "title": "Shifts list",
+      "editbutton": "Edit",
+      "closemodal": "Back to list",
+      "modaltitle": "Shift edition",
+      "updateButtonContent": "Update"
+    },
+    "listUsers": {
+      "title": "Users list",
+      "warning": "You can delete any user except administrators. Warning: Deleting a user involves the permanent deletion of all his shifts.",
+      "userid": "ID",
+      "username": "Name",
+      "email": "Email",
+      "createdat": "Created At",
+      "nbshifts": "Number of shifts",
+      "nbdelivs": "Number of deliveries",
+      "nbkms": "Number of kilometers",
+      "gains": "Gains",
+      "role": "Role",
+      "deleteButtonContent": "Delete"
+    },
+    "footer": {
+      "contact": "Contact us"
+    },
+    "forbidden": {
+      "title": "Nice try !",
+      "explanations": "But you do not have the administration rights expected to view this page ..."
+    },
+    "nav": {
+      "newshift": "Save <span class=\"full-text-nav\">new </span>shift",
+      "myshifts": "<span class=\"full-text-nav\">Your shifts </span>history",
+      "stats": "Stat<span class=\"full-text-nav\">istic</span>s",
+      "presentation": "App presentation",
+      "account": "My account",
+      "logout": "Logout"
+    },
+    "navadmin": {
+      "administration": "Admin<span class=\"full-text-nav\">istration</span>",
+      "adminusers": "Users",
+      "adminshifts": "Shifts",
+      "admincustomers": "Customers"
+    }
+  },
+  "schemas": {
+    "cities": {
+      "name": {
+        "label": "City"
+      },
+      "country": {
+        "label": "Country"
+      },
+      "altCountry": {
+        "label": "Alternative country"
+      },
+      "muni": {
+        "label": "Municipality"
+      },
+      "muniSub": {
+        "label": "muniSub"
+      },
+      "featureClass": {
+        "label": "featureClass"
+      },
+      "featureCode": {
+        "label": "featureCode"
+      },
+      "adminCode": {
+        "label": "adminCode"
+      },
+      "population": {
+        "label": "Population"
+      },
+      "lat": {
+        "label": "Latitude"
+      },
+      "lon": {
+        "label": "Longitude"
+      }
+    },
+    "countries": {
+      "alpha2": {
+        "label": "Alpha 2 code"
+      },
+      "alpha3": {
+        "label": "Alpha 3 code"
+      },
+      "countryCallingCodes": {
+        "label": "Country calling codes"
+      },
+      "countryCallingCode": {
+        "label": "Country calling code"
+      },
+      "currencies": {
+        "label": "Currencies"
+      },
+      "currency": {
+        "label": "Currency"
+      },
+      "ioc": {
+        "label": "IOC"
+      },
+      "languages": {
+        "label": "Languages"
+      },
+      "language": {
+        "label": "Language"
+      },
+      "name": {
+        "label": "Country name"
+      },
+      "status": {
+        "label": "Status"
+      }
+    },
+    "currencies": {
+      "code": {
+        "label": "Currency code"
+      },
+      "name": {
+        "label": "Currency name"
+      },
+      "rate": {
+        "label": "Conversion rate"
+      },
+      "symbol": {
+        "label": "Currency symbol"
+      }
+    },
+    "customers": {
+      "country": {
+        "label": "Country",
+        "placeholder": "Choose a country for customer"
+      },
+      "city": {
+        "label": "City",
+        "placeholder": "Choose a city for customer"
+      },
+      "timezone": {
+        "label": "Timezone",
+        "placeholder": "Choose a timezone for customer"
+      },
+      "brand": {
+        "label": "Brand",
+        "placeholder": "Choose a brand for customer"
+      },
+      "contract": {
+        "label": "Contract name",
+        "placeholder": "Enter a contract name for customer"
+      },
+      "label": {
+        "label": "Customer"
+      },
+      "shiftsCounter": {
+        "label": "Number of shifts"
+      },
+      "couriersCounter": {
+        "label": "Number of couriers"
+      },
+      "createdAt": {
+        "label": "Created at"
+      },
+      "updatedAt": {
+        "label": "Updated at"
+      }
+    },
+    "shifts": {
+      "customer": {
+        "label": "Customer",
+        "placeholder": "Choose a customer"
+      },
+      "date": {
+        "label": "Shift date",
+        "placeholder": "Choose a date"
+      },
+      "starthour": {
+        "label": "Start hour",
+        "placeholder": "Choose a start hour"
+      },
+      "endhour": {
+        "label": "End hour",
+        "placeholder": "Choose an end hour"
+      },
+      "nbdelivs": {
+        "label": "Number of deliveries",
+        "placeholder": "How many deliveries have you done during this shift ?"
+      },
+      "nbkms": {
+        "label": "Number of kilometers",
+        "placeholder": "How many kilometers have you done during this shift ?"
+      },
+      "gains": {
+        "label": "Gains for this shift",
+        "placeholder": "How much did you earn during this shift ?"
+      }
+    },
+    "timezones": {
+      "value": {
+        "label": "Value"
+      },
+      "abbr": {
+        "label": "Abbreviation"
+      },
+      "offset": {
+        "label": "Offset"
+      },
+      "isdst": {
+        "label": "Is DST ?"
+      },
+      "text": {
+        "label": "Text"
+      },
+      "utc": {
+        "label": "UTC"
+      }
+    }
+  },
+  "meta": {
+    "App": {
+      "home": {
+        "title": "ShiftStats - Work less, earn more !",
+        "description": "You are a &quot;food tech&quot; courier ? Choose the most profitable customer."
+      },
+      "myShifts": {
+        "title": "ShiftStats - Your shifts",
+        "description": "View and modify the shifts you have already saved"
+      },
+      "newShift": {
+        "title": "ShiftStats - Log a new shift",
+        "description": "Record your shifts to get accurate statistics !"
+      },
+      "adminCustomers": {
+        "title": "ShiftStats - Customers administration",
+        "description": "Create, list, modify & delete customers."
+      },
+      "adminUsers": {
+        "title": "ShiftStats - Users administration",
+        "description": "Create, list, modify & delete users."
+      }
+    },
+    "atChangePwd": {
+      "title": "ShiftStats - Change your password",
+      "description": "ShiftStats - Work less, earn more !"
+    },
+    "atEnrollAccount": {
+      "title": "ShiftStats - Enroll account",
+      "description": "ShiftStats - Work less, earn more !"
+    },
+    "atForgotPwd": {
+      "title": "ShiftStats - Forgot password ?",
+      "description": "ShiftStats - Work less, earn more !"
+    },
+    "atResetPwd": {
+      "title": "ShiftStats - Reset password",
+      "description": "ShiftStats - Work less, earn more !"
+    },
+    "atSignIn": {
+      "title": "ShiftStats - Sign in",
+      "description": "ShiftStats - Work less, earn more !"
+    },
+    "atSignUp": {
+      "title": "ShiftStats - Sign up",
+      "description": "ShiftStats - Work less, earn more !"
+    },
+    "atVerifyEmail": {
+      "title": "ShiftStats - Verify your email",
+      "description": "ShiftStats - Work less, earn more !"
+    },
+    "atresendVerificationEmail": {
+      "title": "ShiftStats - Resend verification email",
+      "description": "ShiftStats - Work less, earn more !"
+    },
+    "undefined": {
+      "title": "ShiftStats - Sorry, that page doesn't exist",
+      "description": "Sorry, that page doesn't exist",
+      "explanations": "Sorry, that page doesn't exist",
+      "tohome": "Go to home"
+    }
+  },
+  "crudActions": {
+    "customers": {
+      "insert": "Customer has been created",
+      "update": "Customer has been updated",
+      "remove": "Customer has been removed"
+    }
+  }
+}

@@ -1,0 +1,40 @@
+<template name="nav">
+  <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+  <ul class="right hide-on-med-and-down">
+    <li><a href="/new-shift"><i class="material-icons left">mode_edit</i>{{{_ "components.nav.newshift"}}}</a></li>
+    <li><a href="/my-shifts"><i class="material-icons left">list</i>{{{_ "components.nav.myshifts"}}}</a></li>
+    <li><a href="/stats"><i class="material-icons left">trending_up</i>{{{_ "components.nav.stats"}}}</a></li>
+    <li><a href="/presentation"><i class="material-icons left">info_outline</i>{{{_ "components.nav.presentation"}}}</a></li>
+    <li>
+      <ul id="dropdownAccount" class="dropdown-content">
+        <li><a class="language-en" href="#!">English</a></li>
+        <li><a class="language-fr" href="#!">Français</a></li>
+        <li class="divider"></li>
+        <li><a class="at-nav-button" href="#!">{{navButtonText}}</a></li>
+      </ul>
+      <a class="dropdown-button" href="#!" data-activates="dropdownAccount"><i class="material-icons left">person_pin</i>{{{_ "components.nav.account"}}}<i class="material-icons right">arrow_drop_down</i></a>
+    </li>
+    {{#if isInRole 'admin'}}
+      {{> navAdmin ""}}
+    {{/if}}
+  </ul>
+  <ul class="side-nav" id="slide-out">
+    <li><a href="/new-shift"><i class="material-icons left">mode_edit</i>{{{_ "components.nav.newshift"}}}</a></li>
+    <li><a href="/my-shifts"><i class="material-icons left">list</i>{{{_ "components.nav.myshifts"}}}</a></li>
+    <li><a href="/stats"><i class="material-icons left">trending_up</i>{{{_ "components.nav.stats"}}}</a></li>
+    <li><a href="/presentation"><i class="material-icons left">info_outline</i>{{{_ "components.nav.presentation"}}}</a></li>
+    <li><div class="divider"></div></li>
+    <li><a class="subheader"><i class="material-icons left">person_pin</i>{{{_ "components.nav.account"}}}<i class="material-icons right">arrow_drop_down</i></a></li>
+    <li><a class="language-en" href="#!">English</a></li>
+    <li><a class="language-fr" href="#!">Français</a></li>
+    <li><a class="at-nav-button" href="#!">{{navButtonText}}</a></li>
+    <li><div class="divider"></div></li>
+    {{#if isInRole 'admin'}}
+      <li><a class="subheader"><i class="material-icons left">settings</i>{{{_ "components.navadmin.administration"}}}<i class="material-icons right">arrow_drop_down</i></a></li>
+      <li><a href="/admin-users"><i class="material-icons left">perm_identity</i>{{{_ "components.navadmin.adminusers"}}}</a></li>
+      <li><a href="/admin-shifts"><i class="material-icons left">navigation</i>{{_ "components.navadmin.adminshifts"}}</a></li>
+      <li><a href="/admin-customers"><i class="material-icons left">store</i>{{_ "components.navadmin.admincustomers"}}</a></li>
+      <li><div class="divider"></div></li>
+    {{/if}}
+  </ul>
+</template>

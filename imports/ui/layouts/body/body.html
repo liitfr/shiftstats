@@ -1,0 +1,18 @@
+<template name="appBody">
+  <header>
+    <div class="navbar-fixed">
+      <nav class="blue lighten-2">
+        <div class="nav-wrapper">
+          <a href="/home" class="brand-logo">{{appName}}</a>
+          {{> nav ""}}
+        </div>
+      </nav>
+    </div>
+  </header>
+  <main class="container">
+    {{> Template.dynamic template=main}}
+  </main>
+  <footer class="page-footer blue lighten-2">
+    {{> footer ""}}
+  </footer>
+</template>

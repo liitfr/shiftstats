@@ -1,0 +1,8 @@
+<template name="appAdminCustomers">
+  {{#if isInRole 'admin'}}
+    {{> formNewCustomer ""}}
+    {{> listCustomers ""}}
+  {{else}}
+    {{> forbidden ""}}
+  {{/if}}
+</template>

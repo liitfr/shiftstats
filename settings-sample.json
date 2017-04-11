@@ -1,0 +1,35 @@
+{
+  "public": {
+    "appName": "ShiftStats",
+    "brandList": ["Deliveroo", "Foodora", "UberEats"],
+    "contactUs": "https://www.facebook.com/groups/544977725666207/",
+    "defaultLanguage": "fr",
+    "notAccurateThreshold": 0,
+    "barelyAccurateThreshold": 10,
+    "accurateThreshold": 20,
+    "morningStartHour": "06:00",
+    "morningEndHour": "10:59",
+    "lunchStartHour": "11:00",
+    "lunchEndHour": "14:30",
+    "AfternoonStartHour": "14:31",
+    "AfternoonEndHour": "18:29",
+    "dinnerStartHour": "18:30",
+    "dinnerEndHour": "23:29",
+    "nightStartHour": "23:30",
+    "nightEndHour": "05:59",
+    "toastDuration": 4000
+  },
+  "private": {
+    "adminUserName": "XXX",
+    "adminEmail": "XXX@XXX.XX",
+    "adminPassword": "XXXXX",
+    "adminFirstName": "XXX",
+    "adminLastName": "XXX",
+    "adminCompany": "XXX",
+    "serviceFbAppId": "000000000000000",
+    "serviceFbSecret": "00000000000000000000000000000000",
+    "mailgunUsername": "XXX@XXX.XXX.XXX",
+    "mailgunPassword": "00000000000000000000000000000000",
+    "mailgunNoReplyMail": "<no-reply@shiftstats.fr>"
+  }
+}

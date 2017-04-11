@@ -1,0 +1,65 @@
+{
+  "name": "shiftstats",
+  "private": true,
+  "scripts": {
+    "start": "meteor run"
+  },
+  "dependencies": {
+    "all-the-cities": "^2.0.0",
+    "babel-runtime": "^6.20.0",
+    "bcrypt": "^1.0.2",
+    "country-data": "0.0.31",
+    "currencies": "0.0.2",
+    "meteor-node-stubs": "~0.2.4",
+    "simpl-schema": "^0.2.3",
+    "timezones.json": "^1.2.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.1.1",
+    "eslint": "^3.18.0",
+    "eslint-config-airbnb": "^14.1.0",
+    "eslint-import-resolver-meteor": "^0.3.4",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^4.0.0",
+    "eslint-plugin-meteor": "^4.0.1",
+    "eslint-plugin-react": "^6.10.2",
+    "stylelint": "^7.9.0"
+  },
+  "eslintConfig": {
+    "env": {
+      "meteor": true,
+      "mocha": true
+    },
+    "parser": "babel-eslint",
+    "parserOptions": {
+      "allowImportExportEverywhere": true
+    },
+    "plugins": [
+      "meteor"
+    ],
+    "extends": [
+      "airbnb",
+      "plugin:meteor/recommended"
+    ],
+    "settings": {
+      "import/resolver": "meteor"
+    },
+    "rules": {
+      "import/no-extraneous-dependencies": "off",
+      "no-underscore-dangle": "off",
+      "import/extensions": [
+        "off",
+        "never"
+      ],
+      "import/no-unresolved": [
+        "error",
+        {
+          "ignore": [
+            "^meteor/",
+            "^/"
+          ]
+        }
+      ]
+    }
+  }
+}

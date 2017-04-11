@@ -1,0 +1,10 @@
+<template name="navAdmin">
+  <li>
+    <ul id="dropdownAdmin" class="dropdown-content">
+      <li><a href="/admin-users"><i class="material-icons left">perm_identity</i>{{{_ "components.navadmin.adminusers"}}}</a></li>
+      <li><a href="/admin-shifts"><i class="material-icons left">navigation</i>{{_ "components.navadmin.adminshifts"}}</a></li>
+      <li><a href="/admin-customers"><i class="material-icons left">store</i>{{_ "components.navadmin.admincustomers"}}</a></li>
+    </ul>
+    <a class="dropdown-button" href="#!" data-activates="dropdownAdmin"><i class="material-icons left">settings</i>{{{_ "components.navadmin.administration"}}}<i class="material-icons right">arrow_drop_down</i></a>
+  </li>
+</template>

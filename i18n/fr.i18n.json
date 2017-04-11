@@ -1,0 +1,322 @@
+{
+  "presentation": "Inscrivez-vous <b>gratuitement</b> pour partager <b>anonymement</b> vos statistiques avec la communauté des coursiers. Ces informations permettront de générer des statistiques qui vous aideront, toi et tous les coursiers à choisir le client qui vous permettra, par exemple, de gagner le plus d'argent, le plus rapidement possible, et en roulant le moins possible ! Aidez-nous ! Plus il y aura d'utilisateurs, plus les données seront exactes.",
+  "daysoftheweek": {
+    "0": "Lundi",
+    "1": "Mardi",
+    "2": "Mercredi",
+    "3": "Jeudi",
+    "4": "Vendredi",
+    "5": "Samedi",
+    "6": "Dimanche"
+  },
+  "components": {
+    "formNewCustomer": {
+      "title": "Création d'un nouveau client",
+      "buttonContent": "Créer"
+    },
+    "formNewShift": {
+      "title": "Déclarer un nouveau shift",
+      "courier": "Coursier",
+      "buttonContent": "Enregistrer"
+    },
+    "listCustomers": {
+      "warning": "Attention: la modification ou la suppression d'un client implique une mise à jour de la base des shifts. Ce traitement peut être très long en fonction de la taille de la base ! Attention également, la suppression d'un client implique la suppression de tous les shifts qui lui étaient rattachés !",
+      "emptymessage": "Cette liste est vide, veuillez créer de nouveaux clients !",
+      "title": "Liste des clients",
+      "badgeshift": "shift(s)",
+      "badgeshifter": "coursier(s)",
+      "modifycontract": "Modifier le libellé du contrat: ",
+      "deletecontract": "Supprimer définitivement ce contrat (et tous les shifts): ",
+      "deleteButtonContent": "Supprimer",
+      "updateButtonContent": "Mettre à jour",
+      "confirmationTitle": "Confirmation",
+      "confirmationLabel": "Êtes-vous sûr de vouloir supprimer ce client et tous les shifts qui lui sont liés ?",
+      "confirmationYes": "Oui",
+      "confirmationNo": "Non"
+    },
+    "listShifts": {
+      "title": "Liste des shifts",
+      "editbutton": "Editer",
+      "closemodal": "Retour",
+      "modaltitle": "Editer ce shift",
+      "updateButtonContent": "Mettre à jour"
+    },
+    "listUsers": {
+      "title": "Liste des utilisateurs",
+      "warning": "Vous pouvez supprimer n'importe quel utilisateur sauf les administrateurs. Attention: la suppression d'un utilisateur implique la suppression définitive de tous ses shifts.",
+      "userid": "Identifiant",
+      "username": "Nom",
+      "email": "Email",
+      "createdat": "Crée le",
+      "nbshifts": "Nombre de shifts",
+      "nbdelivs": "Nombre de livraisons",
+      "nbkms": "Nombre de kilomètres",
+      "gains": "Gains",
+      "role": "Rôle",
+      "deleteButtonContent": "Supprimer"
+    },
+    "footer": {
+      "contact": "Nous contacter"
+    },
+    "forbidden": {
+      "title": "Bien essayé !",
+      "explanations": "Mais tu ne possèdes pas les droits pour afficher cette page ..."
+    },
+    "nav": {
+      "newshift": "Enregistrer<span class=\"full-text-nav\"> ton shift</span>",
+      "myshifts": "Historique<span class=\"full-text-nav\"> de tes shifts</span>",
+      "stats": "Stat<span class=\"full-text-nav\">istique</span>s",
+      "presentation": "Présentation<span class=\"full-text-nav\"> de l'appli</span>",
+      "account": "Mon compte",
+      "logout": "Se déconnecter"
+    },
+    "navadmin": {
+      "administration": "Admin<span class=\"full-text-nav\">istration</span>",
+      "adminusers": "Utilisat<span class=\"full-text-nav\">eurs</span>",
+      "adminshifts": "Shifts",
+      "admincustomers": "Clients"
+    }
+  },
+  "schemas": {
+    "cities": {
+      "name": {
+        "label": "Ville"
+      },
+      "country": {
+        "label": "Pays"
+      },
+      "altCountry": {
+        "label": "Pays alternatif"
+      },
+      "muni": {
+        "label": "Municipalité"
+      },
+      "muniSub": {
+        "label": "muniSub"
+      },
+      "featureClass": {
+        "label": "featureClass"
+      },
+      "featureCode": {
+        "label": "featureCode"
+      },
+      "adminCode": {
+        "label": "adminCode"
+      },
+      "population": {
+        "label": "Population"
+      },
+      "lat": {
+        "label": "Latitude"
+      },
+      "lon": {
+        "label": "Longitude"
+      }
+    },
+    "countries": {
+      "alpha2": {
+        "label": "Code alpha 2"
+      },
+      "alpha3": {
+        "label": "Code alpha 3"
+      },
+      "countryCallingCodes": {
+        "label": "Indicatifs téléphoniques"
+      },
+      "countryCallingCode": {
+        "label": "Indicatif téléphonique"
+      },
+      "currencies": {
+        "label": "Devises"
+      },
+      "currency": {
+        "label": "Devise"
+      },
+      "ioc": {
+        "label": "Comité international olympique"
+      },
+      "languages": {
+        "label": "Langages"
+      },
+      "language": {
+        "label": "Langage"
+      },
+      "name": {
+        "label": "Nom du pays"
+      },
+      "status": {
+        "label": "Statut"
+      }
+    },
+    "currencies": {
+      "code": {
+        "label": "Code devise"
+      },
+      "name": {
+        "label": "Libellé devise"
+      },
+      "rate": {
+        "label": "Taux de conversion"
+      },
+      "symbol": {
+        "label": "Symbole de la devise"
+      }
+    },
+    "customers": {
+      "country": {
+        "label": "Pays",
+        "placeholder": "Choisissez le pays pour le client"
+      },
+      "city": {
+        "label": "Ville",
+        "placeholder": "Choisissez une ville pour le client"
+      },
+      "timezone": {
+        "label": "Fuseau horaire",
+        "placeholder": "Choisissez un fuseau horaire pour le client"
+      },
+      "brand": {
+        "label": "Marque",
+        "placeholder": "Choisissez une marque pour le client"
+      },
+      "contract": {
+        "label": "Libellé du contrat",
+        "placeholder": "Saisissez un libellé de contrat pour le client"
+      },
+      "label": {
+        "label": "Client"
+      },
+      "shiftsCounter": {
+        "label": "Nombre de shifts"
+      },
+      "couriersCounter": {
+        "label": "Nombre de coursiers"
+      },
+      "createdAt": {
+        "label": "Date de création"
+      },
+      "updatedAt": {
+        "label": "Date de mise à jour"
+      }
+    },
+    "shifts": {
+      "customer": {
+        "label": "Client",
+        "placeholder": "Choisis un client"
+      },
+      "date": {
+        "label": "Date du shift",
+        "placeholder": "Choisis une date"
+      },
+      "starthour": {
+        "label": "Heure de début",
+        "placeholder": "Choisis une heure"
+      },
+      "endhour": {
+        "label": "Heure de fin",
+        "placeholder": "Choisis une heure"
+      },
+      "nbdelivs": {
+        "label": "Nombre de livraisons",
+        "placeholder": "Combien de livraisons as-tu effectuées durant ton shift ?"
+      },
+      "nbkms": {
+        "label": "Nombre de kilomètres",
+        "placeholder": "Combien de kilomètres as-tu parcourus durant ton shift"
+      },
+      "gains": {
+        "label": "Gains pour ce shift",
+        "placeholder": "Combien ce shift t'a t'il fait gagner ?"
+      }
+    },
+    "timezones": {
+      "value": {
+        "label": "Valeur"
+      },
+      "abbr": {
+        "label": "Abréviation"
+      },
+      "offset": {
+        "label": "Décalage"
+      },
+      "isdst": {
+        "label": "Est DST ?"
+      },
+      "text": {
+        "label": "Texte"
+      },
+      "utc": {
+        "label": "UTC"
+      }
+    }
+  },
+  "meta": {
+    "App": {
+      "home": {
+        "title": "ShiftStats - Travaillez moins pour gagner plus !",
+        "description": "Tu es coursier à vélo et tu travailles pour la &quot;food tech&quot; ? Choisis le client le plus rentable."
+      },
+      "myShifts": {
+        "title": "ShiftStats - Liste de tes shifts",
+        "description": "Visualise et modifie les shifts que tu as déjà enregistrés"
+      },
+      "newShift": {
+        "title": "ShiftStats - Déclare un nouveau shift",
+        "description": "Enregistre tes shifts pour obtenir des statistiques précises !"
+      },
+      "adminCustomers": {
+        "title": "ShiftStats - Administration des clients",
+        "description": "Créer, lister, modifier et supprimer des clients."
+      },
+      "adminUsers": {
+        "title": "ShiftStats - Administration des utilisateurs",
+        "description": "Créer, lister, modifier et supprimer des utilisateurs."
+      }
+    },
+    "atChangePwd": {
+      "title": "ShiftStats - Change ton mot de passe",
+      "description": "ShiftStats - Travaillez moins pour gagner plus !"
+    },
+    "atEnrollAccount": {
+      "title": "ShiftStats - Inscription de compte",
+      "description": "ShiftStats - Travaillez moins pour gagner plus !"
+    },
+    "atForgotPwd": {
+      "title": "ShiftStats - Mot de passe oublié",
+      "description": "ShiftStats - Travaillez moins pour gagner plus !"
+    },
+    "atResetPwd": {
+      "title": "ShiftStats - Réinitialise ton mot de passe",
+      "description": "ShiftStats - Travaillez moins pour gagner plus !"
+    },
+    "atSignIn": {
+      "title": "ShiftStats - Se connecter",
+      "description": "ShiftStats - Travaillez moins pour gagner plus !"
+    },
+    "atSignUp": {
+      "title": "ShiftStats - Créer un compte",
+      "description": "ShiftStats - Travaillez moins pour gagner plus !"
+    },
+    "atVerifyEmail": {
+      "title": "ShiftStats - Vérifie ton adresse mail",
+      "description": "ShiftStats - Travaillez moins pour gagner plus !"
+    },
+    "atresendVerificationEmail": {
+      "title": "ShiftStats - Renvoyer un email de confirmation",
+      "description": "ShiftStats - Travaillez moins pour gagner plus !"
+    },
+    "undefined": {
+      "title": "ShiftStats - La page demandée n'existe pas",
+      "description": "La page demandée n'existe pas",
+      "explanations": "La page demandée n'existe pas",
+      "tohome": "Retour à l'accueil"
+    }
+  },
+  "crudActions": {
+    "customers": {
+      "insert": "Le client a bien été créé",
+      "update": "Le client a bien été mis à jour",
+      "remove": "Le client a bien été supprimé"
+    }
+  }
+}

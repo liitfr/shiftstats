@@ -1,0 +1,66 @@
+<template name="listCustomers">
+  <h2>{{_ "components.listCustomers.title"}}</h2>
+  <p class="flow-text warning">{{_ "components.listCustomers.warning"}}</p>
+  {{#if Template.subscriptionsReady}}
+    {{> customersList ""}}
+  {{else}}
+    {{> loader ""}}
+  {{/if}}
+</template>
+
+<!-- ======================================================================= -->
+
+<template name="customersList">
+  <ul class="collapsible" data-collapsible="accordion">
+    {{#each customer in customers}}
+      {{> customersItem customer=customer customerToDelete=customerToDelete}}
+    {{else}}
+      <li>
+        <div class="collapsible-header">
+          <i class="material-icons left">error</i>
+          {{_ "components.listCustomers.emptymessage"}}
+        </div>
+      </li>
+    {{/each}}
+  </ul>
+  <div id="modal-delete-customer" class="modal">
+    <div class="modal-content">
+      <h4>{{_ "components.listCustomers.confirmationTitle"}}</h4>
+      <p>{{_ "components.listCustomers.confirmationLabel"}}</p>
+    </div>
+    <div class="modal-footer">
+      <a id="delete-for-real" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">{{_ "components.listCustomers.confirmationYes"}}</a>
+      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">{{_ "components.listCustomers.confirmationNo"}}</a>
+    </div>
+  </div>
+</template>
+
+<!-- ======================================================================= -->
+
+<template name="customersItem">
+  <li>
+    <div class="collapsible-header">
+      <span class="new badge" data-badge-caption="{{_ "components.listCustomers.badgeshift"}}">{{customer.shiftsCounter}}</span>
+      <span class="new badge" data-badge-caption="{{_ "components.listCustomers.badgeshifter"}}">{{customer.couriersCounter}}</span>
+      <i class="material-icons left">store</i>
+      <div>{{customer.label}}</div>
+    </div>
+    <div class="collapsible-body">
+      <div>
+        <p class="flow-text">{{_ "components.listCustomers.modifycontract"}}</p>
+        {{#if displayForm}}
+          {{> quickForm collection=Customers id=formId doc=customer type="update" buttonContent=updateButtonContent}}
+        {{else}}
+          {{> loader ""}}
+        {{/if}}
+      </div>
+      <div>
+        <p class="flow-text">{{_ "components.listCustomers.deletecontract"}}</p>
+        <a class="waves-effect waves-light btn btn-delete-customer" href="#modal-delete-customer">
+          {{_ "components.listCustomers.deleteButtonContent"}}
+          <i class="material-icons right">delete</i>
+        </a>
+      </div>
+    </div>
+  </li>
+</template>

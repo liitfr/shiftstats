@@ -1,0 +1,45 @@
+<template name="listUsers">
+  <h2>{{_ "components.listUsers.title"}}</h2>
+  <p class="flow-text warning">{{_ "components.listUsers.warning"}}</p>
+  <table class="striped responsive-table">
+    <thead>
+      <tr>
+        <th data-field="username">{{_ "components.listUsers.username"}}</th>
+        <th data-field="email">{{_ "components.listUsers.email"}}</th>
+        <th data-field="createdat">{{_ "components.listUsers.createdat"}}</th>
+        <th data-field="nbshifts">{{_ "components.listUsers.nbshifts"}}</th>
+        <th data-field="nbshifts">{{_ "components.listUsers.nbdelivs"}}</th>
+        <th data-field="nbshifts">{{_ "components.listUsers.nbkms"}}</th>
+        <th data-field="nbshifts">{{_ "components.listUsers.gains"}}</th>
+        <th data-field="role">{{_ "components.listUsers.role"}}</th>
+        <th data-field="delete"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each user in users}}
+        {{> usersItem user=user}}
+      {{/each}}
+    </tbody>
+  </table>
+</template>
+
+<!-- ======================================================================= -->
+
+<template name="usersItem">
+  <tr>
+    <td>{{user.username}} {{user.services.facebook.name}}</td>
+    <td>{{user.emails.[0].address}} {{user.services.facebook.email}}</td>
+    <td>{{formatedCreatedAt}}</td>
+    <td>{{user.shiftsCounter}}</td>
+    <td>{{user.delivsCounter}}</td>
+    <td>{{user.kmsCounter}}</td>
+    <td>{{user.gainsCounter}}</td>
+    <td>{{user.roles.[0]}}</td>
+    <td>
+      <a class="waves-effect waves-light btn btn-delete-user">
+        {{_ "components.listUsers.deleteButtonContent"}}
+        <i class="material-icons right">delete</i>
+      </a>
+    </td>
+  </tr>
+</template>
