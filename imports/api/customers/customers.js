@@ -6,6 +6,7 @@ import { Tracker } from 'meteor/tracker';
 import { _ } from 'meteor/underscore';
 
 import { Cities } from '../cities/cities.js';
+import { Currencies } from '../currencies/currencies.js';
 import { Countries } from '../countries/countries.js';
 import { Timezones } from '../timezones/timezones.js';
 
@@ -27,6 +28,37 @@ const CustomersSchema = new SimpleSchema({
         label: country.name,
         value: country._id,
       })),
+    },
+  },
+  //----------------------------------------------------------------------------
+  currencySymbol: {
+    type: String,
+    label: () => TAPi18n.__('schemas.currencies.symbol.label'),
+    denyUpdate: true,
+    autoValue() {
+      if (this.isInsert && this.field('country').isSet) {
+        const currencyOfCountry = Countries.findOne({
+          _id: this.field('country').value,
+        }, {
+          fields: {
+            currencies: 1,
+          },
+        }).currencies[0];
+        if (currencyOfCountry) {
+          return Currencies.findOne({
+            code: currencyOfCountry,
+          }, {
+            fields: {
+              symbol: 1,
+            },
+          }).symbol;
+        }
+      }
+      this.unset();
+      return undefined;
+    },
+    autoform: {
+      omit: true,
     },
   },
   //----------------------------------------------------------------------------
@@ -247,11 +279,12 @@ CustomersSchema.addDocValidator((customer) => {
   return [];
 });
 
-Customers.attachSchema(CustomersSchema, { transform: true });
+Customers.attachSchema(CustomersSchema);
 
 Customers.adminFields = {
   _id: 1,
   country: 1,
+  currencySymbol: 1,
   city: 1,
   brand: 1,
   contract: 1,
@@ -264,9 +297,7 @@ Customers.adminFields = {
 
 Customers.publicFields = {
   _id: 1,
-  city: 1,
-  brand: 1,
-  contract: 1,
+  currencySymbol: 1,
   label: 1,
 };
 

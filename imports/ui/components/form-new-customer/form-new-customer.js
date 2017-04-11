@@ -23,6 +23,7 @@ Template.formNewCustomer.onCreated(function formNewCustomerOnCreated() {
         template.$('select[name$="timezone"]').material_select();
       });
     });
+    template.subscribe('currencies.list');
   });
 });
 
