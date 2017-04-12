@@ -129,6 +129,28 @@ const CustomersSchema = new SimpleSchema({
     },
   },
   //----------------------------------------------------------------------------
+  cityName: {
+    type: String,
+    label: () => TAPi18n.__('schemas.cities.name.label'),
+    denyUpdate: true,
+    autoValue() {
+      if (this.isInsert && this.field('city').isSet) {
+        return Cities.findOne({
+          _id: this.field('city').value,
+        }, {
+          fields: {
+            name: 1,
+          },
+        }).name;
+      }
+      this.unset();
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
   timezone: {
     type: String,
     regEx: SimpleSchema.RegEx.Id,
@@ -309,6 +331,7 @@ Customers.adminFields = {
   countryName: 1,
   currencySymbol: 1,
   city: 1,
+  cityName: 1,
   brand: 1,
   contract: 1,
   label: 1,
