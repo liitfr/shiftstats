@@ -31,6 +31,28 @@ const CustomersSchema = new SimpleSchema({
     },
   },
   //----------------------------------------------------------------------------
+  countryName: {
+    type: String,
+    label: () => TAPi18n.__('schemas.countries.name.label'),
+    denyUpdate: true,
+    autoValue() {
+      if (this.isInsert && this.field('country').isSet) {
+        return Countries.findOne({
+          _id: this.field('country').value,
+        }, {
+          fields: {
+            name: 1,
+          },
+        }).name;
+      }
+      this.unset();
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
   currencySymbol: {
     type: String,
     label: () => TAPi18n.__('schemas.currencies.symbol.label'),
@@ -284,6 +306,7 @@ Customers.attachSchema(CustomersSchema);
 Customers.adminFields = {
   _id: 1,
   country: 1,
+  countryName: 1,
   currencySymbol: 1,
   city: 1,
   brand: 1,
