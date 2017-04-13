@@ -1,5 +1,6 @@
+/* global Materialize */
+
 import { AutoForm } from 'meteor/aldeed:autoform';
-import { Materialize } from 'meteor/materialize:materialize';
 import { TAPi18n } from 'meteor/tap:i18n';
 
 import './date-picker/date-picker.html';

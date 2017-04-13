@@ -67,13 +67,17 @@ const CustomersSchema = new SimpleSchema({
           },
         }).currencies[0];
         if (currencyOfCountry) {
-          return Currencies.findOne({
+          const currency = Currencies.findOne({
             code: currencyOfCountry,
           }, {
             fields: {
               symbol: 1,
             },
-          }).symbol;
+          });
+          if (currency) {
+            return currency.symbol;
+          }
+          return currencyOfCountry;
         }
       }
       this.unset();

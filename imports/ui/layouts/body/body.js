@@ -1,5 +1,6 @@
 import { DocHead } from 'meteor/kadira:dochead';
 import { FlowRouter } from 'meteor/kadira:flow-router';
+import 'materialize-css';
 import { TAPi18n } from 'meteor/tap:i18n';
 
 import '../../components/nav/nav.js';

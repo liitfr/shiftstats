@@ -62,7 +62,6 @@ livedata@1.0.18
 localstorage@1.0.12
 logging@1.1.17
 matb33:collection-hooks@0.8.4
-materialize:materialize@0.98.1
 mdg:validation-error@0.5.1
 meteor@1.6.1
 meteor-base@1.0.4

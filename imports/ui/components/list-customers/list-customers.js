@@ -1,7 +1,5 @@
-/* eslint-disable prefer-arrow-callback */
-/* global document */
+/* global document, Materialize */
 
-import { Materialize } from 'meteor/materialize:materialize';
 import { TAPi18n } from 'meteor/tap:i18n';
 
 import { Customers } from '../../../api/customers/customers.js';

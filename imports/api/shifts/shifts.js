@@ -321,27 +321,29 @@ const ShiftsSchema = new SimpleSchema({
     },
   },
   //----------------------------------------------------------------------------
-  // startHour: {
-  //   type: String,
-  //   regEx: /^([01]?[0-9]{1}|2[0-3]{1}):[0-5]{1}[0-9]{1}/,
-  //   label: () => TAPi18n.__('schemas.shifts.starthour.label'),
-  //   autoform: {
-  //     afFieldInput: {
-  //       type: 'time',
-  //     },
-  //   },
-  // },
-  // //----------------------------------------------------------------------------
-  // endHour: {
-  //   type: String,
-  //   regEx: /^([01]?[0-9]{1}|2[0-3]{1}):[0-5]{1}[0-9]{1}/,
-  //   label: () => TAPi18n.__('schemas.shifts.endhour.label'),
-  //   autoform: {
-  //     afFieldInput: {
-  //       type: 'time',
-  //     },
-  //   },
-  // },
+  startHour: {
+    type: String,
+    regEx: /^([01]?[0-9]{1}|2[0-3]{1}):[0-5]{1}[0-9]{1}/,
+    label: () => TAPi18n.__('schemas.shifts.starthour.label'),
+    autoform: {
+      afFieldInput: {
+        type: 'time',
+        class: 'timepicker',
+      },
+    },
+  },
+  //----------------------------------------------------------------------------
+  endHour: {
+    type: String,
+    regEx: /^([01]?[0-9]{1}|2[0-3]{1}):[0-5]{1}[0-9]{1}/,
+    label: () => TAPi18n.__('schemas.shifts.endhour.label'),
+    autoform: {
+      afFieldInput: {
+        type: 'time',
+        class: 'timepicker',
+      },
+    },
+  },
   // //----------------------------------------------------------------------------
   // // KPIs
   // //----------------------------------------------------------------------------

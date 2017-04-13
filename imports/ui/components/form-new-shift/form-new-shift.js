@@ -1,4 +1,5 @@
 import { AutoForm } from 'meteor/aldeed:autoform';
+import 'materialize-clockpicker/src/js/materialize.clockpicker.js';
 import { moment } from 'meteor/momentjs:moment';
 import { SessionAmplify } from 'meteor/mrt:session-amplify';
 import { TAPi18n } from 'meteor/tap:i18n';
@@ -20,6 +21,12 @@ Template.formNewShift.onCreated(function formNewShiftOnCreated() {
 });
 
 Template.formNewShift.onRendered(function formNewShiftOnRendered() {
+  $('.timepicker').pickatime({
+    autoclose: true,
+    twelvehour: false,
+    default: '',
+    donetext: 'OK',
+  });
   const $input = this.$('.datepicker').pickadate({
     selectMonths: true,
     selectYears: 2,

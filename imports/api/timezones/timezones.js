@@ -42,6 +42,7 @@ Timezones.attachSchema(TimezonesSchema);
 
 Timezones.publicFields = {
   _id: 1,
+  abbr: 1,
   offset: 1,
   text: 1,
 };
