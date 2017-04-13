@@ -1,9 +1,6 @@
-/* global amplify */
-
-// HACK : Had to define amplify as global since I didn't find what package to include ...
-
 import { moment } from 'meteor/momentjs:moment';
 import { Mongo } from 'meteor/mongo';
+import { SessionAmplify } from 'meteor/mrt:session-amplify';
 import SimpleSchema from 'simpl-schema';
 import { TAPi18n } from 'meteor/tap:i18n';
 import { Tracker } from 'meteor/tracker';
@@ -25,6 +22,9 @@ import { Customers } from '../customers/customers.js';
 const Shifts = new Mongo.Collection('shifts');
 
 const ShiftsSchema = new SimpleSchema({
+  //----------------------------------------------------------------------------
+  // Courier
+  //----------------------------------------------------------------------------
   courier: {
     type: String,
     regEx: SimpleSchema.RegEx.Id,
@@ -37,6 +37,9 @@ const ShiftsSchema = new SimpleSchema({
       omit: true,
     },
   },
+  //----------------------------------------------------------------------------
+  // Customer
+  //----------------------------------------------------------------------------
   customer: {
     type: String,
     regEx: SimpleSchema.RegEx.Id,
@@ -45,16 +48,11 @@ const ShiftsSchema = new SimpleSchema({
     denyUpdate: true,
     autoform: {
       afFieldInput: {
-        // defaultValue: () => amplify.store('autoform-favorite-customer'),
+        defaultValue: () => SessionAmplify.get('shiftstats-user-favorite-customer'),
         firstOption: () => TAPi18n.__('schemas.shifts.customer.placeholder'),
         class: 'select-customer',
-        // LIIT : This is not reactive. If you want to make it reactive, check this link
-        // https://github.com/aldeed/meteor-autoform/issues/247
-        // Idea comes from : https://forums.meteor.com/t/dependant-drop-down-list/8192/3
         options: () => Customers.find({}, { sort: {
-          city: 1,
-          brand: 1,
-          contract: 1,
+          label: 1,
         } }).map(customer => ({
           label: customer.label,
           value: customer._id,
@@ -62,8 +60,77 @@ const ShiftsSchema = new SimpleSchema({
       },
     },
   },
+  //----------------------------------------------------------------------------
+  country: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Id,
+    denyUpdate: true,
+    label: () => TAPi18n.__('schemas.customers.country.label'),
+    autoValue() {
+      if (this.isInsert && this.field('customer').isSet) {
+        return Customers.findOne({
+          _id: this.field('customer').value,
+        }, {
+          fields: {
+            country: 1,
+          },
+        }).country;
+      }
+      this.unset();
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
+  countryName: {
+    type: String,
+    denyUpdate: true,
+    label: () => TAPi18n.__('schemas.countries.name.label'),
+    autoValue() {
+      if (this.isInsert && this.field('customer').isSet) {
+        return Customers.findOne({
+          _id: this.field('customer').value,
+        }, {
+          fields: {
+            countryName: 1,
+          },
+        }).countryName;
+      }
+      this.unset();
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
+  currencySymbol: {
+    type: String,
+    denyUpdate: true,
+    label: () => TAPi18n.__('schemas.currencies.symbol.label'),
+    autoValue() {
+      if (this.isInsert && this.field('customer').isSet) {
+        return Customers.findOne({
+          _id: this.field('customer').value,
+        }, {
+          fields: {
+            currencySymbol: 1,
+          },
+        }).currencySymbol;
+      }
+      this.unset();
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
   city: {
     type: String,
+    regEx: SimpleSchema.RegEx.Id,
     denyUpdate: true,
     label: () => TAPi18n.__('schemas.customers.city.label'),
     autoValue() {
@@ -83,6 +150,96 @@ const ShiftsSchema = new SimpleSchema({
       omit: true,
     },
   },
+  //----------------------------------------------------------------------------
+  cityName: {
+    type: String,
+    denyUpdate: true,
+    label: () => TAPi18n.__('schemas.cities.name.label'),
+    autoValue() {
+      if (this.isInsert && this.field('customer').isSet) {
+        return Customers.findOne({
+          _id: this.field('customer').value,
+        }, {
+          fields: {
+            cityName: 1,
+          },
+        }).cityName;
+      }
+      this.unset();
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
+  timezone: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Id,
+    denyUpdate: true,
+    label: () => TAPi18n.__('schemas.customers.timezone.label'),
+    autoValue() {
+      if (this.isInsert && this.field('customer').isSet) {
+        return Customers.findOne({
+          _id: this.field('customer').value,
+        }, {
+          fields: {
+            timezone: 1,
+          },
+        }).timezone;
+      }
+      this.unset();
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
+  timezoneAbbr: {
+    type: String,
+    denyUpdate: true,
+    label: () => TAPi18n.__('schemas.timezones.abbr.label'),
+    autoValue() {
+      if (this.isInsert && this.field('customer').isSet) {
+        return Customers.findOne({
+          _id: this.field('customer').value,
+        }, {
+          fields: {
+            timezoneAbbr: 1,
+          },
+        }).timezoneAbbr;
+      }
+      this.unset();
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
+  timezoneOffset: {
+    type: Number,
+    denyUpdate: true,
+    label: () => TAPi18n.__('schemas.timezones.offset.label'),
+    autoValue() {
+      if (this.isInsert && this.field('customer').isSet) {
+        return Customers.findOne({
+          _id: this.field('customer').value,
+        }, {
+          fields: {
+            timezoneOffset: 1,
+          },
+        }).timezoneOffset;
+      }
+      this.unset();
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
   brand: {
     type: String,
     denyUpdate: true,
@@ -104,6 +261,7 @@ const ShiftsSchema = new SimpleSchema({
       omit: true,
     },
   },
+  //----------------------------------------------------------------------------
   contract: {
     type: String,
     denyUpdate: true,
@@ -125,81 +283,20 @@ const ShiftsSchema = new SimpleSchema({
       omit: true,
     },
   },
-  // TODO : date picker displayed in french
-  date: {
-    type: Date,
-    label: () => TAPi18n.__('schemas.shifts.date.label'),
-    autoform: {
-      afFieldInput: {
-        // TODO : i18n format
-        defaultValue: moment().format('DD/MM/YYYY'),
-        type: 'datepicker',
-        class: 'datepicker',
-        placeholder: () => TAPi18n.__('schemas.shifts.date.placeholder'),
-      },
-    },
-  },
-  startHour: {
+  //----------------------------------------------------------------------------
+  customerLabel: {
     type: String,
-    regEx: /^([01]?[0-9]{1}|2[0-3]{1}):[0-5]{1}[0-9]{1}/,
-    label: () => TAPi18n.__('schemas.shifts.starthour.label'),
-    autoform: {
-      afFieldInput: {
-        type: 'time',
-      },
-    },
-  },
-  endHour: {
-    type: String,
-    regEx: /^([01]?[0-9]{1}|2[0-3]{1}):[0-5]{1}[0-9]{1}/,
-    label: () => TAPi18n.__('schemas.shifts.endhour.label'),
-    autoform: {
-      afFieldInput: {
-        type: 'time',
-      },
-    },
-  },
-  nbDelivs: {
-    type: SimpleSchema.Integer,
-    label: () => TAPi18n.__('schemas.shifts.nbdelivs.label'),
-    min: 0,
-    autoform: {
-      afFieldInput: {
-        type: 'number',
-        pattern: '[0-9]',
-        step: '1',
-      },
-    },
-  },
-  nbKms: {
-    type: Number,
-    label: () => TAPi18n.__('schemas.shifts.nbkms.label'),
-    min: 0,
-    autoform: {
-      afFieldInput: {
-        type: 'number',
-        step: '0.1',
-      },
-    },
-  },
-  gains: {
-    type: Number,
-    label: () => TAPi18n.__('schemas.shifts.gains.label'),
-    min: 0,
-    autoform: {
-      afFieldInput: {
-        type: 'number',
-        step: '0.1',
-      },
-    },
-  },
-  createdAt: {
-    type: Date,
+    denyUpdate: true,
+    label: () => TAPi18n.__('schemas.customers.label.label'),
     autoValue() {
-      if (this.isInsert) {
-        return new Date();
-      } else if (this.isUpsert) {
-        return { $setOnInsert: new Date() };
+      if (this.isInsert && this.field('customer').isSet) {
+        return Customers.findOne({
+          _id: this.field('customer').value,
+        }, {
+          fields: {
+            label: 1,
+          },
+        }).label;
       }
       this.unset();
       return undefined;
@@ -208,31 +305,117 @@ const ShiftsSchema = new SimpleSchema({
       omit: true,
     },
   },
-  updatedAt: {
-    type: Date,
-    autoValue() {
-      if (this.isUpdate) {
-        return new Date();
-      }
-      return undefined;
-    },
-    denyInsert: true,
-    optional: true,
+  //----------------------------------------------------------------------------
+  // Dates & Hours
+  //----------------------------------------------------------------------------
+  date: {
+    type: Number,
+    label: () => TAPi18n.__('schemas.shifts.date.label'),
     autoform: {
-      omit: true,
+      afFieldInput: {
+        defaultValue: () => moment().format(TAPi18n.__('components.pickadate.format').toUpperCase()),
+        type: 'datepicker',
+        class: 'datepicker',
+        placeholder: () => TAPi18n.__('schemas.shifts.date.placeholder'),
+      },
     },
   },
+  //----------------------------------------------------------------------------
+  // startHour: {
+  //   type: String,
+  //   regEx: /^([01]?[0-9]{1}|2[0-3]{1}):[0-5]{1}[0-9]{1}/,
+  //   label: () => TAPi18n.__('schemas.shifts.starthour.label'),
+  //   autoform: {
+  //     afFieldInput: {
+  //       type: 'time',
+  //     },
+  //   },
+  // },
+  // //----------------------------------------------------------------------------
+  // endHour: {
+  //   type: String,
+  //   regEx: /^([01]?[0-9]{1}|2[0-3]{1}):[0-5]{1}[0-9]{1}/,
+  //   label: () => TAPi18n.__('schemas.shifts.endhour.label'),
+  //   autoform: {
+  //     afFieldInput: {
+  //       type: 'time',
+  //     },
+  //   },
+  // },
+  // //----------------------------------------------------------------------------
+  // // KPIs
+  // //----------------------------------------------------------------------------
+  // nbDelivs: {
+  //   type: SimpleSchema.Integer,
+  //   label: () => TAPi18n.__('schemas.shifts.nbdelivs.label'),
+  //   min: 0,
+  //   autoform: {
+  //     afFieldInput: {
+  //       type: 'number',
+  //       pattern: '[0-9]',
+  //       step: '1',
+  //     },
+  //   },
+  // },
+  // //----------------------------------------------------------------------------
+  // nbKms: {
+  //   type: Number,
+  //   label: () => TAPi18n.__('schemas.shifts.nbkms.label'),
+  //   min: 0,
+  //   autoform: {
+  //     afFieldInput: {
+  //       type: 'number',
+  //       step: '0.1',
+  //     },
+  //   },
+  // },
+  // //----------------------------------------------------------------------------
+  // gains: {
+  //   type: Number,
+  //   label: () => TAPi18n.__('schemas.shifts.gains.label'),
+  //   min: 0,
+  //   autoform: {
+  //     afFieldInput: {
+  //       type: 'number',
+  //       step: '0.1',
+  //     },
+  //   },
+  // },
+  //----------------------------------------------------------------------------
+  // Technical
+  //----------------------------------------------------------------------------
+  // createdAt: {
+  //   type: Date,
+  //   autoValue() {
+  //     if (this.isInsert) {
+  //       return new Date();
+  //     } else if (this.isUpsert) {
+  //       return { $setOnInsert: new Date() };
+  //     }
+  //     this.unset();
+  //     return undefined;
+  //   },
+  //   autoform: {
+  //     omit: true,
+  //   },
+  // },
+  // //----------------------------------------------------------------------------
+  // updatedAt: {
+  //   type: Date,
+  //   autoValue() {
+  //     if (this.isUpdate) {
+  //       return new Date();
+  //     }
+  //     return undefined;
+  //   },
+  //   denyInsert: true,
+  //   optional: true,
+  //   autoform: {
+  //     omit: true,
+  //   },
+  // },
 }, {
   tracker: Tracker,
-}, {
-  clean: {
-    filter: true,
-    autoConvert: true,
-    removeEmptyStrings: true,
-    trimStrings: true,
-    getAutoValues: true,
-    removeNullsFromArrays: true,
-  },
 });
 
 Shifts.attachSchema(ShiftsSchema);

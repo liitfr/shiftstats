@@ -26,7 +26,7 @@ Template.customersList.onCreated(function customersListOnCreated() {
   this.customerToDelete = new ReactiveVar();
 });
 
-Template.customersList.onRendered(function () {
+Template.customersList.onRendered(function customersListOnRendered() {
   this.$('.collapsible').collapsible();
   this.$('.modal').modal();
 });
@@ -45,7 +45,7 @@ Template.customersList.helpers({
 });
 
 Template.customersList.events({
-  'click #delete-for-real': function deleteForReal() {
+  'click #delete-for-real': function clickDeleteForReal() {
     Customers.remove(Template.instance().customerToDelete.get(), () => {
       Materialize.toast(TAPi18n.__('crudActions.customers.remove'), Meteor.settings.public.toastDuration);
     });
@@ -75,10 +75,10 @@ Template.customersItem.helpers({
 
 // TODO : Warning modal
 Template.customersItem.events({
-  'click .btn-delete-customer': function eventDeleteCustomer() {
+  'click .btn-delete-customer': function clickBtnDeleteCustomer() {
     this.customerToDelete.set(this.customer._id);
   },
-  'click .collapsible-header': function eventShowForm(event, templateInstance) {
+  'click .collapsible-header': function clickCollapsibleHeader(event, templateInstance) {
     templateInstance.displayForm.set(true);
   },
 });

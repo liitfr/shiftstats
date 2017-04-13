@@ -192,7 +192,7 @@ const CustomersSchema = new SimpleSchema({
   },
   //----------------------------------------------------------------------------
   timezoneOffset: {
-    type: String,
+    type: Number,
     label: () => TAPi18n.__('schemas.timezones.offset.label'),
     denyUpdate: true,
     autoValue() {
@@ -390,7 +390,16 @@ Customers.adminFields = {
 
 Customers.publicFields = {
   _id: 1,
+  country: 1,
+  countryName: 1,
   currencySymbol: 1,
+  city: 1,
+  cityName: 1,
+  timezone: 1,
+  timezoneAbbr: 1,
+  timezoneOffset: 1,
+  brand: 1,
+  contract: 1,
   label: 1,
 };
 

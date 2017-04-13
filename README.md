@@ -72,7 +72,8 @@ sinon, graphe évolution
 ### Launch meteor app with settings
 
 `meteor --settings settings-development.json`  
-Settings can be accessed like this : `Meteor.settings.public.publicInfo`
+Settings can be accessed like this : `Meteor.settings.public.publicInfo`.  
+If you want to have detailed information, execute `export METEOR_PROFILE=1` before running meteor.
 
 ### Drop database
 

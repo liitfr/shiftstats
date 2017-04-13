@@ -1,18 +1,17 @@
 import { AutoForm } from 'meteor/aldeed:autoform';
 import { moment } from 'meteor/momentjs:moment';
-
-// TODO: support i18n
+import { TAPi18n } from 'meteor/tap:i18n';
 
 AutoForm.addInputType('datepicker', {
   template: 'afInputDatePicker',
   valueIn: function valueIn(val) {
-    return (val instanceof Date) ? moment.utc(val).format('DD/MM/YYYY') : val;
+    return Number.isInteger(val) ? moment(val.toString()).format(TAPi18n.__('components.pickadate.format').toUpperCase()) : val;
   },
   valueOut: function valueOut() {
     const val = this.val();
-    const m = moment(val, 'DD/MM/YYYY', true);
+    const m = moment(val, TAPi18n.__('components.pickadate.format').toUpperCase(), true);
     if (m && m.isValid()) {
-      return new Date(m.get('year'), m.get('month'), m.get('date'));
+      return (m.get('year') * 10000) + ((m.get('month') + 1) * 100) + m.get('date');
     }
     return null;
   },

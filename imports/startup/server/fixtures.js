@@ -158,33 +158,54 @@ Meteor.startup(() => {
       },
     ];
     data.forEach((customer) => {
-      const countryCode = Countries.findOne({
+      const country = Countries.findOne({
         alpha2: customer.country,
       }, {
         fields: {
           _id: 1,
+          name: 1,
+          currencies: 1,
         },
-      })._id;
-      const cityCode = Cities.findOne({
+      });
+      const currency = Currencies.findOne({
+        code: country.currencies[0],
+      }, {
+        fields: {
+          _id: 1,
+          symbol: 1,
+        },
+      });
+      const city = Cities.findOne({
         name: customer.city,
       }, {
         fields: {
           _id: 1,
+          name: 1,
         },
-      })._id;
-      const timezoneCode = Timezones.findOne({
+      });
+      const timezone = Timezones.findOne({
         abbr: customer.timezone,
       }, {
         fields: {
           _id: 1,
+          abbr: 1,
+          offset: 1,
         },
-      })._id;
+      });
       Customers.insert({
-        country: countryCode,
-        city: cityCode,
-        timezone: timezoneCode,
+        country: country._id,
+        countryName: country.name,
+        currencySymbol: currency.symbol,
+        city: city._id,
+        cityName: city.name,
+        timezone: timezone._id,
+        timezoneAbbr: timezone.abbr,
+        timezoneOffset: timezone.offset,
         brand: customer.brand,
         contract: customer.contract,
+        label: `${city.name} > ${customer.brand} > ${customer.contract}`,
+        shiftCounter: 0,
+        couriersCounter: 0,
         createdAt: new Date(timestamp),
       });
       timestamp += 1;

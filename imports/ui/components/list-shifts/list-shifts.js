@@ -64,7 +64,7 @@ Template.listShifts.helpers({
 // BUG we should not use data-attr : https://dweldon.silvrback.com/common-mistakes
 // or use url hashes like https://guide.meteor.com/data-loading.html#organizing-subscriptions
 Template.listShifts.events({
-  'click .modal-trigger': function eventModalTrigger(event, templateInstance) {
+  'click .modal-trigger': function clickModalTrigger(event, templateInstance) {
     templateInstance.selectedShiftId.set($(event.currentTarget).attr('data-shift'));
   },
 });
@@ -73,8 +73,9 @@ Template.listShifts.events({
 
 Template.shiftsItem.helpers({
   formatedDate() {
-    console.log(amplify.store('date-format'));
-    return moment(this.shift.date).format(amplify.store('date-format'));
+    // console.log(amplify.store('date-format'));
+    // return moment(this.shift.date).format(amplify.store('date-format'));
+    return this.shift.date;
   },
 });
 

@@ -10,6 +10,7 @@
     "bcrypt": "^1.0.2",
     "country-data": "0.0.31",
     "currencies": "0.0.2",
+    "materialize-clockpicker": "^1.0.1",
     "meteor-node-stubs": "~0.2.4",
     "simpl-schema": "^0.2.3",
     "timezones.json": "^1.2.0"

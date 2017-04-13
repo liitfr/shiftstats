@@ -25,7 +25,7 @@ Template.usersItem.helpers({
 
 // TODO : Warning modal
 Template.usersItem.events({
-  'click .btn-delete-user': function eventDeletePricing() {
+  'click .btn-delete-user': function clickBtnDeleteUser() {
     Meteor.users.remove(this.user._id);
   },
 });

@@ -28,8 +28,7 @@ Template.formNewCustomer.onCreated(function formNewCustomerOnCreated() {
 });
 
 Template.formNewCustomer.onDestroyed(function formNewCustomerOnDestroyed() {
-  const template = this;
-  template.$('select').material_select('destroy');
+  this.$('select').material_select('destroy');
 });
 
 Template.formNewCustomer.helpers({
