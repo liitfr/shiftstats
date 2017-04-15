@@ -1,5 +1,8 @@
 const Users = {};
 
+// TODO : myCities
+// TODO : myCustomers
+
 Users.adminFields = {
   _id: 1,
   username: 1,

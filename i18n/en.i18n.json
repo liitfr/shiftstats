@@ -256,13 +256,29 @@
         "label": "Shift date",
         "placeholder": "Choose a date"
       },
+      "dayoftheweek": {
+        "label": "Day of the week",
+        "placeholder": "Choose a day"
+      },
+      "month": {
+        "label": "Shift month",
+        "placeholder": "Choose a month"
+      },
       "starthour": {
         "label": "Start hour",
         "placeholder": "Choose a start hour"
       },
+      "startdatetime": {
+        "label": "Start datetime",
+        "placeholder": "Choose a start datetime"
+      },
       "endhour": {
         "label": "End hour",
         "placeholder": "Choose an end hour"
+      },
+      "enddatetime": {
+        "label": "End datetime",
+        "placeholder": "Choose an end datetime"
       },
       "nbdelivs": {
         "label": "Number of deliveries",
@@ -275,6 +291,12 @@
       "gains": {
         "label": "Gains for this shift",
         "placeholder": "How much did you earn during this shift ?"
+      },
+      "counter": {
+        "label": "Number of shifts"
+      },
+      "duration": {
+        "label": "Duration"
       }
     },
     "timezones": {
@@ -295,6 +317,14 @@
       },
       "utc": {
         "label": "UTC"
+      }
+    },
+    "users": {
+      "username": {
+        "label": "Username"
+      },
+      "email": {
+        "label": "Email address"
       }
     }
   },

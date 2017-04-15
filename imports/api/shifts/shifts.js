@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import { moment } from 'meteor/momentjs:moment';
 import { Mongo } from 'meteor/mongo';
 import { SessionAmplify } from 'meteor/mrt:session-amplify';
@@ -8,16 +9,11 @@ import { Tracker } from 'meteor/tracker';
 import { Customers } from '../customers/customers.js';
 
 // TODO : index on analytics fields
-// TODO : denormalize city, brand, contract
 // TODO : message about the shortest the shift is the better it is
-// TODO : security control that user === user
 // TODO : when customer + date chosen : display related calculation fields
-// TODO : save user choices for city / brand / contract in amplify
-// TODO : should we control if user has already defined a shift on this period ?
-// TODO : use materialize date picker ?
 // TODO : control that hours are in right order and date not in futur
-// TODO : save choice of customer in client
-// TODO : should city / brand / contract be in 3 fields ?
+// TODO : add methods to get courier (watch out user permission) & customer
+// TODO : complete fields lists
 
 const Shifts = new Mongo.Collection('shifts');
 
@@ -31,7 +27,60 @@ const ShiftsSchema = new SimpleSchema({
     label: () => TAPi18n.__('schemas.shifts.courier.label'),
     denyUpdate: true,
     autoValue() {
-      return this.userId;
+      if (this.isInsert) {
+        return this.userId;
+      }
+      this.unset();
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
+  courierUsername: {
+    type: String,
+    denyUpdate: true,
+    label: () => TAPi18n.__('schemas.users.username.label'),
+    autoValue() {
+      if (this.isInsert && this.field('courier').isSet) {
+        const courier = Meteor.users.findOne({
+          _id: this.field('courier').value,
+        }, {
+          fields: {
+            username: 1,
+            services: 1,
+          },
+        });
+        return courier.username !== undefined ? courier.username : courier.services.facebook.name;
+      }
+      this.unset();
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
+  courierEmail: {
+    type: String,
+    denyUpdate: true,
+    label: () => TAPi18n.__('schemas.users.email.label'),
+    autoValue() {
+      if (this.isInsert && this.field('courier').isSet) {
+        const courier = Meteor.users.findOne({
+          _id: this.field('courier').value,
+        }, {
+          fields: {
+            emails: 1,
+            services: 1,
+          },
+        });
+        return courier.emails[0].address !== undefined ?
+        courier.emails[0].address : courier.services.facebook.name;
+      }
+      this.unset();
+      return undefined;
     },
     autoform: {
       omit: true,
@@ -309,7 +358,7 @@ const ShiftsSchema = new SimpleSchema({
   // Dates & Hours
   //----------------------------------------------------------------------------
   date: {
-    type: Number,
+    type: SimpleSchema.Integer,
     label: () => TAPi18n.__('schemas.shifts.date.label'),
     autoform: {
       afFieldInput: {
@@ -318,6 +367,39 @@ const ShiftsSchema = new SimpleSchema({
         class: 'datepicker',
         placeholder: () => TAPi18n.__('schemas.shifts.date.placeholder'),
       },
+    },
+  },
+  //----------------------------------------------------------------------------
+  dayOfTheWeek: {
+    type: SimpleSchema.Integer,
+    label: () => TAPi18n.__('schemas.shifts.dayoftheweek.label'),
+    autoValue() {
+      if (this.field('date').isSet) {
+        const year = Math.floor(this.field('date').value / 10000);
+        const month = Math.floor((this.field('date').value - (year * 10000)) / 100);
+        const day = this.field('date').value - (year * 10000) - (month * 100);
+        return moment(new Date(year, month, day)).day();
+      }
+      this.unset();
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
+  month: {
+    type: SimpleSchema.Integer,
+    label: () => TAPi18n.__('schemas.shifts.month.label'),
+    autoValue() {
+      if (this.field('date').isSet) {
+        return Math.floor(this.field('date').value / 100);
+      }
+      this.unset();
+      return undefined;
+    },
+    autoform: {
+      omit: true,
     },
   },
   //----------------------------------------------------------------------------
@@ -344,78 +426,171 @@ const ShiftsSchema = new SimpleSchema({
       },
     },
   },
-  // //----------------------------------------------------------------------------
-  // // KPIs
-  // //----------------------------------------------------------------------------
-  // nbDelivs: {
-  //   type: SimpleSchema.Integer,
-  //   label: () => TAPi18n.__('schemas.shifts.nbdelivs.label'),
-  //   min: 0,
-  //   autoform: {
-  //     afFieldInput: {
-  //       type: 'number',
-  //       pattern: '[0-9]',
-  //       step: '1',
-  //     },
-  //   },
-  // },
-  // //----------------------------------------------------------------------------
-  // nbKms: {
-  //   type: Number,
-  //   label: () => TAPi18n.__('schemas.shifts.nbkms.label'),
-  //   min: 0,
-  //   autoform: {
-  //     afFieldInput: {
-  //       type: 'number',
-  //       step: '0.1',
-  //     },
-  //   },
-  // },
-  // //----------------------------------------------------------------------------
-  // gains: {
-  //   type: Number,
-  //   label: () => TAPi18n.__('schemas.shifts.gains.label'),
-  //   min: 0,
-  //   autoform: {
-  //     afFieldInput: {
-  //       type: 'number',
-  //       step: '0.1',
-  //     },
-  //   },
-  // },
+  //----------------------------------------------------------------------------
+  duration: {
+    type: SimpleSchema.Integer,
+    label: () => TAPi18n.__('schemas.shifts.duration.label'),
+    autoValue() {
+      if (this.field('startHour').isSet && this.field('endHour').isSet) {
+        const startHour = this.field('startHour').value;
+        const endHour = this.field('endHour').value;
+        return ((parseInt(endHour.split(':')[0], 10) * 60) + (parseInt(endHour.split(':')[1], 10))) - ((parseInt(startHour.split(':')[0], 10) * 60) + (parseInt(startHour.split(':')[1], 10)));
+      }
+      this.unset();
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
+  startDatetime: {
+    type: Date,
+    label: () => TAPi18n.__('schemas.shifts.startdatetime.label'),
+    autoValue() {
+      if (this.field('customer') && this.field('startHour').isSet && this.field('date').isSet) {
+        const startYear = Math.floor(this.field('date').value / 10000);
+        const startMonth = Math.floor((this.field('date').value - (startYear * 10000)) / 100);
+        const startDay = this.field('date').value - (startYear * 10000) - (startMonth * 100);
+        const startHour = parseInt(this.field('startHour').value.split(':')[0], 10);
+        const startMin = parseInt(this.field('startHour').value.split(':')[1], 10);
+        const offset = Customers.findOne({
+          _id: this.field('customer').value,
+        }, {
+          fields: {
+            timezoneOffset: 1,
+          },
+        }).timezoneOffset;
+        const d = new Date(Date.UTC(startYear, startMonth - 1, startDay, startHour, startMin));
+        // console.log(d)
+        d.setHours(d.getHours() - offset);
+        return d;
+      }
+      this.unset();
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
+  endDatetime: {
+    type: Date,
+    label: () => TAPi18n.__('schemas.shifts.enddatetime.label'),
+    autoValue() {
+      if (this.field('customer') && this.field('endHour').isSet && this.field('date').isSet) {
+        const endYear = Math.floor(this.field('date').value / 10000);
+        const endMonth = Math.floor((this.field('date').value - (endYear * 10000)) / 100);
+        const endDay = this.field('date').value - (endYear * 10000) - (endMonth * 100);
+        const endHour = parseInt(this.field('endHour').value.split(':')[0], 10);
+        const endMin = parseInt(this.field('endHour').value.split(':')[1], 10);
+        const offset = Customers.findOne({
+          _id: this.field('customer').value,
+        }, {
+          fields: {
+            timezoneOffset: 1,
+          },
+        }).timezoneOffset;
+        const d = new Date(Date.UTC(endYear, endMonth - 1, endDay, endHour, endMin));
+        // console.log(d)
+        d.setHours(d.getHours() - offset);
+        return d;
+      }
+      this.unset();
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
+  // KPIs
+  //----------------------------------------------------------------------------
+  counter: {
+    type: SimpleSchema.Integer,
+    label: () => TAPi18n.__('schemas.shifts.counter.label'),
+    denyUpdate: true,
+    autoValue() {
+      if (this.isInsert) {
+        return 1;
+      }
+      this.unset();
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
+  nbDelivs: {
+    type: SimpleSchema.Integer,
+    label: () => TAPi18n.__('schemas.shifts.nbdelivs.label'),
+    min: 0,
+    autoform: {
+      afFieldInput: {
+        type: 'number',
+        pattern: '[0-9]',
+        step: '1',
+      },
+    },
+  },
+  //----------------------------------------------------------------------------
+  nbKms: {
+    type: Number,
+    label: () => TAPi18n.__('schemas.shifts.nbkms.label'),
+    min: 0,
+    autoform: {
+      afFieldInput: {
+        type: 'number',
+        step: '0.1',
+      },
+    },
+  },
+  //----------------------------------------------------------------------------
+  gains: {
+    type: Number,
+    label: () => TAPi18n.__('schemas.shifts.gains.label'),
+    min: 0,
+    autoform: {
+      afFieldInput: {
+        type: 'number',
+        step: '0.1',
+      },
+    },
+  },
   //----------------------------------------------------------------------------
   // Technical
   //----------------------------------------------------------------------------
-  // createdAt: {
-  //   type: Date,
-  //   autoValue() {
-  //     if (this.isInsert) {
-  //       return new Date();
-  //     } else if (this.isUpsert) {
-  //       return { $setOnInsert: new Date() };
-  //     }
-  //     this.unset();
-  //     return undefined;
-  //   },
-  //   autoform: {
-  //     omit: true,
-  //   },
-  // },
-  // //----------------------------------------------------------------------------
-  // updatedAt: {
-  //   type: Date,
-  //   autoValue() {
-  //     if (this.isUpdate) {
-  //       return new Date();
-  //     }
-  //     return undefined;
-  //   },
-  //   denyInsert: true,
-  //   optional: true,
-  //   autoform: {
-  //     omit: true,
-  //   },
-  // },
+  createdAt: {
+    type: Date,
+    autoValue() {
+      if (this.isInsert) {
+        return new Date();
+      } else if (this.isUpsert) {
+        return { $setOnInsert: new Date() };
+      }
+      this.unset();
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
+  updatedAt: {
+    type: Date,
+    autoValue() {
+      if (this.isUpdate) {
+        return new Date();
+      }
+      return undefined;
+    },
+    denyInsert: true,
+    optional: true,
+    autoform: {
+      omit: true,
+    },
+  },
 }, {
   tracker: Tracker,
 });
@@ -425,13 +600,29 @@ Shifts.attachSchema(ShiftsSchema);
 Shifts.adminFields = {
   _id: 1,
   courier: 1,
+  courierUsername: 1,
+  courierEmail: 1,
   customer: 1,
+  country: 1,
+  countryName: 1,
+  currencySymbol: 1,
   city: 1,
+  cityName: 1,
+  timezone: 1,
+  timezoneAbbr: 1,
+  timezoneOffset: 1,
   brand: 1,
   contract: 1,
+  customerLabel: 1,
   date: 1,
+  dayOfTheWeek: 1,
+  month: 1,
   startHour: 1,
   endHour: 1,
+  duration: 1,
+  startDatetime: 1,
+  endDatetime: 1,
+  counter: 1,
   nbDelivs: 1,
   nbKms: 1,
   gains: 1,
@@ -441,6 +632,7 @@ Shifts.adminFields = {
 
 Shifts.userFields = {
   city: 1,
+  cityName: 1,
   brand: 1,
   contract: 1,
   date: 1,
@@ -450,5 +642,21 @@ Shifts.userFields = {
   nbKms: 1,
   gains: 1,
 };
+
+Shifts.helpers({
+  getCourier() {
+    if (this.courier === this.userId) {
+      return Meteor.users.findOne({
+        _id: this.courier,
+      }, {});
+    }
+    return undefined;
+  },
+  getCustomer() {
+    return Customers.findOne({
+      _id: this.customer,
+    }, {});
+  },
+});
 
 export { Shifts, ShiftsSchema };

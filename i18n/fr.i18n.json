@@ -256,13 +256,29 @@
         "label": "Date du shift",
         "placeholder": "Choisis une date"
       },
+      "dayoftheweek": {
+        "label": "Jour de la semaine",
+        "placeholder": "Choisis un jour"
+      },
+      "month": {
+        "label": "Mois du shift",
+        "placeholder": "Choisis un mois"
+      },
       "starthour": {
         "label": "Heure de début",
         "placeholder": "Choisis une heure"
       },
+      "startdatetime": {
+        "label": "Jour et heure de début",
+        "placeholder": "Choisis un jour et une heure de début"
+      },
       "endhour": {
         "label": "Heure de fin",
         "placeholder": "Choisis une heure"
+      },
+      "enddatetime": {
+        "label": "Jour et heure de fin",
+        "placeholder": "Choisis un jour et une heure de fin"
       },
       "nbdelivs": {
         "label": "Nombre de livraisons",
@@ -275,6 +291,12 @@
       "gains": {
         "label": "Gains pour ce shift",
         "placeholder": "Combien ce shift t'a t'il fait gagner ?"
+      },
+      "counter": {
+        "label": "Nombre de shifts"
+      },
+      "duration": {
+        "label": "Durée"
       }
     },
     "timezones": {
@@ -295,6 +317,14 @@
       },
       "utc": {
         "label": "UTC"
+      }
+    },
+    "users": {
+      "username": {
+        "label": "Utilisateur"
+      },
+      "email": {
+        "label": "Adresse email"
       }
     }
   },
