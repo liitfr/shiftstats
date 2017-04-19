@@ -1,3 +1,3 @@
-import '../../components/list-shifts/list-shifts.js';
+import '../../components/list-my-shifts/list-my-shifts.js';
 
 import './my-shifts.html';

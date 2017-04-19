@@ -2,6 +2,14 @@ import { Meteor } from 'meteor/meteor';
 import { Security } from 'meteor/ongoworks:security';
 import { _ } from 'meteor/underscore';
 
+Security.defineMethod('ifIsCurrentUser', {
+  fetch: [],
+  transform: null,
+  allow(type, arg, userId, doc) {
+    return userId === doc._id;
+  },
+});
+
 Security.defineMethod('ifAccountIsNotAdmin', {
   fetch: [],
   transform: null,
@@ -14,8 +22,8 @@ Security.defineMethod('ifAccountIsNotAdmin', {
 });
 
 Security.permit(['update']).collections([Meteor.users])
-  .never()
-  .allowInClientCode();
+  .ifIsCurrentUser()
+  .onlyProps(['shiftsCounter', 'delivsCounter', 'kmsCounter', 'gainsCounter', 'months', 'customers']);
 
 // TODO : delete all his shifts
 Security.permit(['remove']).collections([Meteor.users])

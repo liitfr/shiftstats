@@ -1,6 +1,16 @@
 <template name="listUsers">
   <h2>{{_ "components.listUsers.title"}}</h2>
   <p class="flow-text warning">{{_ "components.listUsers.warning"}}</p>
+  {{#if Template.subscriptionsReady}}
+    {{> usersList ""}}
+  {{else}}
+    {{> loader ""}}
+  {{/if}}
+</template>
+
+<!-- ======================================================================= -->
+
+<template name="usersList">
   <table class="striped responsive-table">
     <thead>
       <tr>
@@ -17,10 +27,20 @@
     </thead>
     <tbody>
       {{#each user in users}}
-        {{> usersItem user=user}}
+        {{> usersItem user=user userToDelete=userToDelete}}
       {{/each}}
     </tbody>
   </table>
+  <div id="modal-delete-user" class="modal">
+    <div class="modal-content">
+      <h4>{{_ "components.listUsers.confirmationTitle"}}</h4>
+      <p>{{_ "components.listUsers.confirmationLabel"}}</p>
+    </div>
+    <div class="modal-footer">
+      <a id="delete-for-real" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">{{_ "components.listUsers.confirmationYes"}}</a>
+      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">{{_ "components.listUsers.confirmationNo"}}</a>
+    </div>
+  </div>
 </template>
 
 <!-- ======================================================================= -->
@@ -36,10 +56,12 @@
     <td>{{user.gainsCounter}}</td>
     <td>{{user.roles.[0]}}</td>
     <td>
-      <a class="waves-effect waves-light btn btn-delete-user">
-        {{_ "components.listUsers.deleteButtonContent"}}
-        <i class="material-icons right">delete</i>
-      </a>
+      {{#if isNotAdmin}}
+        <a class="waves-effect waves-light btn btn-delete-user" href="#modal-delete-user">
+          {{_ "components.listUsers.deleteButtonContent"}}
+          <i class="material-icons right">delete</i>
+        </a>
+      {{/if}}
     </td>
   </tr>
 </template>

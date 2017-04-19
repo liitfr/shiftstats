@@ -101,7 +101,11 @@
       "nbkms": "Number of kilometers",
       "gains": "Gains",
       "role": "Role",
-      "deleteButtonContent": "Delete"
+      "deleteButtonContent": "Delete",
+      "confirmationTitle": "Confirm",
+      "confirmationLabel": "Are you sure you want to delete this user and all its related shifts ?",
+      "confirmationYes": "Yes",
+      "confirmationNo": "No"
     },
     "footer": {
       "contact": "Contact us"
@@ -400,6 +404,11 @@
       "insert": "Your shift has been created",
       "update": "Your shift has been updated",
       "remove": "Your shift has been removed"
+    },
+    "users": {
+      "insert": "User has been created",
+      "update": "User has been updated",
+      "remove": "User has been removed"
     }
   }
 }

@@ -1,6 +1,6 @@
-<template name="listShifts">
+<template name="listMyShifts">
   <h2>{{_ "components.listShifts.title"}}</h2>
-  <table class="striped responsive-table">
+  <!-- <table class="striped responsive-table">
     <thead>
       <tr>
         <th data-field="city">{{_ "schemas.customers.city.label"}}</th>
@@ -20,8 +20,8 @@
         {{> shiftsItem shift=shift}}
       {{/each}}
     </tbody>
-  </table>
-  <div id="modal1" class="modal modal-fixed-footer">
+  </table> -->
+  <!-- <div id="modal1" class="modal modal-fixed-footer">
     <div class="modal-content">
       <h4>{{_ "components.listShifts.modaltitle"}}</h4>
       {{> quickForm collection=Shifts id=formId doc=selectedShift type="update" buttonContent=updateButtonContent}}
@@ -32,12 +32,12 @@
         <i class="material-icons right">replay</i>
       </a>
     </div>
-  </div>
+  </div> -->
 </template>
 
 <!-- ======================================================================= -->
 
-<template name="shiftsItem">
+<!-- <template name="shiftsItem">
   <tr>
     <td>{{shift.cityName}}</td>
     <td>{{shift.brand}}</td>
@@ -55,4 +55,4 @@
       </a>
     </td>
   </tr>
-</template>
+</template> -->

@@ -101,7 +101,11 @@
       "nbkms": "Nombre de kilomètres",
       "gains": "Gains",
       "role": "Rôle",
-      "deleteButtonContent": "Supprimer"
+      "deleteButtonContent": "Supprimer",
+      "confirmationTitle": "Confirmation",
+      "confirmationLabel": "Êtes-vous sûr de vouloir supprimer cet utilisateur et tous les shifts qui lui sont liés ?",
+      "confirmationYes": "Oui",
+      "confirmationNo": "Non"
     },
     "footer": {
       "contact": "Nous contacter"
@@ -400,6 +404,11 @@
       "insert": "Ton shift a bien été enregistré",
       "update": "Ton shift a bien été mis à jour",
       "remove": "Ton shift a bien été supprimé"
+    },
+    "users": {
+      "insert": "L'utilisateur a bien été enregistré",
+      "update": "L'utilisateur a bien été mis à jour",
+      "remove": "L'utilisateur a bien été supprimé"
     }
   }
 }

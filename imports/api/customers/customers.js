@@ -8,6 +8,7 @@ import { _ } from 'meteor/underscore';
 import { Cities } from '../cities/cities.js';
 import { Currencies } from '../currencies/currencies.js';
 import { Countries } from '../countries/countries.js';
+import { Shifts } from '../shifts/shifts.js';
 import { Timezones } from '../timezones/timezones.js';
 
 const Customers = new Mongo.Collection('customers');
@@ -269,14 +270,18 @@ const CustomersSchema = new SimpleSchema({
             brand: 1,
           },
         });
-        const cityName = Cities.findOne({
-          _id: customer.city,
-        }, {
-          fields: {
-            name: 1,
-          },
-        }).name;
-        return `${cityName} > ${customer.brand} > ${this.field('contract').value}`;
+        if (customer !== undefined) {
+          const cityName = Cities.findOne({
+            _id: customer.city,
+          }, {
+            fields: {
+              name: 1,
+            },
+          }).name;
+          if (cityName !== undefined) {
+            return `${cityName} > ${customer.brand} > ${this.field('contract').value}`;
+          }
+        }
       }
       return undefined;
     },
@@ -423,6 +428,30 @@ Customers.helpers({
       _id: this.timezone,
     }, {});
   },
+});
+
+Customers.after.update((userId, doc, fieldNames) => {
+  if (Meteor.isServer) {
+    const setShifts = {};
+    fieldNames.forEach((field) => {
+      setShifts[field] = doc[field];
+    });
+    setShifts.customerLabel = setShifts.label;
+    delete setShifts.label;
+    Shifts.direct.update({
+      _id: userId,
+    }, {
+      $set: setShifts,
+    });
+  }
+});
+
+Customers.after.remove((userId, doc) => {
+  if (Meteor.isServer) {
+    Shifts.remove({
+      customer: doc._id,
+    });
+  }
 });
 
 export { Customers, CustomersSchema };

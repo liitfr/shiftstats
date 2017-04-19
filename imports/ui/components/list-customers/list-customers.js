@@ -1,4 +1,4 @@
-/* global document, Materialize */
+/* global Materialize */
 
 import { TAPi18n } from 'meteor/tap:i18n';
 
@@ -8,13 +8,9 @@ import '../loader/loader.js';
 import './list-customers.html';
 
 Template.listCustomers.onCreated(function listCustomersOnCreated() {
-  // TODO : as seen in tutorial & blaze doc, we should use SimpleSchema here too
-  // LIIT : seems like we don't need autorun ?!
   const template = this;
-  template.subscribe('customers.admin', () => {
-    Tracker.afterFlush(() => {
-      $('select').material_select();
-    });
+  template.autorun(() => {
+    template.subscribe('customers.admin');
   });
 });
 
@@ -44,8 +40,8 @@ Template.customersList.helpers({
 
 Template.customersList.events({
   'click #delete-for-real': function clickDeleteForReal() {
-    Customers.remove(Template.instance().customerToDelete.get(), () => {
-      Materialize.toast(TAPi18n.__('crudActions.customers.remove'), Meteor.settings.public.toastDuration);
+    Customers.remove(Template.instance().customerToDelete.get(), (err) => {
+      Materialize.toast(err || TAPi18n.__('crudActions.customers.remove'), Meteor.settings.public.toastDuration);
     });
   },
 });

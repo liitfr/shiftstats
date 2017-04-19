@@ -9,15 +9,11 @@ Accounts.onCreateUser((options, user) => {
   myUser.delivsCounter = 0;
   myUser.kmsCounter = 0;
   myUser.gainsCounter = 0;
+  myUser.months = {};
+  myUser.customers = {};
   return myUser;
 });
 
 // TODO : mail for english user
-// BUG : accounts UI pages title & description doesn't work !
 // BUG : account UI when redefine password isn't materialized but bootstrap ...
-
-// TODO : Denormalized number of shifts for the user ?
-// Accounts.onCreateUser((options, user) => {
-//   user.nbShifts = 0;
-//   return user;
-// });
+// TODO : add favorite city & favorite language in user

@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { moment } from 'meteor/momentjs:moment';
 import { Mongo } from 'meteor/mongo';
+import { Roles } from 'meteor/alanning:roles';
 import { SessionAmplify } from 'meteor/mrt:session-amplify';
 import SimpleSchema from 'simpl-schema';
 import { TAPi18n } from 'meteor/tap:i18n';
@@ -12,7 +13,6 @@ import { Customers } from '../customers/customers.js';
 // TODO : message about the shortest the shift is the better it is
 // TODO : when customer + date chosen : display related calculation fields
 // TODO : control that hours are in right order and date not in futur
-// TODO : add methods to get courier (watch out user permission) & customer
 // TODO : complete fields lists
 
 const Shifts = new Mongo.Collection('shifts');
@@ -403,6 +403,21 @@ const ShiftsSchema = new SimpleSchema({
     },
   },
   //----------------------------------------------------------------------------
+  monthString: {
+    type: String,
+    label: () => TAPi18n.__('schemas.shifts.month.label'),
+    autoValue() {
+      if (this.field('date').isSet) {
+        return (Math.floor(this.field('date').value / 100)).toString();
+      }
+      this.unset();
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
   startHour: {
     type: String,
     regEx: /^([01]?[0-9]{1}|2[0-3]{1}):[0-5]{1}[0-9]{1}/,
@@ -617,6 +632,7 @@ Shifts.adminFields = {
   date: 1,
   dayOfTheWeek: 1,
   month: 1,
+  monthString: 1,
   startHour: 1,
   endHour: 1,
   duration: 1,
@@ -645,7 +661,7 @@ Shifts.userFields = {
 
 Shifts.helpers({
   getCourier() {
-    if (this.courier === this.userId) {
+    if (this.courier === this.userId || Roles.userIsInRole(this.userId, 'admin')) {
       return Meteor.users.findOne({
         _id: this.courier,
       }, {});
@@ -657,6 +673,70 @@ Shifts.helpers({
       _id: this.customer,
     }, {});
   },
+});
+
+Shifts.after.insert((userId, doc) => {
+  if (Meteor.isServer) {
+    const incUser = {
+      shiftsCounter: 1,
+      delivsCounter: doc.nbDelivs,
+      kmsCounter: doc.nbKms,
+      gainsCounter: doc.gains,
+    };
+    incUser[`customers.${doc.customer}`] = 1;
+    incUser[`months.${doc.monthString}`] = 1;
+    Meteor.users.update({
+      _id: userId,
+    }, {
+      $inc: incUser,
+    });
+  }
+});
+
+Shifts.after.update(function shiftsAfterUpdate(userId, doc, fieldNames) {
+  if (Meteor.isServer) {
+    const incUser = {};
+    if (fieldNames.nbDelivs) {
+      incUser.delivsCounter = doc.nbDelivs - this.previous.nbDelivs;
+    }
+    if (fieldNames.nbKms) {
+      incUser.kmsCounter = doc.nbKms - this.previous.nbKms;
+    }
+    if (fieldNames.gains) {
+      incUser.gainsCounter = doc.gains - this.previous.gains;
+    }
+    if (fieldNames.customer) {
+      incUser[`customers.${doc.customer}`] = 1;
+      incUser[`customers.${this.previous.customer}`] = -1;
+    }
+    if (fieldNames.month) {
+      incUser[`months.${doc.monthString}`] = 1;
+      incUser[`months.${this.previous.monthString}`] = -1;
+    }
+    Meteor.users.update({
+      _id: userId,
+    }, {
+      $inc: incUser,
+    });
+  }
+}, { fetchPrevious: true });
+
+Shifts.after.remove((userId, doc) => {
+  if (Meteor.isServer) {
+    const incUser = {
+      shiftsCounter: -1,
+      delivsCounter: -doc.nbDelivs,
+      kmsCounter: -doc.nbKms,
+      gainsCounter: -doc.gains,
+    };
+    incUser[`customers.${doc.customer}`] = -1;
+    incUser[`months.${doc.monthString}`] = -1;
+    Meteor.users.update({
+      _id: userId,
+    }, {
+      $inc: incUser,
+    });
+  }
 });
 
 export { Shifts, ShiftsSchema };
