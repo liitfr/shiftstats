@@ -25,7 +25,6 @@ Security.permit(['update']).collections([Meteor.users])
   .ifIsCurrentUser()
   .onlyProps(['shiftsCounter', 'delivsCounter', 'kmsCounter', 'gainsCounter', 'months', 'customers']);
 
-// TODO : delete all his shifts
 Security.permit(['remove']).collections([Meteor.users])
   .ifHasRole('admin')
   .ifAccountIsNotAdmin()

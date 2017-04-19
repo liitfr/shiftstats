@@ -13,6 +13,10 @@ import { Timezones } from '../timezones/timezones.js';
 
 const Customers = new Mongo.Collection('customers');
 
+//----------------------------------------------------------------------------
+// Schema
+//----------------------------------------------------------------------------
+
 const CustomersSchema = new SimpleSchema({
   country: {
     type: String,
@@ -378,6 +382,10 @@ CustomersSchema.addDocValidator((customer) => {
 
 Customers.attachSchema(CustomersSchema);
 
+//----------------------------------------------------------------------------
+// Fields
+//----------------------------------------------------------------------------
+
 Customers.adminFields = {
   _id: 1,
   country: 1,
@@ -412,6 +420,10 @@ Customers.publicFields = {
   label: 1,
 };
 
+//----------------------------------------------------------------------------
+// Helpers
+//----------------------------------------------------------------------------
+
 Customers.helpers({
   getCountry() {
     return Countries.findOne({
@@ -430,6 +442,12 @@ Customers.helpers({
   },
 });
 
+// TODO : should I do every task before and return false if error ?
+
+//----------------------------------------------------------------------------
+// Hooks
+//----------------------------------------------------------------------------
+
 Customers.after.update((userId, doc, fieldNames) => {
   if (Meteor.isServer) {
     const setShifts = {};
@@ -446,6 +464,8 @@ Customers.after.update((userId, doc, fieldNames) => {
   }
 });
 
+// TODO : pull entry in customers
+// http://stackoverflow.com/questions/9285766/how-do-you-remove-an-embedded-document-in-mongodb
 Customers.after.remove((userId, doc) => {
   if (Meteor.isServer) {
     Shifts.remove({

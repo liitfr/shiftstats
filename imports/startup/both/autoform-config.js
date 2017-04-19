@@ -3,6 +3,8 @@ import SimpleSchema from 'simpl-schema';
 
 SimpleSchema.extendOptions(['autoform']);
 
+// TODO : can take exemple on i18n & datepicker to move translations from this file to i18n
+
 MessageBox.defaults({
   messages: {
     en: {

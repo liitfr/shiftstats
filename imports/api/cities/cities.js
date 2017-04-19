@@ -4,6 +4,10 @@ import { TAPi18n } from 'meteor/tap:i18n';
 
 const Cities = new Mongo.Collection('cities');
 
+//----------------------------------------------------------------------------
+// Schema
+//----------------------------------------------------------------------------
+
 const CitiesSchema = new SimpleSchema({
   name: {
     type: String,
@@ -59,6 +63,10 @@ const CitiesSchema = new SimpleSchema({
 });
 
 Cities.attachSchema(CitiesSchema);
+
+//----------------------------------------------------------------------------
+// Fields
+//----------------------------------------------------------------------------
 
 Cities.publicFields = {
   _id: 1,

@@ -11,11 +11,15 @@ import { Customers } from '../customers/customers.js';
 
 // TODO : index on analytics fields
 // TODO : message about the shortest the shift is the better it is
-// TODO : when customer + date chosen : display related calculation fields
 // TODO : control that hours are in right order and date not in futur
 // TODO : complete fields lists
+// TODO : verify if all fields are really necessary and think about their format (date for example).
 
 const Shifts = new Mongo.Collection('shifts');
+
+//----------------------------------------------------------------------------
+// Schema
+//----------------------------------------------------------------------------
 
 const ShiftsSchema = new SimpleSchema({
   //----------------------------------------------------------------------------
@@ -477,7 +481,6 @@ const ShiftsSchema = new SimpleSchema({
           },
         }).timezoneOffset;
         const d = new Date(Date.UTC(startYear, startMonth - 1, startDay, startHour, startMin));
-        // console.log(d)
         d.setHours(d.getHours() - offset);
         return d;
       }
@@ -507,7 +510,6 @@ const ShiftsSchema = new SimpleSchema({
           },
         }).timezoneOffset;
         const d = new Date(Date.UTC(endYear, endMonth - 1, endDay, endHour, endMin));
-        // console.log(d)
         d.setHours(d.getHours() - offset);
         return d;
       }
@@ -612,6 +614,10 @@ const ShiftsSchema = new SimpleSchema({
 
 Shifts.attachSchema(ShiftsSchema);
 
+//----------------------------------------------------------------------------
+// Fields
+//----------------------------------------------------------------------------
+
 Shifts.adminFields = {
   _id: 1,
   courier: 1,
@@ -659,6 +665,10 @@ Shifts.userFields = {
   gains: 1,
 };
 
+//----------------------------------------------------------------------------
+// Helpers
+//----------------------------------------------------------------------------
+
 Shifts.helpers({
   getCourier() {
     if (this.courier === this.userId || Roles.userIsInRole(this.userId, 'admin')) {
@@ -674,6 +684,10 @@ Shifts.helpers({
     }, {});
   },
 });
+
+//----------------------------------------------------------------------------
+// Hooks
+//----------------------------------------------------------------------------
 
 Shifts.after.insert((userId, doc) => {
   if (Meteor.isServer) {

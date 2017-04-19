@@ -67,7 +67,6 @@ Template.customersItem.helpers({
   },
 });
 
-// TODO : Warning modal
 Template.customersItem.events({
   'click .btn-delete-customer': function clickBtnDeleteCustomer() {
     this.customerToDelete.set(this.customer._id);

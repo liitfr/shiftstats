@@ -6,6 +6,10 @@ import { Currencies } from '../currencies/currencies.js';
 
 const Countries = new Mongo.Collection('countries');
 
+//----------------------------------------------------------------------------
+// Schema
+//----------------------------------------------------------------------------
+
 const CountriesSchema = new SimpleSchema({
   alpha2: {
     type: String,
@@ -58,12 +62,20 @@ const CountriesSchema = new SimpleSchema({
 
 Countries.attachSchema(CountriesSchema);
 
+//----------------------------------------------------------------------------
+// Fields
+//----------------------------------------------------------------------------
+
 Countries.publicFields = {
   _id: 1,
   alpha2: 1,
   name: 1,
   currencies: 1,
 };
+
+//----------------------------------------------------------------------------
+// Helpers
+//----------------------------------------------------------------------------
 
 Countries.helpers({
   getFirstCurrency() {

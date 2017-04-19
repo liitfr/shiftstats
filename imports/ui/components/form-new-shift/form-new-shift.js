@@ -4,6 +4,7 @@ import { moment } from 'meteor/momentjs:moment';
 import { SessionAmplify } from 'meteor/mrt:session-amplify';
 import { TAPi18n } from 'meteor/tap:i18n';
 import { Tracker } from 'meteor/tracker';
+import { _ } from 'meteor/underscore';
 
 import { Shifts } from '../../../api/shifts/shifts.js';
 

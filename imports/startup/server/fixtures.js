@@ -4,6 +4,7 @@ import currencies from 'currencies';
 import timezones from 'timezones.json';
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
+import { _ } from 'meteor/underscore';
 
 import { Cities } from '../../api/cities/cities.js';
 import { Countries } from '../../api/countries/countries.js';

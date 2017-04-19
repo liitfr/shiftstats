@@ -4,6 +4,10 @@ import { TAPi18n } from 'meteor/tap:i18n';
 
 const Timezones = new Mongo.Collection('timezones');
 
+//----------------------------------------------------------------------------
+// Schema
+//----------------------------------------------------------------------------
+
 const TimezonesSchema = new SimpleSchema({
   value: {
     type: String,
@@ -39,6 +43,10 @@ const TimezonesSchema = new SimpleSchema({
 });
 
 Timezones.attachSchema(TimezonesSchema);
+
+//----------------------------------------------------------------------------
+// Fields
+//----------------------------------------------------------------------------
 
 Timezones.publicFields = {
   _id: 1,

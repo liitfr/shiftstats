@@ -4,6 +4,10 @@ import { TAPi18n } from 'meteor/tap:i18n';
 
 const Currencies = new Mongo.Collection('currencies');
 
+//----------------------------------------------------------------------------
+// Schema
+//----------------------------------------------------------------------------
+
 const CurrenciesSchema = new SimpleSchema({
   code: {
     type: String,
@@ -26,6 +30,10 @@ const CurrenciesSchema = new SimpleSchema({
 });
 
 Currencies.attachSchema(CurrenciesSchema);
+
+//----------------------------------------------------------------------------
+// Fields
+//----------------------------------------------------------------------------
 
 Currencies.publicFields = {
   _id: 1,

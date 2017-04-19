@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+import { Roles } from 'meteor/alanning:roles';
 import { _ } from 'meteor/underscore';
 
 import { Customers } from '../customers/customers.js';
@@ -5,7 +7,9 @@ import { Shifts } from '../shifts/shifts.js';
 
 const Users = {};
 
-// TODO : helpers my shifts
+//----------------------------------------------------------------------------
+// Fields
+//----------------------------------------------------------------------------
 
 Users.adminFields = {
   _id: 1,
@@ -23,6 +27,27 @@ Users.adminFields = {
   createdAt: 1,
   updatedAt: 1,
 };
+
+// TODO : rename months & customers to something less generic, more verbose
+
+//----------------------------------------------------------------------------
+// Helpers
+//----------------------------------------------------------------------------
+
+Meteor.users.helpers({
+  getShifts() {
+    if (this._id === this.userId || Roles.userIsInRole(this.userId, 'admin')) {
+      return Shifts.find({
+        courier: this._id,
+      }, {});
+    }
+    return undefined;
+  },
+});
+
+//----------------------------------------------------------------------------
+// Hooks
+//----------------------------------------------------------------------------
 
 Meteor.users.after.update((userId, doc, fieldsNames, modifier) => {
   if (Meteor.isServer && fieldsNames.customers) {
