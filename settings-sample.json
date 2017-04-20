@@ -30,6 +30,19 @@
     "serviceFbSecret": "00000000000000000000000000000000",
     "mailgunUsername": "XXX@XXX.XXX.XXX",
     "mailgunPassword": "00000000000000000000000000000000",
-    "mailgunNoReplyMail": "<no-reply@shiftstats.fr>"
+    "mailgunNoReplyMail": "<no-reply@shiftstats.fr>",
+    "usersFixtures": [
+      {
+        "username": "XXXX XXXX",
+        "email": "XXX@XXX.XX",
+        "password": "XXXXXXXX",
+        "isAdmin": true
+      }, {
+        "username": "XXXX XXXX",
+        "email": "XXX@XXX.XX",
+        "password": "XXXXXXXX",
+        "isAdmin": false
+      }
+    ]
   }
 }

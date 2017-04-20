@@ -49,24 +49,28 @@ Meteor.users.helpers({
 // Hooks
 //----------------------------------------------------------------------------
 
-Meteor.users.after.update((userId, doc, fieldsNames, modifier) => {
-  if (Meteor.isServer && fieldsNames.customers) {
-    _.each(modifier.$inc.customers, (counterInc, id) => {
-      const newCounter = doc.customers[id];
-      const oldCounter = newCounter - counterInc;
-      const incCustomer = {
-        shiftsCounter: -counterInc,
-      };
-      if (newCounter >= 1 && oldCounter <= 0) {
-        incCustomer.couriersCounter = 1;
-      } else if (newCounter <= 0 && oldCounter >= 1) {
-        incCustomer.couriersCounter = -1;
+Meteor.users.after.update((userId, doc, fieldNames, modifier) => {
+  if (Meteor.isServer && _.indexOf(fieldNames, 'customers') !== -1) {
+    _.each(modifier.$inc, (counterInc, id) => {
+      const field = id.split('.')[0];
+      if (field === 'customers') {
+        const custId = id.split('.')[1];
+        const newCounter = doc.customers[custId];
+        const oldCounter = newCounter - counterInc;
+        const incCustomer = {
+          shiftsCounter: counterInc,
+        };
+        if (newCounter >= 1 && oldCounter <= 0) {
+          incCustomer.couriersCounter = 1;
+        } else if (newCounter <= 0 && oldCounter >= 1) {
+          incCustomer.couriersCounter = -1;
+        }
+        Customers.direct.update({
+          _id: custId,
+        }, {
+          $inc: incCustomer,
+        });
       }
-      Customers.update({
-        _id: id,
-      }, {
-        $inc: incCustomer,
-      });
     });
   }
 });

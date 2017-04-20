@@ -21,6 +21,8 @@ Template.formNewShift.onCreated(function formNewShiftOnCreated() {
   });
 });
 
+// TODO : bug after submit, if you open date picker,
+// displayed dates in input & calendar aren't the same
 Template.formNewShift.onRendered(function formNewShiftOnRendered() {
   $('.timepicker').pickatime({
     autoclose: true,

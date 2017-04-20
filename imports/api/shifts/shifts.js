@@ -6,6 +6,7 @@ import { SessionAmplify } from 'meteor/mrt:session-amplify';
 import SimpleSchema from 'simpl-schema';
 import { TAPi18n } from 'meteor/tap:i18n';
 import { Tracker } from 'meteor/tracker';
+import { _ } from 'meteor/underscore';
 
 import { Customers } from '../customers/customers.js';
 
@@ -56,7 +57,9 @@ const ShiftsSchema = new SimpleSchema({
             services: 1,
           },
         });
-        return courier.username !== undefined ? courier.username : courier.services.facebook.name;
+        if (courier) {
+          return courier.username !== undefined ? courier.username : courier.services.facebook.name;
+        }
       }
       this.unset();
       return undefined;
@@ -317,7 +320,6 @@ const ShiftsSchema = new SimpleSchema({
   //----------------------------------------------------------------------------
   contract: {
     type: String,
-    denyUpdate: true,
     label: () => TAPi18n.__('schemas.customers.contract.label'),
     autoValue() {
       if (this.isInsert && this.field('customer').isSet) {
@@ -329,7 +331,6 @@ const ShiftsSchema = new SimpleSchema({
           },
         }).contract;
       }
-      this.unset();
       return undefined;
     },
     autoform: {
@@ -339,7 +340,6 @@ const ShiftsSchema = new SimpleSchema({
   //----------------------------------------------------------------------------
   customerLabel: {
     type: String,
-    denyUpdate: true,
     label: () => TAPi18n.__('schemas.customers.label.label'),
     autoValue() {
       if (this.isInsert && this.field('customer').isSet) {
@@ -351,7 +351,6 @@ const ShiftsSchema = new SimpleSchema({
           },
         }).label;
       }
-      this.unset();
       return undefined;
     },
     autoform: {
@@ -467,7 +466,7 @@ const ShiftsSchema = new SimpleSchema({
     type: Date,
     label: () => TAPi18n.__('schemas.shifts.startdatetime.label'),
     autoValue() {
-      if (this.field('customer') && this.field('startHour').isSet && this.field('date').isSet) {
+      if (this.field('customer').isSet && this.field('startHour').isSet && this.field('date').isSet) {
         const startYear = Math.floor(this.field('date').value / 10000);
         const startMonth = Math.floor((this.field('date').value - (startYear * 10000)) / 100);
         const startDay = this.field('date').value - (startYear * 10000) - (startMonth * 100);
@@ -496,7 +495,7 @@ const ShiftsSchema = new SimpleSchema({
     type: Date,
     label: () => TAPi18n.__('schemas.shifts.enddatetime.label'),
     autoValue() {
-      if (this.field('customer') && this.field('endHour').isSet && this.field('date').isSet) {
+      if (this.field('customer').isSet && this.field('endHour').isSet && this.field('date').isSet) {
         const endYear = Math.floor(this.field('date').value / 10000);
         const endMonth = Math.floor((this.field('date').value - (endYear * 10000)) / 100);
         const endDay = this.field('date').value - (endYear * 10000) - (endMonth * 100);
@@ -710,20 +709,20 @@ Shifts.after.insert((userId, doc) => {
 Shifts.after.update(function shiftsAfterUpdate(userId, doc, fieldNames) {
   if (Meteor.isServer) {
     const incUser = {};
-    if (fieldNames.nbDelivs) {
+    if (_.indexOf(fieldNames, 'nbDelivs') !== -1) {
       incUser.delivsCounter = doc.nbDelivs - this.previous.nbDelivs;
     }
-    if (fieldNames.nbKms) {
+    if (_.indexOf(fieldNames, 'nbKms') !== -1) {
       incUser.kmsCounter = doc.nbKms - this.previous.nbKms;
     }
-    if (fieldNames.gains) {
+    if (_.indexOf(fieldNames, 'gains') !== -1) {
       incUser.gainsCounter = doc.gains - this.previous.gains;
     }
-    if (fieldNames.customer) {
+    if (_.indexOf(fieldNames, 'customer') !== -1) {
       incUser[`customers.${doc.customer}`] = 1;
       incUser[`customers.${this.previous.customer}`] = -1;
     }
-    if (fieldNames.month) {
+    if (_.indexOf(fieldNames, 'month') !== -1) {
       incUser[`months.${doc.monthString}`] = 1;
       incUser[`months.${this.previous.monthString}`] = -1;
     }

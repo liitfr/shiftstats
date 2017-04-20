@@ -15,10 +15,10 @@ import { Timezones } from '../../api/timezones/timezones.js';
 Meteor.startup(() => {
   // ---------------------------------------------------------------------------
   // Admin user
-  let adminId;
+  let userId;
   let timestamp = (new Date()).getTime();
   if (Meteor.users.find().count() === 0) {
-    adminId = Accounts.createUser({
+    userId = Accounts.createUser({
       username: Meteor.settings.private.adminUserName,
       email: Meteor.settings.private.adminEmail,
       password: Meteor.settings.private.adminPassword,
@@ -29,9 +29,22 @@ Meteor.startup(() => {
       },
       createdAt: new Date(timestamp),
     });
-    Meteor.users.update({ _id: adminId }, { $set: { 'emails.0.verified': true } });
-    Roles.addUsersToRoles(adminId, 'admin');
+    Meteor.users.update({ _id: userId }, { $set: { 'emails.0.verified': true } });
+    Roles.addUsersToRoles(userId, 'admin');
     timestamp += 1;
+    Meteor.settings.private.usersFixtures.forEach((user) => {
+      userId = Accounts.createUser({
+        username: user.username,
+        email: user.email,
+        password: user.password,
+        createdAt: new Date(timestamp),
+      });
+      Meteor.users.update({ _id: userId }, { $set: { 'emails.0.verified': true } });
+      if (user.isAdmin) {
+        Roles.addUsersToRoles(userId, 'admin');
+      }
+      timestamp += 1;
+    });
   }
   // ---------------------------------------------------------------------------
   // Timezones
@@ -107,7 +120,7 @@ Meteor.startup(() => {
   // ---------------------------------------------------------------------------
   // Customers
   if (Customers.find().count() === 0) {
-    const data = [
+    const customersData = [
       {
         country: 'FR',
         city: 'Lyon',
@@ -131,7 +144,7 @@ Meteor.startup(() => {
         city: 'Lyon',
         timezone: 'RDT',
         brand: 'Deliveroo',
-        contract: 'Nouveau Contract',
+        contract: 'Nouveau Contrat',
       }, {
         country: 'FR',
         city: 'Bordeaux',
@@ -155,10 +168,10 @@ Meteor.startup(() => {
         city: 'Bordeaux',
         timezone: 'RDT',
         brand: 'Deliveroo',
-        contract: 'Nouveau Contract',
+        contract: 'Nouveau Contrat',
       },
     ];
-    data.forEach((customer) => {
+    customersData.forEach((customer) => {
       const country = Countries.findOne({
         alpha2: customer.country,
       }, {

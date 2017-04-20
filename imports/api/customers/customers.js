@@ -256,7 +256,7 @@ const CustomersSchema = new SimpleSchema({
     type: String,
     label: () => TAPi18n.__('schemas.customers.label.label'),
     autoValue() {
-      if (this.isInsert && this.field('city').value !== undefined && this.field('brand').value !== undefined && this.field('contract').value !== undefined) {
+      if (this.isInsert && this.field('city').isSet && this.field('brand').isSet && this.field('contract').isSet) {
         const cityName = Cities.findOne({
           _id: this.field('city').value,
         }, {
@@ -265,7 +265,7 @@ const CustomersSchema = new SimpleSchema({
           },
         }).name;
         return `${cityName} > ${this.field('brand').value} > ${this.field('contract').value}`;
-      } else if (this.isUpdate) {
+      } else if (this.isUpdate && this.field('contract').isSet) {
         const customer = Customers.findOne({
           _id: this.docId,
         }, {
@@ -301,7 +301,6 @@ const CustomersSchema = new SimpleSchema({
       if (this.isInsert) {
         return 0;
       }
-      this.unset();
       return undefined;
     },
     autoform: {
@@ -316,7 +315,6 @@ const CustomersSchema = new SimpleSchema({
       if (this.isInsert) {
         return 0;
       }
-      this.unset();
       return undefined;
     },
     autoform: {
@@ -456,20 +454,29 @@ Customers.after.update((userId, doc, fieldNames) => {
     });
     setShifts.customerLabel = setShifts.label;
     delete setShifts.label;
+    delete setShifts.updatedAt;
     Shifts.direct.update({
-      _id: userId,
+      customer: doc._id,
     }, {
       $set: setShifts,
+    }, {
+      multi: true,
     });
   }
 });
 
-// TODO : pull entry in customers
-// http://stackoverflow.com/questions/9285766/how-do-you-remove-an-embedded-document-in-mongodb
 Customers.after.remove((userId, doc) => {
   if (Meteor.isServer) {
     Shifts.remove({
       customer: doc._id,
+    });
+    const unsetUsers = {};
+    unsetUsers[`customers.${doc._id}`] = '';
+    Meteor.users.direct.update({
+    }, {
+      $unset: unsetUsers,
+    }, {
+      multi: true,
     });
   }
 });
