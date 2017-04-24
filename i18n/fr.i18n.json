@@ -82,12 +82,20 @@
       "confirmationYes": "Oui",
       "confirmationNo": "Non"
     },
-    "listShifts": {
-      "title": "Liste des shifts",
+    "listMyShifts": {
+      "title": "Liste de tes shifts",
       "editbutton": "Editer",
       "closemodal": "Retour",
       "modaltitle": "Editer ce shift",
-      "updateButtonContent": "Mettre à jour"
+      "updateButtonContent": "Mettre à jour",
+      "noShifts": "Commence d'abord par rouler Gringo !",
+      "date": "Date",
+      "startHour": "Heure de début",
+      "endHour": "Heure de fin",
+      "nbshifts": "Shifts",
+      "nbdelivs": "Livraisons",
+      "nbkms": "Kilomètres",
+      "gains": "Gains"
     },
     "listUsers": {
       "title": "Liste des utilisateurs",
@@ -96,9 +104,9 @@
       "username": "Nom",
       "email": "Email",
       "createdat": "Crée le",
-      "nbshifts": "Nombre de shifts",
-      "nbdelivs": "Nombre de livraisons",
-      "nbkms": "Nombre de kilomètres",
+      "nbshifts": "Shifts",
+      "nbdelivs": "Livraisons",
+      "nbkms": "Kilomètres",
       "gains": "Gains",
       "role": "Rôle",
       "deleteButtonContent": "Supprimer",
@@ -265,7 +273,7 @@
         "placeholder": "Choisis un jour"
       },
       "month": {
-        "label": "Mois du shift",
+        "label": "Mois",
         "placeholder": "Choisis un mois"
       },
       "starthour": {

@@ -1,3 +1,4 @@
+import { check } from 'meteor/check';
 import { Meteor } from 'meteor/meteor';
 // import { publishComposite } from 'meteor/reywood:publish-composite';
 import { ReactiveAggregate } from 'meteor/jcbernack:reactive-aggregate';
@@ -6,11 +7,13 @@ import { ReactiveAggregate } from 'meteor/jcbernack:reactive-aggregate';
 import { Shifts } from '../shifts.js';
 // import { Users } from '../../users/users.js';
 
-Meteor.publish('shifts.mine', function shiftsMine() {
+Meteor.publish('shifts.mine', function shiftsMine(monthString) {
+  check(monthString, String);
   if (this.userId) {
     ReactiveAggregate(this, Shifts, [{
       $match: {
         courier: this.userId,
+        monthString,
       },
     }, {
       $group: {
@@ -49,7 +52,8 @@ Meteor.publish('shifts.mine', function shiftsMine() {
       $sort: {
         month: -1,
         customerLabel: 1,
-
+        date: -1,
+        endHour: -1,
       },
     // }, {
       // $project: {
@@ -93,6 +97,7 @@ Meteor.publish('shifts.mine', function shiftsMine() {
 //   return this.ready();
 // });
 
+// TODO : Control user is logged
 // Meteor.publish('shifts.analytics', function shiftsAnalytics() {
 //   ReactiveAggregate(this, Shifts, [{
 //     $group: {

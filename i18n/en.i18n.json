@@ -82,12 +82,20 @@
       "confirmationYes": "Yes",
       "confirmationNo": "No"
     },
-    "listShifts": {
-      "title": "Shifts list",
+    "listMyShifts": {
+      "title": "Your shifts list",
       "editbutton": "Edit",
       "closemodal": "Back to list",
       "modaltitle": "Shift edition",
-      "updateButtonContent": "Update"
+      "updateButtonContent": "Update",
+      "noShifts": "First, start by riding your bike Gringo !",
+      "date": "Date",
+      "startHour": "Start hour",
+      "endHour": "End hour",
+      "nbshifts": "Shifts",
+      "nbdelivs": "Deliveries",
+      "nbkms": "Kilometers",
+      "gains": "Gains"
     },
     "listUsers": {
       "title": "Users list",
@@ -95,10 +103,10 @@
       "userid": "ID",
       "username": "Name",
       "email": "Email",
-      "createdat": "Created At",
-      "nbshifts": "Number of shifts",
-      "nbdelivs": "Number of deliveries",
-      "nbkms": "Number of kilometers",
+      "createdat": "Creation date",
+      "nbshifts": "Shifts",
+      "nbdelivs": "Deliveries",
+      "nbkms": "Kilometers",
       "gains": "Gains",
       "role": "Role",
       "deleteButtonContent": "Delete",
@@ -265,7 +273,7 @@
         "placeholder": "Choose a day"
       },
       "month": {
-        "label": "Shift month",
+        "label": "Month",
         "placeholder": "Choose a month"
       },
       "starthour": {

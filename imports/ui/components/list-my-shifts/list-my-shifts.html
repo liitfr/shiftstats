@@ -1,58 +1,96 @@
 <template name="listMyShifts">
-  <h2>{{_ "components.listShifts.title"}}</h2>
-  <!-- <table class="striped responsive-table">
-    <thead>
-      <tr>
-        <th data-field="city">{{_ "schemas.customers.city.label"}}</th>
-        <th data-field="brand">{{_ "schemas.customers.brand.label"}}</th>
-        <th data-field="contract">{{_ "schemas.customers.contract.label"}}</th>
-        <th data-field="date">{{_ "schemas.shifts.date.label"}}</th>
-        <th data-field="startHour">{{_ "schemas.shifts.starthour.label"}}</th>
-        <th data-field="endHour">{{_ "schemas.shifts.endhour.label"}}</th>
-        <th data-field="nbDelivs">{{_ "schemas.shifts.nbdelivs.label"}}</th>
-        <th data-field="nbKms">{{_ "schemas.shifts.nbkms.label"}}</th>
-        <th data-field="gains">{{_ "schemas.shifts.gains.label"}}</th>
-        <th data-field="modify"></th>
-      </tr>
-    </thead>
-    <tbody>
-      {{#each shift in shifts}}
-        {{> shiftsItem shift=shift}}
-      {{/each}}
-    </tbody>
-  </table> -->
-  <!-- <div id="modal1" class="modal modal-fixed-footer">
-    <div class="modal-content">
-      <h4>{{_ "components.listShifts.modaltitle"}}</h4>
-      {{> quickForm collection=Shifts id=formId doc=selectedShift type="update" buttonContent=updateButtonContent}}
-    </div>
-    <div class="modal-footer">
-      <a href="#!" class="modal-action modal-close waves-effect waves-light btn-flat ">
-        {{_ "components.listShifts.closemodal"}}
-        <i class="material-icons right">replay</i>
-      </a>
-    </div>
-  </div> -->
+  <h2>{{_ "components.listMyShifts.title"}}</h2>
+  {{> myMonthsList monthToDisplay=monthToDisplay}}
+  {{> myCustomersInMonth monthToDisplay=monthToDisplay}}
 </template>
 
 <!-- ======================================================================= -->
 
-<!-- <template name="shiftsItem">
+<template name="myMonthsList">
+  {{#if Template.subscriptionsReady}}
+    <div class="form-group">
+      <label>{{_ "schemas.shifts.month.label"}}</label>
+      <select id="my-months-list">
+        {{#each month in myMonths}}
+          <option value="{{month.value}}">{{month.label}}</option>
+        {{/each}}
+      </select>
+    </div>
+  {{/if}}
+</template>
+
+<!-- ======================================================================= -->
+
+<template name="myCustomersInMonth">
+  {{#if Template.subscriptionsReady}}
+    <p class="flow-text warning">{{_ "components.listMyShifts.noShifts"}}</p>
+    {{#each shift in shifts}}
+      {{> myShiftsInCustomer shift=shift shiftToModify=shiftToModify}}
+    {{/each}}
+    <div id="modal-modify-shift" class="modal modal-fixed-footer">
+      <div class="modal-content">
+        <h4>{{_ "components.listMyShifts.modaltitle"}}</h4>
+        <!-- {{> quickForm collection=Shifts id=formId doc=shiftToModify type="update" buttonContent=updateButtonContent}} -->
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-action modal-close waves-effect waves-light btn-flat ">
+          {{_ "components.listMyShifts.closemodal"}}
+          <i class="material-icons right">replay</i>
+        </a>
+      </div>
+    </div>
+  {{else}}
+    {{> loader ""}}
+  {{/if}}
+</template>
+
+<!-- ======================================================================= -->
+
+<template name="myShiftsInCustomer">
+  <h3>{{shift.customer}}</h3>
+  <table class="striped responsive-table">
+    <thead>
+      <tr>
+        <th data-field="date">{{_ "components.listMyShifts.date"}}</th>
+        <th data-field="startHour">{{_ "components.listMyShifts.startHour"}}</th>
+        <th data-field="endHour">{{_ "components.listMyShifts.endHour"}}</th>
+        <th data-field="nbDelivs">{{_ "components.listMyShifts.nbdelivs"}}</th>
+        <th data-field="nbKms">{{_ "components.listMyShifts.nbkms"}}</th>
+        <th data-field="gains">{{_ "components.listMyShifts.gains"}}</th>
+        <th data-field="modify"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each shiftItem in shift.shifts}}
+        {{> shiftsItem shift=shiftItem currency=shift.currency shiftToModify=shiftToModify}}
+      {{/each}}
+      <tr>
+        <td><b>Total</b></td>
+        <td colspan = "2">{{durationInHours}}</td>
+        <td>{{shift.nbDelivs}}</td>
+        <td>{{distWithKM}}</td>
+        <td>{{gainsWithCurrency}}</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</template>
+
+<!-- ======================================================================= -->
+
+<template name="shiftsItem">
   <tr>
-    <td>{{shift.cityName}}</td>
-    <td>{{shift.brand}}</td>
-    <td>{{shift.contract}}</td>
     <td>{{formatedDate}}</td>
     <td>{{shift.startHour}}</td>
     <td>{{shift.endHour}}</td>
     <td>{{shift.nbDelivs}}</td>
-    <td>{{shift.nbKms}}</td>
-    <td>{{shift.gains}}</td>
+    <td>{{distWithKM}}</td>
+    <td>{{gainsWithCurrency}}</td>
     <td>
-      <a class="modal-trigger waves-effect waves-light btn" data-shift="{{shift._id}}" href="#modal1">
-        {{_ "components.listShifts.editbutton"}}
+      <a class="modal-trigger waves-effect waves-light btn" href="#modal-modify-shift">
+        {{_ "components.listMyShifts.editbutton"}}
         <i class="material-icons right">open_in_new</i>
       </a>
     </td>
   </tr>
-</template> -->
+</template>

@@ -1,5 +1,6 @@
 /* global Materialize */
 
+import { ReactiveVar } from 'meteor/reactive-var';
 import { TAPi18n } from 'meteor/tap:i18n';
 
 import { Customers } from '../../../api/customers/customers.js';
