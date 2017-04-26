@@ -1,6 +1,7 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 import { TAPi18n } from 'meteor/tap:i18n';
+import { Tracker } from 'meteor/tracker';
 
 const Timezones = new Mongo.Collection('timezones');
 

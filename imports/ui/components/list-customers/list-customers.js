@@ -18,7 +18,7 @@ Template.listCustomers.onCreated(function listCustomersOnCreated() {
 // -----------------------------------------------------------------------------
 
 Template.customersList.onCreated(function customersListOnCreated() {
-  this.customerToDelete = new ReactiveVar();
+  this.customerToDeleteRV = new ReactiveVar();
 });
 
 Template.customersList.onRendered(function customersListOnRendered() {
@@ -34,14 +34,14 @@ Template.customersList.helpers({
       },
     });
   },
-  customerToDelete() {
-    return Template.instance().customerToDelete;
+  customerToDeleteRV() {
+    return Template.instance().customerToDeleteRV;
   },
 });
 
 Template.customersList.events({
   'click #delete-for-real': function clickDeleteForReal() {
-    Customers.remove(Template.instance().customerToDelete.get(), (err) => {
+    Customers.remove(Template.instance().customerToDeleteRV.get(), (err) => {
       Materialize.toast(err || TAPi18n.__('crudActions.customers.remove'), Meteor.settings.public.toastDuration);
     });
   },
@@ -50,7 +50,7 @@ Template.customersList.events({
 // -----------------------------------------------------------------------------
 
 Template.customersItem.onCreated(function customersItemOnCreated() {
-  this.displayForm = new ReactiveVar(false);
+  this.displayFormRV = new ReactiveVar(false);
 });
 
 Template.customersItem.helpers({
@@ -61,7 +61,7 @@ Template.customersItem.helpers({
     return Spacebars.SafeString(`${TAPi18n.__('components.listCustomers.updateButtonContent')} <i class="material-icons right">loop</i>`);
   },
   displayForm() {
-    return Template.instance().displayForm.get();
+    return Template.instance().displayFormRV.get();
   },
   formId() {
     return `updateCustomerForm-${this.customer._id}`;
@@ -70,9 +70,9 @@ Template.customersItem.helpers({
 
 Template.customersItem.events({
   'click .btn-delete-customer': function clickBtnDeleteCustomer() {
-    this.customerToDelete.set(this.customer._id);
+    this.customerToDeleteRV.set(this.customer._id);
   },
   'click .collapsible-header': function clickCollapsibleHeader(event, templateInstance) {
-    templateInstance.displayForm.set(true);
+    templateInstance.displayFormRV.set(true);
   },
 });

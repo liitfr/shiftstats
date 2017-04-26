@@ -17,6 +17,8 @@ const Customers = new Mongo.Collection('customers');
 // Schema
 //----------------------------------------------------------------------------
 
+// TODO : i18n for distancies unit
+
 const CustomersSchema = new SimpleSchema({
   country: {
     type: String,
@@ -121,9 +123,11 @@ const CustomersSchema = new SimpleSchema({
           },
         });
         if (countryField !== undefined) {
-          Tracker.afterFlush(() => {
-            $('select[name$="city"]').material_select();
-          });
+          if (Meteor.isClient) {
+            Tracker.afterFlush(() => {
+              $('select[name$="city"]').material_select();
+            });
+          }
           return Cities.find({
             country: countryField.alpha2,
           }, { sort: {

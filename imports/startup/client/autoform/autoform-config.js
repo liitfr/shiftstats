@@ -10,6 +10,10 @@ Template.autoForm.onRendered(function autoFormOnRendered() {
   this.$('select').material_select();
 });
 
+Template.autoForm.onDestroyed(function autoFormOnDestroyed() {
+  this.$('select').material_select('destroy');
+});
+
 AutoForm.addHooks(null, {
   onSuccess(formType) {
     const collectionName = this.collection._name;

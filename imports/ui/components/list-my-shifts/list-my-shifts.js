@@ -1,6 +1,10 @@
+/* global Materialize */
+
+import { lodash } from 'meteor/alethes:lodash';
 import { moment } from 'meteor/momentjs:moment';
 import { ReactiveVar } from 'meteor/reactive-var';
 import { TAPi18n } from 'meteor/tap:i18n';
+import { Tracker } from 'meteor/tracker';
 
 import { Shifts } from '../../../api/shifts/shifts.js';
 
@@ -8,38 +12,26 @@ import '../loader/loader.js';
 
 import './list-my-shifts.html';
 
+// TODO : 1. list doens't update when month change. and page is empty
+// TODO : 2. Empty data and debug user counters (after create / delete / update (date update))!
+// TODO : 3. Debug date display
+// TODO : 4. Delete feature
+// TODO : 5. Order in client side
+
+const _ = lodash;
+
 Template.listMyShifts.onCreated(function listMyShiftsOnCreated() {
   this.monthToDisplay = new ReactiveVar();
+  this.dataAvailable = new ReactiveVar(false);
 });
 
 Template.listMyShifts.helpers({
   monthToDisplay() {
     return Template.instance().monthToDisplay;
   },
-//   selectedShift() {
-//     return Shifts.findOne({
-//       _id: Template.instance().selectedShiftId.get(),
-//     }, {});
-//   },
-  // MyShifts() {
-  //   return MyShifts.find();
-  // },
-//   formId() {
-//     return `updateShiftForm-${Template.instance().selectedShiftId.get()}`;
-//   },
-//   updateButtonContent() {
-//     return Spacebars.SafeString(`${TAPi18n.__('components.listShifts.updateButtonContent')}
-//     <i class="material-icons right">loop</i>`);
-//   },
-//   shifts() {
-//     return Shifts.find({}, {
-//       sort: {
-//         date: -1,
-//         endHour: -1,
-//         startHour: -1,
-//       },
-//     });
-//   },
+  dataAvailable() {
+    return Template.instance().dataAvailable;
+  },
 });
 
 // -----------------------------------------------------------------------------
@@ -48,25 +40,42 @@ Template.myMonthsList.onCreated(function myMonthsListOnCreated() {
   const template = this;
   template.autorun(() => {
     template.subscribe('users.me', () => {
-      template.data.monthToDisplay.set(_.max(Object.keys(Meteor.users.findOne().months)));
-      Tracker.afterFlush(() => {
-        template.$('select').material_select();
+      template.autorun(() => {
+        const me = Meteor.users.findOne();
+        if (me.shiftsCounter > 0) {
+          template.data.dataAvailable.set(true);
+        } else {
+          template.data.dataAvailable.set(false);
+        }
+        const lastMonth = _.max(Object.keys(_.omit(me.months, counter => counter <= 0)));
+        // TODO : do not set if there's already a monthToDisplay set & counter > 0
+        template.data.monthToDisplay.set(lastMonth === -Infinity ? undefined : lastMonth);
+        Tracker.afterFlush(() => {
+          template.$('select').material_select();
+        });
       });
     });
   });
 });
 
 Template.myMonthsList.helpers({
+  isSelected(testedMonth) {
+    return testedMonth === Template.instance().data.monthToDisplay.get();
+  },
   myMonths() {
-    return _.map(_.sortBy(Object.keys(Meteor.users.findOne().months), month => -month), month => ({
+    return _.map(_.sortBy(Object.keys(_.omit(Meteor.users.findOne().months,
+    counter => counter <= 0)), month => -month), month => ({
       value: month,
       label: `${TAPi18n.__(`components.pickadate.monthsFull.${parseInt(month.substring(4, 6), 10) - 1}`)} ${month.substring(0, 4)}`,
     }));
   },
+  dataAvailable() {
+    return Template.instance().data.dataAvailable.get();
+  },
 });
 
 Template.myMonthsList.events({
-  'change #my-months-list': function changeMonthSelect(event, templateInstance) {
+  'change #my-months-list': function changeMyMonthsList(event, templateInstance) {
     templateInstance.data.monthToDisplay.set(event.target.value);
   },
 });
@@ -75,20 +84,89 @@ Template.myMonthsList.events({
 
 Template.myCustomersInMonth.onCreated(function myCustomersInMonthOnCreated() {
   const template = this;
-  template.shiftToModify = new ReactiveVar();
+  template.shiftToModifyRV = new ReactiveVar();
+  template.shiftToDeleteRV = new ReactiveVar();
   template.autorun(() => {
-    if (template.data.monthToDisplay.get() !== undefined) {
+    if (template.data.dataAvailable.get() && template.data.monthToDisplay.get() !== undefined) {
       template.subscribe('shifts.mine', template.data.monthToDisplay.get());
     }
   });
 });
 
+Template.myCustomersInMonth.onRendered(function myCustomersInMonthOnRendered() {
+  this.$('.modal').modal();
+  // TODO : reinit timepicker when doc changes
+  this.$('.timepicker').pickatime({
+    autoclose: true,
+    twelvehour: false,
+    default: '',
+    donetext: 'OK',
+  });
+  const $input = this.$('.datepicker').pickadate({
+    container: 'main',
+    selectMonths: true,
+    selectYears: 2,
+    format: TAPi18n.__('components.pickadate.format'),
+    closeOnSelect: true,
+    closeOnClear: true,
+    max: new Date(),
+    onSet(ele) {
+      if (ele.select) {
+        this.close();
+      }
+    },
+  });
+  const picker = $input.pickadate('picker');
+  this.autorun(() => {
+    picker.component.settings.monthsFull = _.map(TAPi18n.__('components.pickadate.monthsFull', { returnObjectTrees: true }), month => month);
+    picker.component.settings.monthsShort = _.map(TAPi18n.__('components.pickadate.monthsShort', { returnObjectTrees: true }), month => month);
+    picker.component.settings.weekdaysFull = _.map(TAPi18n.__('components.pickadate.weekdaysFull', { returnObjectTrees: true }), weekday => weekday);
+    picker.component.settings.weekdaysShort = _.map(TAPi18n.__('components.pickadate.weekdaysShort', { returnObjectTrees: true }), weekday => weekday);
+    picker.component.settings.today = TAPi18n.__('components.pickadate.today');
+    picker.component.settings.clear = TAPi18n.__('components.pickadate.clear');
+    picker.component.settings.close = TAPi18n.__('components.pickadate.close');
+    picker.component.settings.firstDay = TAPi18n.__('components.pickadate.firstDay');
+    picker.component.settings.format = TAPi18n.__('components.pickadate.format');
+    picker.component.settings.labelMonthNext = TAPi18n.__('components.pickadate.labelMonthNext');
+    picker.component.settings.labelMonthPrev = TAPi18n.__('components.pickadate.labelMonthPrev');
+    picker.component.settings.labelMonthSelect = TAPi18n.__('components.pickadate.labelMonthSelect');
+    picker.component.settings.labelYearSelect = TAPi18n.__('components.pickadate.labelYearSelect');
+    picker.render();
+  });
+});
+
 Template.myCustomersInMonth.helpers({
+  Shifts() {
+    return Shifts;
+  },
   shifts() {
     return Shifts.find();
   },
+  shiftToModifyRV() {
+    return Template.instance().shiftToModifyRV;
+  },
   shiftToModify() {
-    return Template.instance().shiftToModify;
+    return Template.instance().shiftToModifyRV.get();
+  },
+  shiftToDeleteRV() {
+    return Template.instance().shiftToDeleteRV;
+  },
+  shiftToDelete() {
+    return Template.instance().shiftToDeleteRV.get();
+  },
+  buttonContent() {
+    return Spacebars.SafeString(`${TAPi18n.__('components.formNewShift.buttonContent')} <i class="material-icons right">send</i>`);
+  },
+  dataAvailable() {
+    return Template.instance().data.dataAvailable.get();
+  },
+});
+
+Template.myCustomersInMonth.events({
+  'click #delete-for-real': function clickDeleteForReal() {
+    Shifts.remove(Template.instance().shiftToDeleteRV.get(), (err) => {
+      Materialize.toast(err || TAPi18n.__('crudActions.shifts.remove'), Meteor.settings.public.toastDuration);
+    });
   },
 });
 
@@ -107,33 +185,6 @@ Template.myShiftsInCustomer.helpers({
     return `${hours}h${minutes}`;
   },
 });
-// LIIT : check that shift day isn't UTC in database
-// Template.listMyShifts.onRendered(function listMyShiftsOnRendered() {
-//   $('.modal').modal();
-//   $('.datepicker').pickadate({
-//     selectMonths: true,
-//     selectYears: 2,
-//     format: 'dd/mm/yyyy',
-//     closeOnSelect: true,
-//     closeOnClear: true,
-//     max: new Date(),
-//     onSet(ele) {
-//       if (ele.select) {
-//         this.close();
-//       }
-//     },
-//   });
-// });
-
-// TODO : message if no shift has been added yet !
-
-// BUG we should not use data-attr : https://dweldon.silvrback.com/common-mistakes
-// or use url hashes like https://guide.meteor.com/data-loading.html#organizing-subscriptions
-// Template.listMyShifts.events({
-//   'click .modal-trigger': function clickModalTrigger(event, templateInstance) {
-//     templateInstance.selectedShiftId.set($(event.currentTarget).attr('data-shift'));
-//   },
-// });
 
 // -----------------------------------------------------------------------------
 
@@ -150,8 +201,10 @@ Template.shiftsItem.helpers({
 });
 
 Template.shiftsItem.events({
-  'click .modal-trigger': function eventModalTrigger(event, templateInstance) {
-    // templateInstance.selectedShiftId.set($(event.currentTarget).attr('data-shift'));
-    // console.log(templateInstance);
+  'click .modal-modify-shift-trigger': function clickModalModifyShiftTrigger() {
+    this.shiftToModifyRV.set(this.shift);
+  },
+  'click .modal-delete-shift-trigger': function clickModalDeleteShiftTrigger() {
+    this.shiftToDeleteRV.set(this.shift._id);
   },
 });

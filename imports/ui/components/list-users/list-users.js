@@ -18,7 +18,7 @@ Template.listUsers.onCreated(function listUsersOnCreated() {
 // -----------------------------------------------------------------------------
 
 Template.usersList.onCreated(function usersListOnCreated() {
-  this.userToDelete = new ReactiveVar();
+  this.userToDeleteRV = new ReactiveVar();
 });
 
 Template.usersList.onRendered(function usersListOnRendered() {
@@ -29,14 +29,14 @@ Template.usersList.helpers({
   users() {
     return Meteor.users.find({}, { sort: { createdAt: -1 } });
   },
-  userToDelete() {
-    return Template.instance().userToDelete;
+  userToDeleteRV() {
+    return Template.instance().userToDeleteRV;
   },
 });
 
 Template.usersList.events({
   'click #delete-for-real': function clickDeleteForReal() {
-    Meteor.users.remove(Template.instance().userToDelete.get(), (err) => {
+    Meteor.users.remove(Template.instance().userToDeleteRV.get(), (err) => {
       Materialize.toast(err || TAPi18n.__('crudActions.users.remove'), Meteor.settings.public.toastDuration);
     });
   },
@@ -55,6 +55,6 @@ Template.usersItem.helpers({
 
 Template.usersItem.events({
   'click .btn-delete-user': function clickBtnDeleteUser() {
-    this.userToDelete.set(this.user._id);
+    this.userToDeleteRV.set(this.user._id);
   },
 });

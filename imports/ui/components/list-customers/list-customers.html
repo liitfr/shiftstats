@@ -13,7 +13,7 @@
 <template name="customersList">
   <ul class="collapsible" data-collapsible="accordion">
     {{#each customer in customers}}
-      {{> customersItem customer=customer customerToDelete=customerToDelete}}
+      {{> customersItem customer=customer customerToDeleteRV=customerToDeleteRV}}
     {{else}}
       <li>
         <div class="collapsible-header">
