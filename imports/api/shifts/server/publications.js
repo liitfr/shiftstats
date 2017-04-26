@@ -16,6 +16,13 @@ Meteor.publish('shifts.mine', function shiftsMine(monthString) {
         monthString,
       },
     }, {
+      $sort: {
+        month: -1,
+        customerLabel: -1,
+        date: -1,
+        endHour: -1,
+      },
+    }, {
       $group: {
         _id: { $concat: ['$courier', '$customer', '$monthString'] },
         customer: {
@@ -48,28 +55,11 @@ Meteor.publish('shifts.mine', function shiftsMine(monthString) {
           $sum: '$gains',
         },
       },
-    }, {
-      $sort: {
-        month: -1,
-        customerLabel: 1,
-        date: -1,
-        endHour: -1,
-      },
-    // }, {
-      // $project: {
-      //   // courier: '$_id.courier',
-      //   // customerLabel: '$_id.customerLabel',
-      //   // month: '$_id.month',
-      //   _id: '$_id',
-      //   // shifts: '$shifts',
-      //   // nbDelivs: '$nbDelivs',
-      //   // nbKms: '$nbKms',
-      //   gains: '$gains',
-      // },
     }]);
+    return undefined;
   }
-  // this.stop();
-  // return this.ready();
+  this.stop();
+  return this.ready();
 });
 
 // publishComposite('shifts.admin', function shiftsAdmin() {

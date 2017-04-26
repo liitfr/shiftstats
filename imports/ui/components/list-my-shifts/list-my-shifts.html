@@ -1,47 +1,58 @@
 <template name="listMyShifts">
   <h2>{{_ "components.listMyShifts.title"}}</h2>
-  {{> myMonthsList monthToDisplay=monthToDisplay}}
-  {{> myCustomersInMonth monthToDisplay=monthToDisplay}}
+  {{> myMonthsList monthToDisplay=monthToDisplay dataAvailable=dataAvailable}}
+  {{> myCustomersInMonth monthToDisplay=monthToDisplay dataAvailable=dataAvailable}}
 </template>
 
 <!-- ======================================================================= -->
 
 <template name="myMonthsList">
   {{#if Template.subscriptionsReady}}
-    <div class="form-group">
-      <label>{{_ "schemas.shifts.month.label"}}</label>
-      <select id="my-months-list">
-        {{#each month in myMonths}}
-          <option value="{{month.value}}">{{month.label}}</option>
-        {{/each}}
-      </select>
-    </div>
+    {{#if dataAvailable}}
+      <div class="form-group">
+        <label>{{_ "schemas.shifts.month.label"}}</label>
+        <select id="my-months-list">
+          {{#each month in myMonths}}
+            {{#if isSelected month.value}}
+              <option value="{{month.value}}" selected>{{month.label}}</option>
+            {{else}}
+              <option value="{{month.value}}">{{month.label}}</option>
+            {{/if}}
+          {{/each}}
+        </select>
+      </div>
+    {{else}}
+      <p class="flow-text warning">{{_ "components.listMyShifts.noShifts"}}</p>
+    {{/if}}
   {{/if}}
 </template>
 
 <!-- ======================================================================= -->
 
 <template name="myCustomersInMonth">
-  {{#if Template.subscriptionsReady}}
-    <p class="flow-text warning">{{_ "components.listMyShifts.noShifts"}}</p>
-    {{#each shift in shifts}}
-      {{> myShiftsInCustomer shift=shift shiftToModify=shiftToModify}}
-    {{/each}}
-    <div id="modal-modify-shift" class="modal modal-fixed-footer">
-      <div class="modal-content">
-        <h4>{{_ "components.listMyShifts.modaltitle"}}</h4>
-        <!-- {{> quickForm collection=Shifts id=formId doc=shiftToModify type="update" buttonContent=updateButtonContent}} -->
-      </div>
-      <div class="modal-footer">
-        <a href="#!" class="modal-action modal-close waves-effect waves-light btn-flat ">
-          {{_ "components.listMyShifts.closemodal"}}
-          <i class="material-icons right">replay</i>
-        </a>
-      </div>
-    </div>
-  {{else}}
-    {{> loader ""}}
+  {{#if dataAvailable}}
+    {{#if Template.subscriptionsReady}}
+      {{#each shift in shifts}}
+        {{> myShiftsInCustomer shift=shift shiftToModify=shiftToModifyRV}}
+      {{/each}}
+    {{else}}
+      <!-- TODO : loader for both subscriptions -->
+      {{> loader ""}}
+    {{/if}}
   {{/if}}
+  <!-- TODO : shouldn't be displayed if no data available -->
+  <div id="modal-modify-shift" class="modal modal-fixed-footer">
+    <div class="modal-content">
+      <h4>{{_ "components.listMyShifts.modaltitle"}}</h4>
+      {{> quickForm collection=Shifts id="updateShiftForm" resetOnSuccess=false doc=shiftToModify type="update" buttonContent=buttonContent}}
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-action modal-close waves-effect waves-light btn-flat ">
+        {{_ "components.listMyShifts.closemodal"}}
+        <i class="material-icons right">replay</i>
+      </a>
+    </div>
+  </div>
 </template>
 
 <!-- ======================================================================= -->
@@ -66,7 +77,8 @@
       {{/each}}
       <tr>
         <td><b>Total</b></td>
-        <td colspan = "2">{{durationInHours}}</td>
+        <td>{{durationInHours}}</td>
+        <td></td>
         <td>{{shift.nbDelivs}}</td>
         <td>{{distWithKM}}</td>
         <td>{{gainsWithCurrency}}</td>
@@ -87,8 +99,7 @@
     <td>{{distWithKM}}</td>
     <td>{{gainsWithCurrency}}</td>
     <td>
-      <a class="modal-trigger waves-effect waves-light btn" href="#modal-modify-shift">
-        {{_ "components.listMyShifts.editbutton"}}
+      <a class="modal-trigger waves-effect waves-light btn-floating" href="#modal-modify-shift">
         <i class="material-icons right">open_in_new</i>
       </a>
     </td>

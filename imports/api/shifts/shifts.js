@@ -107,12 +107,19 @@ const ShiftsSchema = new SimpleSchema({
         defaultValue: () => SessionAmplify.get('shiftstats-user-favorite-customer'),
         firstOption: () => TAPi18n.__('schemas.shifts.customer.placeholder'),
         class: 'select-customer',
-        options: () => Customers.find({}, { sort: {
-          label: 1,
-        } }).map(customer => ({
-          label: customer.label,
-          value: customer._id,
-        })),
+        options: () => {
+          if (Meteor.isClient) {
+            Tracker.afterFlush(() => {
+              $('select[name$="customer"]').material_select();
+            });
+          }
+          return Customers.find({}, { sort: {
+            label: 1,
+          } }).map(customer => ({
+            label: customer.label,
+            value: customer._id,
+          }));
+        },
       },
     },
   },
@@ -718,11 +725,11 @@ Shifts.after.update(function shiftsAfterUpdate(userId, doc, fieldNames) {
     if (_.indexOf(fieldNames, 'gains') !== -1) {
       incUser.gainsCounter = doc.gains - this.previous.gains;
     }
-    if (_.indexOf(fieldNames, 'customer') !== -1) {
+    if (_.indexOf(fieldNames, 'customer') !== -1 && doc.customer !== this.previous.customer) {
       incUser[`customers.${doc.customer}`] = 1;
       incUser[`customers.${this.previous.customer}`] = -1;
     }
-    if (_.indexOf(fieldNames, 'month') !== -1) {
+    if (_.indexOf(fieldNames, 'month') !== -1 && doc.monthString !== this.previous.monthString) {
       incUser[`months.${doc.monthString}`] = 1;
       incUser[`months.${this.previous.monthString}`] = -1;
     }

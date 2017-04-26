@@ -65,7 +65,7 @@
     "formNewShift": {
       "title": "Declare a new shift",
       "courier": "Courier",
-      "buttonContent": "Submit"
+      "buttonContent": "Update"
     },
     "listCustomers": {
       "warning": "Warning: modifying or deleting a client involves updating the base of the shifts. This treatment can be very long depending on the size of the base! Attention also, the removal of a customer implies the removal of all the shifts attached to it!",
@@ -95,7 +95,11 @@
       "nbshifts": "Shifts",
       "nbdelivs": "Deliveries",
       "nbkms": "Kilometers",
-      "gains": "Gains"
+      "gains": "Gains",
+      "confirmationTitle": "Confirm",
+      "confirmationLabel": "Are you sure you want to delete this shift ?",
+      "confirmationYes": "Yes",
+      "confirmationNo": "No"
     },
     "listUsers": {
       "title": "Users list",

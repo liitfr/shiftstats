@@ -65,7 +65,7 @@
     "formNewShift": {
       "title": "Déclarer un nouveau shift",
       "courier": "Coursier",
-      "buttonContent": "Enregistrer"
+      "buttonContent": "Mettre à jour"
     },
     "listCustomers": {
       "warning": "Attention: la modification ou la suppression d'un client implique une mise à jour de la base des shifts. Ce traitement peut être très long en fonction de la taille de la base ! Attention également, la suppression d'un client implique la suppression de tous les shifts qui lui étaient rattachés !",
@@ -95,7 +95,11 @@
       "nbshifts": "Shifts",
       "nbdelivs": "Livraisons",
       "nbkms": "Kilomètres",
-      "gains": "Gains"
+      "gains": "Gains",
+      "confirmationTitle": "Confirmation",
+      "confirmationLabel": "Es-tu sûr de vouloir supprimer ce shift ?",
+      "confirmationYes": "Oui",
+      "confirmationNo": "Non"
     },
     "listUsers": {
       "title": "Liste des utilisateurs",

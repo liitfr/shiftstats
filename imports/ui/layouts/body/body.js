@@ -2,6 +2,7 @@ import { DocHead } from 'meteor/kadira:dochead';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import 'materialize-css';
 import { TAPi18n } from 'meteor/tap:i18n';
+import { Tracker } from 'meteor/tracker';
 
 import '../../components/nav/nav.js';
 import '../../components/footer/footer.js';
