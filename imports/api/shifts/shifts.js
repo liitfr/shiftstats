@@ -12,11 +12,45 @@ import { Customers } from '../customers/customers.js';
 
 // TODO : index on analytics fields
 // TODO : message about the shortest the shift is the better it is
-// TODO : control that hours are in right order and date not in futur
 // TODO : complete fields lists
 // TODO : verify if all fields are really necessary and think about their format (date for example).
 
 const Shifts = new Mongo.Collection('shifts');
+
+const applyMorningOffset = (time) => {
+  const timeMinutesWithOffsetInt = (parseInt(time.substring(3, 5), 10) -
+    parseInt(Meteor.settings.public.morningStartHour.substring(3, 5), 10)) % 60;
+  let timeHoursWithOffsetInt = (parseInt(time.substring(0, 2), 10) -
+    parseInt(Meteor.settings.public.morningStartHour.substring(0, 2), 10));
+  if (parseInt(time.substring(3, 5), 10) -
+    parseInt(Meteor.settings.public.morningStartHour.substring(3, 5), 10) < 0) {
+    timeHoursWithOffsetInt -= 1;
+  }
+  timeHoursWithOffsetInt = (timeHoursWithOffsetInt + 24) % 24;
+  return `${`0${timeHoursWithOffsetInt}`.slice(-2)}:${`0${timeMinutesWithOffsetInt}`.slice(-2)}`;
+};
+
+const calcDuration = (startHour, endHour) => {
+  const startHourWithOffset = applyMorningOffset(startHour);
+  const endHourWithOffset = applyMorningOffset(endHour);
+  const duration = ((parseInt(endHourWithOffset.split(':')[0], 10) * 60) + (parseInt(endHourWithOffset.split(':')[1], 10))) -
+  ((parseInt(startHourWithOffset.split(':')[0], 10) * 60) + (parseInt(startHourWithOffset.split(':')[1], 10)));
+  return duration;
+};
+
+const distribute = (startShiftStr, endShiftStr, startPeriodStr, endPeriodStr, ratio) => {
+  const startShiftInt = parseInt(startShiftStr.replace(':', ''), 10);
+  const endShiftInt = parseInt(endShiftStr.replace(':', ''), 10);
+  const startPeriodInt = parseInt(startPeriodStr.replace(':', ''), 10);
+  const endPeriodInt = parseInt(endPeriodStr.replace(':', ''), 10);
+  if (startShiftInt < endPeriodInt && endShiftInt > startPeriodInt) {
+    return calcDuration(
+      startShiftInt >= startPeriodInt ? startShiftStr : startPeriodStr,
+      endShiftInt <= endPeriodInt ? endShiftStr : endPeriodStr) /
+      ratio ? calcDuration(startShiftStr, endShiftStr) : 1;
+  }
+  return 0;
+};
 
 //----------------------------------------------------------------------------
 // Schema
@@ -378,6 +412,12 @@ const ShiftsSchema = new SimpleSchema({
         placeholder: () => TAPi18n.__('schemas.shifts.date.placeholder'),
       },
     },
+    custom() {
+      if (this.value > parseInt(moment().format('YYYYMMDD'), 10)) {
+        return { name: 'date', type: 'shiftInFuture' };
+      }
+      return undefined;
+    },
   },
   //----------------------------------------------------------------------------
   dayOfTheWeek: {
@@ -449,23 +489,6 @@ const ShiftsSchema = new SimpleSchema({
         type: 'time',
         class: 'timepicker',
       },
-    },
-  },
-  //----------------------------------------------------------------------------
-  duration: {
-    type: SimpleSchema.Integer,
-    label: () => TAPi18n.__('schemas.shifts.duration.label'),
-    autoValue() {
-      if (this.field('startHour').isSet && this.field('endHour').isSet) {
-        const startHour = this.field('startHour').value;
-        const endHour = this.field('endHour').value;
-        return ((parseInt(endHour.split(':')[0], 10) * 60) + (parseInt(endHour.split(':')[1], 10))) - ((parseInt(startHour.split(':')[0], 10) * 60) + (parseInt(startHour.split(':')[1], 10)));
-      }
-      this.unset();
-      return undefined;
-    },
-    autoform: {
-      omit: true,
     },
   },
   //----------------------------------------------------------------------------
@@ -582,6 +605,371 @@ const ShiftsSchema = new SimpleSchema({
     },
   },
   //----------------------------------------------------------------------------
+  duration: {
+    type: SimpleSchema.Integer,
+    label: () => TAPi18n.__('schemas.shifts.duration.label'),
+    autoValue() {
+      if (this.field('startHour').isSet && this.field('endHour').isSet) {
+        return calcDuration(this.field('startHour').value, this.field('endHour').value);
+      }
+      this.unset();
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
+  counterMorning: {
+    type: SimpleSchema.Integer,
+    label: () => TAPi18n.__('schemas.shifts.counter.label'),
+    autoValue() {
+      if (this.field('startHour').isSet && this.field('endHour').isSet) {
+        return distribute(this.field('startHour').value, this.field('endHour').value, Meteor.settings.public.morningStartHour, Meteor.settings.public.morningEndHour, false) > 0 ? 1 : 0;
+      }
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
+  nbDelivsMorning: {
+    type: SimpleSchema.Integer,
+    label: () => TAPi18n.__('schemas.shifts.nbdelivs.label'),
+    autoValue() {
+      if (this.field('startHour').isSet && this.field('endHour').isSet && this.field('nbDelivs').isSet) {
+        return distribute(this.field('startHour').value, this.field('endHour').value, Meteor.settings.public.morningStartHour, Meteor.settings.public.morningEndHour, true) * this.field('nbDelivs').value;
+      }
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
+  nbKmsMorning: {
+    type: Number,
+    label: () => TAPi18n.__('schemas.shifts.nbkms.label'),
+    autoValue() {
+      if (this.field('startHour').isSet && this.field('endHour').isSet && this.field('nbKms').isSet) {
+        return distribute(this.field('startHour').value, this.field('endHour').value, Meteor.settings.public.morningStartHour, Meteor.settings.public.morningEndHour, true) * this.field('nbKms').value;
+      }
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
+  gainsMorning: {
+    type: Number,
+    label: () => TAPi18n.__('schemas.shifts.gains.label'),
+    autoValue() {
+      if (this.field('startHour').isSet && this.field('endHour').isSet && this.field('gains').isSet) {
+        return distribute(this.field('startHour').value, this.field('endHour').value, Meteor.settings.public.morningStartHour, Meteor.settings.public.morningEndHour, true) * this.field('gains').value;
+      }
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
+  durationMorning: {
+    type: SimpleSchema.Integer,
+    label: () => TAPi18n.__('schemas.shifts.duration.label'),
+    autoValue() {
+      if (this.field('startHour').isSet && this.field('endHour').isSet) {
+        return distribute(this.field('startHour').value, this.field('endHour').value, Meteor.settings.public.morningStartHour, Meteor.settings.public.morningEndHour, false);
+      }
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
+  counterLunch: {
+    type: SimpleSchema.Integer,
+    label: () => TAPi18n.__('schemas.shifts.counter.label'),
+    autoValue() {
+      if (this.field('startHour').isSet && this.field('endHour').isSet) {
+        return distribute(this.field('startHour').value, this.field('endHour').value, Meteor.settings.public.lunchStartHour, Meteor.settings.public.lunchEndHour, false) > 0 ? 1 : 0;
+      }
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
+  nbDelivsLunch: {
+    type: SimpleSchema.Integer,
+    label: () => TAPi18n.__('schemas.shifts.nbdelivs.label'),
+    autoValue() {
+      if (this.field('startHour').isSet && this.field('endHour').isSet && this.field('nbDelivs').isSet) {
+        return distribute(this.field('startHour').value, this.field('endHour').value, Meteor.settings.public.lunchStartHour, Meteor.settings.public.lunchEndHour, true) * this.field('nbDelivs').value;
+      }
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
+  nbKmsLunch: {
+    type: Number,
+    label: () => TAPi18n.__('schemas.shifts.nbkms.label'),
+    autoValue() {
+      if (this.field('startHour').isSet && this.field('endHour').isSet && this.field('nbKms').isSet) {
+        return distribute(this.field('startHour').value, this.field('endHour').value, Meteor.settings.public.lunchStartHour, Meteor.settings.public.lunchEndHour, true) * this.field('nbKms').value;
+      }
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
+  gainsLunch: {
+    type: Number,
+    label: () => TAPi18n.__('schemas.shifts.gains.label'),
+    autoValue() {
+      if (this.field('startHour').isSet && this.field('endHour').isSet && this.field('gains').isSet) {
+        return distribute(this.field('startHour').value, this.field('endHour').value, Meteor.settings.public.lunchStartHour, Meteor.settings.public.lunchEndHour, true) * this.field('gains').value;
+      }
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
+  durationLunch: {
+    type: SimpleSchema.Integer,
+    label: () => TAPi18n.__('schemas.shifts.duration.label'),
+    autoValue() {
+      if (this.field('startHour').isSet && this.field('endHour').isSet) {
+        return distribute(this.field('startHour').value, this.field('endHour').value, Meteor.settings.public.lunchStartHour, Meteor.settings.public.lunchEndHour, false);
+      }
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
+  counterAfternoon: {
+    type: SimpleSchema.Integer,
+    label: () => TAPi18n.__('schemas.shifts.counter.label'),
+    autoValue() {
+      if (this.field('startHour').isSet && this.field('endHour').isSet) {
+        return distribute(this.field('startHour').value, this.field('endHour').value, Meteor.settings.public.afternoonStartHour, Meteor.settings.public.afternoonEndHour, false) > 0 ? 1 : 0;
+      }
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
+  nbDelivsAfternoon: {
+    type: SimpleSchema.Integer,
+    label: () => TAPi18n.__('schemas.shifts.nbdelivs.label'),
+    autoValue() {
+      if (this.field('startHour').isSet && this.field('endHour').isSet && this.field('nbDelivs').isSet) {
+        return distribute(this.field('startHour').value, this.field('endHour').value, Meteor.settings.public.afternoonStartHour, Meteor.settings.public.afternoonEndHour, true) * this.field('nbDelivs').value;
+      }
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
+  nbKmsAfternoon: {
+    type: Number,
+    label: () => TAPi18n.__('schemas.shifts.nbkms.label'),
+    autoValue() {
+      if (this.field('startHour').isSet && this.field('endHour').isSet && this.field('nbKms').isSet) {
+        return distribute(this.field('startHour').value, this.field('endHour').value, Meteor.settings.public.afternoonStartHour, Meteor.settings.public.afternoonEndHour, true) * this.field('nbKms').value;
+      }
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
+  gainsAfternoon: {
+    type: Number,
+    label: () => TAPi18n.__('schemas.shifts.gains.label'),
+    autoValue() {
+      if (this.field('startHour').isSet && this.field('endHour').isSet && this.field('gains').isSet) {
+        return distribute(this.field('startHour').value, this.field('endHour').value, Meteor.settings.public.afternoonStartHour, Meteor.settings.public.afternoonEndHour, true) * this.field('gains').value;
+      }
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
+  durationAfternoon: {
+    type: SimpleSchema.Integer,
+    label: () => TAPi18n.__('schemas.shifts.duration.label'),
+    autoValue() {
+      if (this.field('startHour').isSet && this.field('endHour').isSet) {
+        return distribute(this.field('startHour').value, this.field('endHour').value, Meteor.settings.public.afternoonStartHour, Meteor.settings.public.afternoonEndHour, false);
+      }
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
+  counterDinner: {
+    type: SimpleSchema.Integer,
+    label: () => TAPi18n.__('schemas.shifts.counter.label'),
+    autoValue() {
+      if (this.field('startHour').isSet && this.field('endHour').isSet) {
+        return distribute(this.field('startHour').value, this.field('endHour').value, Meteor.settings.public.dinnerStartHour, Meteor.settings.public.dinnerEndHour, false) > 0 ? 1 : 0;
+      }
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
+  nbDelivsDinner: {
+    type: SimpleSchema.Integer,
+    label: () => TAPi18n.__('schemas.shifts.nbdelivs.label'),
+    autoValue() {
+      if (this.field('startHour').isSet && this.field('endHour').isSet && this.field('nbDelivs').isSet) {
+        return distribute(this.field('startHour').value, this.field('endHour').value, Meteor.settings.public.dinnerStartHour, Meteor.settings.public.dinnerEndHour, true) * this.field('nbDelivs').value;
+      }
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
+  nbKmsDinner: {
+    type: Number,
+    label: () => TAPi18n.__('schemas.shifts.nbkms.label'),
+    autoValue() {
+      if (this.field('startHour').isSet && this.field('endHour').isSet && this.field('nbKms').isSet) {
+        return distribute(this.field('startHour').value, this.field('endHour').value, Meteor.settings.public.dinnerStartHour, Meteor.settings.public.dinnerEndHour, true) * this.field('nbKms').value;
+      }
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
+  gainsDinner: {
+    type: Number,
+    label: () => TAPi18n.__('schemas.shifts.gains.label'),
+    autoValue() {
+      if (this.field('startHour').isSet && this.field('endHour').isSet && this.field('gains').isSet) {
+        return distribute(this.field('startHour').value, this.field('endHour').value, Meteor.settings.public.dinnerStartHour, Meteor.settings.public.dinnerEndHour, true) * this.field('gains').value;
+      }
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
+  durationDinner: {
+    type: SimpleSchema.Integer,
+    label: () => TAPi18n.__('schemas.shifts.duration.label'),
+    autoValue() {
+      if (this.field('startHour').isSet && this.field('endHour').isSet) {
+        return distribute(this.field('startHour').value, this.field('endHour').value, Meteor.settings.public.dinnerStartHour, Meteor.settings.public.dinnerEndHour, false);
+      }
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
+  counterNight: {
+    type: SimpleSchema.Integer,
+    label: () => TAPi18n.__('schemas.shifts.counter.label'),
+    autoValue() {
+      if (this.field('startHour').isSet && this.field('endHour').isSet) {
+        return distribute(this.field('startHour').value, this.field('endHour').value, Meteor.settings.public.nightStartHour, Meteor.settings.public.nightEndHour, false) > 0 ? 1 : 0;
+      }
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
+  nbDelivsNight: {
+    type: SimpleSchema.Integer,
+    label: () => TAPi18n.__('schemas.shifts.nbdelivs.label'),
+    autoValue() {
+      if (this.field('startHour').isSet && this.field('endHour').isSet && this.field('nbDelivs').isSet) {
+        return distribute(this.field('startHour').value, this.field('endHour').value, Meteor.settings.public.nightStartHour, Meteor.settings.public.nightEndHour, true) * this.field('nbDelivs').value;
+      }
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
+  nbKmsNight: {
+    type: Number,
+    label: () => TAPi18n.__('schemas.shifts.nbkms.label'),
+    autoValue() {
+      if (this.field('startHour').isSet && this.field('endHour').isSet && this.field('nbKms').isSet) {
+        return distribute(this.field('startHour').value, this.field('endHour').value, Meteor.settings.public.nightStartHour, Meteor.settings.public.nightEndHour, true) * this.field('nbKms').value;
+      }
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
+  gainsNight: {
+    type: Number,
+    label: () => TAPi18n.__('schemas.shifts.gains.label'),
+    autoValue() {
+      if (this.field('startHour').isSet && this.field('endHour').isSet && this.field('gains').isSet) {
+        return distribute(this.field('startHour').value, this.field('endHour').value, Meteor.settings.public.nightStartHour, Meteor.settings.public.nightEndHour, true) * this.field('gains').value;
+      }
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
+  durationNight: {
+    type: SimpleSchema.Integer,
+    label: () => TAPi18n.__('schemas.shifts.duration.label'),
+    autoValue() {
+      if (this.field('startHour').isSet && this.field('endHour').isSet) {
+        return distribute(this.field('startHour').value, this.field('endHour').value, Meteor.settings.public.nightStartHour, Meteor.settings.public.nightEndHour, false);
+      }
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
   // Technical
   //----------------------------------------------------------------------------
   createdAt: {
@@ -618,6 +1006,28 @@ const ShiftsSchema = new SimpleSchema({
   tracker: Tracker,
 });
 
+ShiftsSchema.addDocValidator((shift) => {
+  if (_.has(shift, 'startHour') && _.has(shift, 'endHour')) {
+    if (shift.startHour === shift.endHour) {
+      return [
+        { name: 'startHour', type: 'noDuration' },
+        { name: 'endHour', type: 'noDuration' },
+      ];
+    }
+    const startHourWithOffset = applyMorningOffset(shift.startHour);
+    const endHourWithOffset = applyMorningOffset(shift.endHour);
+    const startHourWithOffsetInt = parseInt(startHourWithOffset.replace(':', ''), 10);
+    const endHourWithOffsetInt = parseInt(endHourWithOffset.replace(':', ''), 10);
+    if (endHourWithOffsetInt < startHourWithOffsetInt) {
+      return [
+        { name: 'startHour', type: 'dayOverlap' },
+        { name: 'endHour', type: 'dayOverlap' },
+      ];
+    }
+  }
+  return [];
+});
+
 Shifts.attachSchema(ShiftsSchema);
 
 //----------------------------------------------------------------------------
@@ -647,13 +1057,38 @@ Shifts.adminFields = {
   monthString: 1,
   startHour: 1,
   endHour: 1,
-  duration: 1,
   startDatetime: 1,
   endDatetime: 1,
   counter: 1,
   nbDelivs: 1,
   nbKms: 1,
   gains: 1,
+  duration: 1,
+  counterMorning: 1,
+  nbDelivsMorning: 1,
+  nbKmsMorning: 1,
+  gainsMorning: 1,
+  durationMorning: 1,
+  counterLunch: 1,
+  nbDelivsLunch: 1,
+  nbKmsLunch: 1,
+  gainsLunch: 1,
+  durationLunch: 1,
+  counterAfternoon: 1,
+  nbDelivsAfternoon: 1,
+  nbKmsAfternoon: 1,
+  gainsAfternoon: 1,
+  durationAfternoon: 1,
+  counterDinner: 1,
+  nbDelivsDinner: 1,
+  nbKmsDinner: 1,
+  gainsDinner: 1,
+  durationDinner: 1,
+  counterNight: 1,
+  nbDelivsNight: 1,
+  nbKmsNight: 1,
+  gainsNight: 1,
+  durationNight: 1,
   createdAt: 1,
   updatedAt: 1,
 };

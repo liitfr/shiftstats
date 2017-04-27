@@ -19,31 +19,25 @@ AutoForm.addInputType('datepicker', {
   },
 });
 
-// TODO : reinit datepicker when doc changes
-
 Template.afInputDatePicker.onRendered(() => {
   const instance = Template.instance();
-  if (instance.data.value) {
-    instance.$('input').parent().find('label').addClass('active');
-  }
-  // TODO : remove datepicker class in Shift.js
-  const input = instance.$('input').pickadate({
-    container: 'main',
-    selectMonths: true,
-    selectYears: 2,
-    format: TAPi18n.__('components.pickadate.format'),
-    closeOnSelect: true,
-    closeOnClear: true,
-    // TODO : isn't generic ....
-    max: new Date(),
-    onSet(ele) {
-      if (ele.select) {
-        this.close();
-      }
-    },
-  });
-  const picker = input.pickadate('picker');
   instance.autorun(() => {
+    const input = instance.$('input').pickadate({
+      container: 'main',
+      selectMonths: true,
+      selectYears: 2,
+      format: TAPi18n.__('components.pickadate.format'),
+      closeOnSelect: true,
+      closeOnClear: true,
+      // TODO : isn't generic ....
+      max: new Date(),
+      onSet(ele) {
+        if (ele.select) {
+          this.close();
+        }
+      },
+    });
+    const picker = input.pickadate('picker');
     picker.component.settings.monthsFull = _.map(TAPi18n.__('components.pickadate.monthsFull', { returnObjectTrees: true }), month => month);
     picker.component.settings.monthsShort = _.map(TAPi18n.__('components.pickadate.monthsShort', { returnObjectTrees: true }), month => month);
     picker.component.settings.weekdaysFull = _.map(TAPi18n.__('components.pickadate.weekdaysFull', { returnObjectTrees: true }), weekday => weekday);

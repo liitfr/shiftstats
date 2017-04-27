@@ -82,3 +82,7 @@ If you want to have detailed information, execute `export METEOR_PROFILE=1` befo
 ### Manage mail gun account
 
 go to https://app.mailgun.com/app/domains
+
+### Materialize
+
+If you experience troubles with Materialize, please run `npm install` to execute postinstall script.

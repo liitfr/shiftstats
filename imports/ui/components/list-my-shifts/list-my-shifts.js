@@ -13,11 +13,8 @@ import '../loader/loader.js';
 
 import './list-my-shifts.html';
 
-// TODO : 1. list doens't update when month change. and page is empty
-// TODO : 2. Empty data and debug user counters (after create / delete / update (date update))!
-// TODO : 3. Debug date display
-// TODO : 4. Delete feature
-// TODO : 5. Order in client side
+// TODO : put Order of query in client side
+// TODO : loader for both substricptions !
 
 const _ = lodash;
 

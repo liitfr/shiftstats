@@ -44,7 +44,9 @@
   <div id="modal-modify-shift" class="modal modal-fixed-footer">
     <div class="modal-content">
       <h4>{{_ "components.listMyShifts.modaltitle"}}</h4>
-      {{> quickForm collection=Shifts id="updateShiftForm" resetOnSuccess=false doc=shiftToModify type="update" buttonContent=buttonContent}}
+      {{#if shiftToModify}}
+        {{> quickForm collection=Shifts id="updateShiftForm" resetOnSuccess=false doc=shiftToModify type="update" buttonContent=buttonContent}}
+      {{/if}}
     </div>
     <div class="modal-footer">
       <a href="#!" class="modal-action modal-close waves-effect waves-light btn-flat ">
