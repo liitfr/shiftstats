@@ -1,5 +1,6 @@
 {
   "presentation": "Register <b>for free</b> to share your stats <b>anonymously</b> with the courier community. This information will generate statistics that will help you and all the couriers to choose the customer that will allow you, for example, to earn the most money, as fast as possible, and to ride as little as possible ! Help us ! The more users there are, the more accurate the data will be.",
+  "underConstruction": "This page is currently under development. If you have the skills to help us, do not hesitate to contact us to get things moving!",
   "components": {
     "pickadate": {
       "monthsFull": {
@@ -352,7 +353,7 @@
       },
       "myShifts": {
         "title": "ShiftStats - Your shifts",
-        "description": "View and modify the shifts you have already saved"
+        "description": "View and modify the shifts you have already saved."
       },
       "newShift": {
         "title": "ShiftStats - Log a new shift",
@@ -365,6 +366,18 @@
       "adminUsers": {
         "title": "ShiftStats - Users administration",
         "description": "Create, list, modify & delete users."
+      },
+      "adminShifts": {
+        "title": "ShiftStats - Shifts administration",
+        "description": "Create, list, modify & delete shifts."
+      },
+      "stats": {
+        "title": "ShiftStats - Statistics reporting",
+        "description": "Display statistics of your city & choose the best customer !"
+      },
+      "presentation": {
+        "title": "ShiftStats - Presentation",
+        "description": "Presentation of this tool : How it works and how to use it."
       }
     },
     "atChangePwd": {

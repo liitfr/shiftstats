@@ -6,8 +6,11 @@ import '../../ui/layouts/body/body.js';
 import '../../ui/pages/home/home.js';
 import '../../ui/pages/new-shift/new-shift.js';
 import '../../ui/pages/my-shifts/my-shifts.js';
+import '../../ui/pages/stats/stats.js';
+import '../../ui/pages/presentation/presentation.js';
 import '../../ui/pages/admin-customers/admin-customers.js';
 import '../../ui/pages/admin-users/admin-users.js';
+import '../../ui/pages/admin-shifts/admin-shifts.js';
 import '../../ui/pages/not-found/not-found.js';
 
 FlowRouter.route('/', {
@@ -39,11 +42,34 @@ FlowRouter.route('/my-shifts', {
   },
 });
 
+FlowRouter.route('/stats', {
+  triggersEnter: [AccountsTemplates.ensureSignedIn],
+  name: 'App.stats',
+  action() {
+    BlazeLayout.render('appBody', { main: 'appStats' });
+  },
+});
+
+FlowRouter.route('/presentation', {
+  name: 'App.presentation',
+  action() {
+    BlazeLayout.render('appBody', { main: 'appPresentation' });
+  },
+});
+
 FlowRouter.route('/admin-customers', {
   triggersEnter: [AccountsTemplates.ensureSignedIn],
   name: 'App.adminCustomers',
   action() {
     BlazeLayout.render('appBody', { main: 'appAdminCustomers' });
+  },
+});
+
+FlowRouter.route('/admin-shifts', {
+  triggersEnter: [AccountsTemplates.ensureSignedIn],
+  name: 'App.adminShifts',
+  action() {
+    BlazeLayout.render('appBody', { main: 'appAdminShifts' });
   },
 });
 

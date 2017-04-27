@@ -9,61 +9,14 @@ Help us ! The more users there are, the more accurate the data will be.
 ## To keep in mind
 
 // TODO : explain to users that shifts shouldn't last a whole day but represent
-// more customer's planing
-ajouter "les stats permettront de projeter de nouvelles politique tarifaires: ex: vaut il mieux rouler au fixe ou au variable ?"
-# client
-obligatoire, sauvegardé
-#date de ton shift
-obligatoire, ne doit pas être dans le futur !
-#heure de début
-obligatoire, inf à heure de fin
-#heure de fin
-obligatoire, sup à heure de début
-si possible déclarer des shifts aussi courts que possible
-#nombre de livraisons
-obligatoire, une course double compte double, triple compte triple etc
-#nombre de kilomètres
-obligatoire, de l'heure de début de ton shift à la fin
-utilise strava (bientôt nous integrerons les données strava à l'appli)
-#gains totaux
-obligatoire: inclus les gains liés au shift  (dont les bonus week-ends montées, badges, pluie, jour spécial) et uniquement au shift (pas d'opé spé marketing, recrutement, etc)
-compter les commissions type uber
-
-indicateurs
-
-km / course
-€ / km
-€ / course
-€ / he
-courses / he
-€ / he
-km / he
-
-euros ?
-
-en brut ?
-en net ? ( -25%)
-
-période :
-journée
-matin
-midi
-après-midi
-soir
-
-historique ?
-toujours
-année
-mois
-semaine s-1
-semaine courante
-
-chaque histogramme: de combien de sources dispose t'on ?
-
-
-sinon, graphe évolution
+// more customer's planing and explain why
+// "les stats permettront de projeter de nouvelles politique tarifaires: ex: vaut il mieux rouler au fixe ou au variable ?"
+// Sur la page de création : Tu pourras modifier ton shift à tout moment
+// Ta ville ne figure pas dans cette liste ? contacte nous.
 
 ## How to ?
+
+// TODO (presentation content)
 
 ### Run tests
 

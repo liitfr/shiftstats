@@ -1,0 +1,7 @@
+<template name="appAdminShifts">
+  {{#if isInRole 'admin'}}
+    {{> listAllShifts ""}}
+  {{else}}
+    {{> forbidden ""}}
+  {{/if}}
+</template>

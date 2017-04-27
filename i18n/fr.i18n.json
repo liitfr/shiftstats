@@ -1,5 +1,6 @@
 {
   "presentation": "Inscrivez-vous <b>gratuitement</b> pour partager <b>anonymement</b> vos statistiques avec la communauté des coursiers. Ces informations permettront de générer des statistiques qui vous aideront, toi et tous les coursiers à choisir le client qui vous permettra, par exemple, de gagner le plus d'argent, le plus rapidement possible, et en roulant le moins possible ! Aidez-nous ! Plus il y aura d'utilisateurs, plus les données seront exactes.",
+  "underConstruction": "Cette page est en cours de développement. Si tu as les compétences pour nous venir en aide, n'hésite pas à nous contacter pour faire avancer les choses !",
   "components": {
     "pickadate": {
       "monthsFull": {
@@ -352,7 +353,7 @@
       },
       "myShifts": {
         "title": "ShiftStats - Liste de tes shifts",
-        "description": "Visualise et modifie les shifts que tu as déjà enregistrés"
+        "description": "Visualise et modifie les shifts que tu as déjà enregistrés."
       },
       "newShift": {
         "title": "ShiftStats - Déclare un nouveau shift",
@@ -365,6 +366,18 @@
       "adminUsers": {
         "title": "ShiftStats - Administration des utilisateurs",
         "description": "Créer, lister, modifier et supprimer des utilisateurs."
+      },
+      "adminShifts": {
+        "title": "ShiftStats - Administration des shifts",
+        "description": "Créer, lister, modifier et supprimer des shifts."
+      },
+      "stats": {
+        "title": "ShiftStats - Reporting",
+        "description": "Affiche les statistiques de ta ville et choisis le meilleur client !"
+      },
+      "presentation": {
+        "title": "ShiftStats - Présentation",
+        "description": "Présentation de l'outil : comment il marche et comment s'en servir."
       }
     },
     "atChangePwd": {
