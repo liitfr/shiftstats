@@ -145,7 +145,40 @@
       "trending": "Évolution",
       "compare": "Comparer",
       "chartType": "Choix du graphique",
-      "filters": "Filtres"
+      "filters": "Filtres",
+      "city": {
+        "label": "Ville",
+        "placeholder": "Choisis une ville"
+      },
+      "history": {
+        "label": "Niveau d'historique",
+        "placeholder": "Choisis un niveau d'historique",
+        "rollingMonth": "Mois roulant"
+      },
+      "kpi": {
+        "title": "Indicateurs",
+        "kmperdeliv": "kms / course",
+        "gainsperkm": "gains / km",
+        "gainsperdeliv": "gains / course",
+        "gainsperhour": "gains / heure",
+        "delivsperhour": "courses / heure",
+        "kmsperhour": "kms / heure"
+      },
+      "period": {
+        "title": "Période",
+        "fullday": "Toute la journée",
+        "morning": "Matin",
+        "lunch": "Midi",
+        "afternoon": "Après-midi",
+        "dinner": "Soir",
+        "night": "Nuit"
+      },
+      "payroll": {
+        "title": "Simulateur de charges",
+        "gross": "Brut",
+        "net": "Net",
+        "percentage": "Pourcentage de charges"
+      }
     },
     "chartCompare": {
       "title": "Compare les clients de ta ville"

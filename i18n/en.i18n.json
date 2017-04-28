@@ -145,7 +145,40 @@
       "trending": "Evolution",
       "compare": "Comparing",
       "chartType": "Chart type",
-      "filters": "Filters"
+      "filters": "Filters",
+      "city": {
+        "label": "City",
+        "placeholder": "Choose a city"
+      },
+      "history": {
+        "label": "History level",
+        "placeholder": "Choose an history level",
+        "rollingMonth": "Rolling month"
+      },
+      "kpi": {
+        "title": "KPI",
+        "kmperdeliv": "kms / delivery",
+        "gainsperkm": "gains / km",
+        "gainsperdeliv": "gains / delivery",
+        "gainsperhour": "gains / hour",
+        "delivsperhour": "deliveries / hour",
+        "kmsperhour": "kms / hour"
+      },
+      "period": {
+        "title": "Period",
+        "fullday": "Whole day",
+        "morning": "Morning",
+        "lunch": "Lunch",
+        "afternoon": "Afternoon",
+        "dinner": "Dinner",
+        "night": "Night"
+      },
+      "payroll": {
+        "title": "Payroll simulator",
+        "gross": "Gross",
+        "net": "Net",
+        "percentage": "Payroll percentage"
+      }
     },
     "chartCompare": {
       "title": "Compare customers in your city"

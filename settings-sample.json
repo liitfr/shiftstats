@@ -1,4 +1,8 @@
 {
+  "kadira": {
+    "appId": "XXXXXXXXXXXXXXXXX", 
+    "appSecret": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
+  },
   "public": {
     "appName": "ShiftStats",
     "brandList": ["Deliveroo", "Foodora", "UberEats"],

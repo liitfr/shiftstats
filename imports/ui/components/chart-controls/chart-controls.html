@@ -3,85 +3,87 @@
   <p><a id="show-chart-compare" class="waves-effect waves-light btn"><i class="material-icons left">assessment</i>{{_ "components.chartControls.compare"}}</a></p>
   <p><a id="show-chart-evol" class="waves-effect waves-light btn"><i class="material-icons left">trending_up</i>{{_ "components.chartControls.trending"}}</a></p>
   <h5>{{_ "components.chartControls.filters"}}</h5>
-  <select id="select-city" name="city">
-    <option value="" disabled selected>Choose your option</option>
-    {{#each city in cities}}
-      {{#if city.isSelected}}
-        <option value="{{city.value}}" selected>{{city.label}}</option>
-      {{else}}
-        <option value="{{city.value}}">{{city.label}}</option>
-      {{/if}}
-    {{/each}}
-  </select>
-  <label>Materialize Select</label>
-  <select>
-    <option value="" disabled selected>Choose your option</option>
-    <option value="1">Option 1</option>
-    <option value="2">Option 2</option>
-    <option value="3">Option 3</option>
-  </select>
-  <label>Materialize Select</label>
-  <h5>Indicateurs</h5>
+  <div class="input-field">
+    <select class="select-city" name="city">
+      <option value="" disabled selected>{{_ "components.chartControls.city.placeholder"}}</option>
+      {{#each city in cities}}
+        {{#if city.isSelected}}
+          <option value="{{city.value}}" selected>{{city.label}}</option>
+        {{else}}
+          <option value="{{city.value}}">{{city.label}}</option>
+        {{/if}}
+      {{/each}}
+    </select>
+    <label>{{_ "components.chartControls.city.label"}}</label>
+  </div>
+  <div class="input-field">
+    <select class="select-history" name="history">
+      <option value="" disabled>{{_ "components.chartControls.history.placeholder"}}</option>
+      <option value="rollingMonth" selected>{{_ "components.chartControls.history.rollingMonth"}}</option>
+    </select>
+    <label>{{_ "components.chartControls.history.label"}}</label>
+  </div>
+  <h5>{{_ "components.chartControls.kpi.title"}}</h5>
   <p>
-    <input class="with-gap" name="kpi-group" type="radio" id="kpi-km-per-deliv"/>
-    <label for="kpi-km-per-deliv">kms / course</label>
+    <input class="with-gap radio-kpi" name="kpi-group" type="radio" id="kpi-km-per-deliv" value="kmperdeliv"/>
+    <label for="kpi-km-per-deliv">{{_ "components.chartControls.kpi.kmperdeliv"}}</label>
   </p>
   <p>
-    <input class="with-gap" name="kpi-group" type="radio" id="kpi-gains-per-km"/>
-    <label for="kpi-gains-per-km">gains / km</label>
+    <input class="with-gap radio-kpi" name="kpi-group" type="radio" id="kpi-gains-per-km" value="gainsperkm"/>
+    <label for="kpi-gains-per-km">{{_ "components.chartControls.kpi.gainsperkm"}}</label>
   </p>
   <p>
-    <input class="with-gap" name="kpi-group" type="radio" id="kpi-gains-per-deliv"/>
-    <label for="kpi-gains-per-deliv">gains / course</label>
+    <input class="with-gap radio-kpi" name="kpi-group" type="radio" id="kpi-gains-per-deliv" value="gainsperdeliv"/>
+    <label for="kpi-gains-per-deliv">{{_ "components.chartControls.kpi.gainsperdeliv"}}</label>
   </p>
   <p>
-    <input class="with-gap" name="kpi-group" type="radio" id="kpi-gains-per-hour" checked/>
-    <label for="kpi-gains-per-hour">gains / heure</label>
+    <input class="with-gap radio-kpi" name="kpi-group" type="radio" id="kpi-gains-per-hour" value="gainsperhour" checked/>
+    <label for="kpi-gains-per-hour">{{_ "components.chartControls.kpi.gainsperhour"}}</label>
   </p>
   <p>
-    <input class="with-gap" name="kpi-group" type="radio" id="kpi-delivs-per-hour"/>
-    <label for="kpi-delivs-per-hour">courses / heure</label>
+    <input class="with-gap radio-kpi" name="kpi-group" type="radio" id="kpi-delivs-per-hour" value="delivsperhour"/>
+    <label for="kpi-delivs-per-hour">{{_ "components.chartControls.kpi.delivsperhour"}}</label>
   </p>
   <p>
-    <input class="with-gap" name="kpi-group" type="radio" id="kpi-km-per-hour"/>
-    <label for="kpi-km-per-hour">kms / heure</label>
+    <input class="with-gap radio-kpi" name="kpi-group" type="radio" id="kpi-kms-per-hour" value="kmsperhour"/>
+    <label for="kpi-kms-per-hour">{{_ "components.chartControls.kpi.kmsperhour"}}</label>
   </p>
-  <h5>Période</h5>
+  <h5>{{_ "components.chartControls.period.title"}}</h5>
   <p>
-    <input class="with-gap" name="period-group" type="radio" id="period-full-day"/>
-    <label for="period-full-day">Toute la journée</label>
-  </p>
-  <p>
-    <input class="with-gap" name="period-group" type="radio" id="period-morning"/>
-    <label for="period-morning">Matin</label>
+    <input class="with-gap radio-period" name="period-group" type="radio" id="period-full-day" value="fullday"/>
+    <label for="period-full-day">{{_ "components.chartControls.period.fullday"}}</label>
   </p>
   <p>
-    <input class="with-gap" name="period-group" type="radio" id="period-lunch"/>
-    <label for="period-lunch">Midi</label>
+    <input class="with-gap radio-period" name="period-group" type="radio" id="period-morning" value="morning"/>
+    <label for="period-morning">{{_ "components.chartControls.period.morning"}}</label>
   </p>
   <p>
-    <input class="with-gap" name="period-group" type="radio" id="period-afternoon"/>
-    <label for="period-afternoon">Après-midi</label>
+    <input class="with-gap radio-period" name="period-group" type="radio" id="period-lunch" value="lunch"/>
+    <label for="period-lunch">{{_ "components.chartControls.period.lunch"}}</label>
   </p>
   <p>
-    <input class="with-gap" name="period-group" type="radio" id="period-dinner" checked/>
-    <label for="period-dinner">Soir</label>
+    <input class="with-gap radio-period" name="period-group" type="radio" id="period-afternoon" value="afternoon"/>
+    <label for="period-afternoon">{{_ "components.chartControls.period.afternoon"}}</label>
   </p>
   <p>
-    <input class="with-gap" name="period-group" type="radio" id="period-night"/>
-    <label for="period-night">Nuit</label>
+    <input class="with-gap radio-period" name="period-group" type="radio" id="period-dinner" value="dinner" checked/>
+    <label for="period-dinner">{{_ "components.chartControls.period.dinner"}}</label>
   </p>
-  <h5>Simulateur de charges</h5>
-  <div class="switch">
+  <p>
+    <input class="with-gap radio-period" name="period-group" type="radio" id="period-night" value="night"/>
+    <label for="period-night">{{_ "components.chartControls.period.night"}}</label>
+  </p>
+  <h5>{{_ "components.chartControls.payroll.title"}}</h5>
+  <div class="switch switch-payroll">
     <label>
-      Brut
+      {{_ "components.chartControls.payroll.gross"}}
       <input type="checkbox">
       <span class="lever"></span>
-      Net
+      {{_ "components.chartControls.payroll.net"}}
     </label>
   </div>
-  <p class="range-field">
-    <label for="payroll">Pourcentage de charge</label>
+  <p class="range-field range-payroll">
+    <label for="payroll">{{_ "components.chartControls.payroll.percentage"}}</label>
     <input type="range" id="payroll" value="25" min="0" max="50" step="0.1"/>
   </p>
 </template>

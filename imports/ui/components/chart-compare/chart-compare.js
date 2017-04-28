@@ -1,5 +1,22 @@
 import './chart-compare.html';
 
+Template.chartCompare.onRendered(function chartCompareOnRendered() {
+  const template = this;
+  template.autorun(() => {
+    console.log(this.data.chartFiltersRD.get('city'));
+    console.log(this.data.chartFiltersRD.get('history'));
+    console.log(this.data.chartFiltersRD.get('kpi'));
+    console.log(this.data.chartFiltersRD.get('period'));
+    console.log(this.data.chartFiltersRD.get('payroll-activated'));
+    console.log(this.data.chartFiltersRD.get('payroll-percentage'));
+    console.log('----------------------------------------------------');
+  });
+});
+
+Template.chartCompare.helpers({
+
+});
+
 // # client
 // obligatoire, sauvegardé
 // #date de ton shift
