@@ -19,6 +19,7 @@ import './list-my-shifts.html';
 const _ = lodash;
 
 Template.listMyShifts.onCreated(function listMyShiftsOnCreated() {
+  // TODO : rename these variables by *RV
   this.monthToDisplay = new ReactiveVar();
   this.dataAvailable = new ReactiveVar(false);
 });
@@ -54,6 +55,10 @@ Template.myMonthsList.onCreated(function myMonthsListOnCreated() {
       });
     });
   });
+});
+
+Template.myMonthsList.onDestroyed(function myMonthsListOnDestroyed() {
+  this.$('select').material_select('destroy');
 });
 
 Template.myMonthsList.helpers({

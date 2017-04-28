@@ -1,3 +1,87 @@
 <template name="chartControls">
-  <p class="flow-text">{{_ "underConstruction"}}</p>
+  <h5>{{_ "components.chartControls.chartType"}}</h5>
+  <p><a id="show-chart-compare" class="waves-effect waves-light btn"><i class="material-icons left">assessment</i>{{_ "components.chartControls.compare"}}</a></p>
+  <p><a id="show-chart-evol" class="waves-effect waves-light btn"><i class="material-icons left">trending_up</i>{{_ "components.chartControls.trending"}}</a></p>
+  <h5>{{_ "components.chartControls.filters"}}</h5>
+  <select id="select-city" name="city">
+    <option value="" disabled selected>Choose your option</option>
+    {{#each city in cities}}
+      {{#if city.isSelected}}
+        <option value="{{city.value}}" selected>{{city.label}}</option>
+      {{else}}
+        <option value="{{city.value}}">{{city.label}}</option>
+      {{/if}}
+    {{/each}}
+  </select>
+  <label>Materialize Select</label>
+  <select>
+    <option value="" disabled selected>Choose your option</option>
+    <option value="1">Option 1</option>
+    <option value="2">Option 2</option>
+    <option value="3">Option 3</option>
+  </select>
+  <label>Materialize Select</label>
+  <h5>Indicateurs</h5>
+  <p>
+    <input class="with-gap" name="kpi-group" type="radio" id="kpi-km-per-deliv"/>
+    <label for="kpi-km-per-deliv">kms / course</label>
+  </p>
+  <p>
+    <input class="with-gap" name="kpi-group" type="radio" id="kpi-gains-per-km"/>
+    <label for="kpi-gains-per-km">gains / km</label>
+  </p>
+  <p>
+    <input class="with-gap" name="kpi-group" type="radio" id="kpi-gains-per-deliv"/>
+    <label for="kpi-gains-per-deliv">gains / course</label>
+  </p>
+  <p>
+    <input class="with-gap" name="kpi-group" type="radio" id="kpi-gains-per-hour" checked/>
+    <label for="kpi-gains-per-hour">gains / heure</label>
+  </p>
+  <p>
+    <input class="with-gap" name="kpi-group" type="radio" id="kpi-delivs-per-hour"/>
+    <label for="kpi-delivs-per-hour">courses / heure</label>
+  </p>
+  <p>
+    <input class="with-gap" name="kpi-group" type="radio" id="kpi-km-per-hour"/>
+    <label for="kpi-km-per-hour">kms / heure</label>
+  </p>
+  <h5>Période</h5>
+  <p>
+    <input class="with-gap" name="period-group" type="radio" id="period-full-day"/>
+    <label for="period-full-day">Toute la journée</label>
+  </p>
+  <p>
+    <input class="with-gap" name="period-group" type="radio" id="period-morning"/>
+    <label for="period-morning">Matin</label>
+  </p>
+  <p>
+    <input class="with-gap" name="period-group" type="radio" id="period-lunch"/>
+    <label for="period-lunch">Midi</label>
+  </p>
+  <p>
+    <input class="with-gap" name="period-group" type="radio" id="period-afternoon"/>
+    <label for="period-afternoon">Après-midi</label>
+  </p>
+  <p>
+    <input class="with-gap" name="period-group" type="radio" id="period-dinner" checked/>
+    <label for="period-dinner">Soir</label>
+  </p>
+  <p>
+    <input class="with-gap" name="period-group" type="radio" id="period-night"/>
+    <label for="period-night">Nuit</label>
+  </p>
+  <h5>Simulateur de charges</h5>
+  <div class="switch">
+    <label>
+      Brut
+      <input type="checkbox">
+      <span class="lever"></span>
+      Net
+    </label>
+  </div>
+  <p class="range-field">
+    <label for="payroll">Pourcentage de charge</label>
+    <input type="range" id="payroll" value="25" min="0" max="50" step="0.1"/>
+  </p>
 </template>

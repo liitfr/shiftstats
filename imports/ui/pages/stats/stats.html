@@ -1,5 +1,10 @@
 <template name="appStats">
-  <p class="flow-text">{{_ "underConstruction"}}</p>
-  {{> chartControls ""}}
-  {{> Template.dynamic template=chart}}
+  <div class="row">
+    <div id="chartControls" class="col s12 m4 l3">
+      {{> chartControls chartTypeRV=chartTypeRV}}
+    </div>
+    <div class="col s12 m8 l9">
+      {{> Template.dynamic template=chartType}}
+    </div>
+</div>
 </template>

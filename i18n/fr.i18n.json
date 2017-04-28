@@ -140,6 +140,18 @@
       "adminusers": "Utilisat<span class=\"full-text-nav\">eurs</span>",
       "adminshifts": "Shifts",
       "admincustomers": "Clients"
+    },
+    "chartControls": {
+      "trending": "Évolution",
+      "compare": "Comparer",
+      "chartType": "Choix du graphique",
+      "filters": "Filtres"
+    },
+    "chartCompare": {
+      "title": "Compare les clients de ta ville"
+    },
+    "chartEvol": {
+      "title": "Contrôle l'évolution des gains avec tes clients"
     }
   },
   "schemas": {

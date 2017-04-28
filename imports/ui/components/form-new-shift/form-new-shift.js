@@ -5,6 +5,7 @@ import { SessionAmplify } from 'meteor/mrt:session-amplify';
 import { TAPi18n } from 'meteor/tap:i18n';
 import { Tracker } from 'meteor/tracker';
 
+import { Customers } from '../../../api/customers/customers.js';
 import { Shifts } from '../../../api/shifts/shifts.js';
 
 import './form-new-shift.html';
@@ -47,6 +48,14 @@ Template.formNewShift.helpers({
 Template.formNewShift.events({
   'change .select-customer': function changeSelectCustomer(event) {
     SessionAmplify.set('shiftstats-user-favorite-customer', $(event.target).val());
+    const favoriteCity = Customers.findOne({
+      _id: $(event.target).val(),
+    }, {
+      fields: {
+        city: 1,
+      },
+    }).city;
+    SessionAmplify.set('shiftstats-user-favorite-city', favoriteCity);
   },
 });
 

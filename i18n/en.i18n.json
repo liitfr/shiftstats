@@ -140,6 +140,18 @@
       "adminusers": "Users",
       "adminshifts": "Shifts",
       "admincustomers": "Customers"
+    },
+    "chartControls": {
+      "trending": "Evolution",
+      "compare": "Comparing",
+      "chartType": "Chart type",
+      "filters": "Filters"
+    },
+    "chartCompare": {
+      "title": "Compare customers in your city"
+    },
+    "chartEvol": {
+      "title": "Check your customer's gains evolution"
     }
   },
   "schemas": {
