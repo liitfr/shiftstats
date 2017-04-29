@@ -1,3 +1,4 @@
+import { moment } from 'meteor/momentjs:moment';
 import { SessionAmplify } from 'meteor/mrt:session-amplify';
 import { Tracker } from 'meteor/tracker';
 import { _ } from 'meteor/underscore';
@@ -8,12 +9,15 @@ import './chart-controls.html';
 
 // TODO : loaders when subscription ready !
 // TODO : should we import { $ } wherever it is used ?
+// TODO : historique ? toujours, année, mois, semaine s-1, semaine courante, ... ?
 
 Template.chartControls.onCreated(function chartControlsOnCreated() {
   // TODO : we should manage default values in one single place
   // (today it's defined both in chart-controls.js & chart-controls.html)
   this.data.chartFiltersRD.set('city', SessionAmplify.get('shiftstats-user-favorite-city'));
   this.data.chartFiltersRD.set('history', 'rollingMonth');
+  this.data.chartFiltersRD.set('startDate', parseInt(moment().add(-31, 'd').format('YYYYMMDD'), 10));
+  this.data.chartFiltersRD.set('endDate', parseInt(moment().add(-1, 'd').format('YYYYMMDD'), 10));
   this.data.chartFiltersRD.set('kpi', 'gainsperhour');
   this.data.chartFiltersRD.set('period', 'dinner');
   this.data.chartFiltersRD.set('payroll-activated', false);
@@ -70,6 +74,10 @@ Template.chartControls.events({
   },
   'change .select-history': function changeSelectHistory(event, templateInstance) {
     templateInstance.data.chartFiltersRD.set('history', $(event.target).val());
+    if ($(event.target).val() === 'rollingMonth') {
+      this.data.chartFiltersRD.set('startDate', parseInt(moment().add(-31, 'd').format('YYYYMMDD'), 10));
+      this.data.chartFiltersRD.set('endDate', parseInt(moment().add(-1, 'd').format('YYYYMMDD'), 10));
+    }
   },
   'change .radio-kpi': function changeRadioKpi(event, templateInstance) {
     templateInstance.data.chartFiltersRD.set('kpi', $(event.target).val());

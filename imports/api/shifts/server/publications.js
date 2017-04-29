@@ -1,11 +1,8 @@
-import { check } from 'meteor/check';
+import { check, Match } from 'meteor/check';
 import { Meteor } from 'meteor/meteor';
-// import { publishComposite } from 'meteor/reywood:publish-composite';
 import { ReactiveAggregate } from 'meteor/jcbernack:reactive-aggregate';
-// import { Roles } from 'meteor/alanning:roles';
 
 import { Shifts } from '../shifts.js';
-// import { Users } from '../../users/users.js';
 
 Meteor.publish('shifts.mine', function shiftsMine(monthString) {
   check(monthString, String);
@@ -62,47 +59,131 @@ Meteor.publish('shifts.mine', function shiftsMine(monthString) {
   return this.ready();
 });
 
-// publishComposite('shifts.admin', function shiftsAdmin() {
-//   if (Roles.userIsInRole(this.userId, 'admin')) {
-//     return {
-//       find() {
-//         return Shifts.find({}, {
-//           fields: Shifts.adminFields,
-//         });
-//       },
-//       children: [{
-//         collectionName: 'usersOfShifts',
-//         find(shift) {
-//           return Meteor.users.find({
-//             _id: shift.courier,
-//           }, {
-//             fields: Users.adminFields,
-//             limit: 1,
-//           });
-//         },
-//       }],
-//     };
-//   }
-//   this.stop();
-//   return this.ready();
-// });
-
-// TODO : Control user is logged
-// Meteor.publish('shifts.analytics', function shiftsAnalytics() {
-//   ReactiveAggregate(this, Shifts, [{
-//     $group: {
-//       _id: this.userId,
-//       hours: {
-//         $sum: '$hours',
-//       },
-//       books: {
-//         $sum: 'books',
-//       },
-//     },
-//   }, {
-//     $project: {
-//       hours: '$hours',
-//       books: '$books',
-//     },
-//   }], { clientCollection: 'shiftReport' });
-// });
+Meteor.publish('shifts.analytics.compare', function shiftsAnalyticsCompare(city, startDate, endDate) {
+  check(city, String);
+  check(startDate, Match.Integer);
+  check(endDate, Match.Integer);
+  if (this.userId) {
+    ReactiveAggregate(this, Shifts, [{
+      $match: {
+        city,
+        date: {
+          $gte: startDate,
+          $lte: endDate,
+        },
+      },
+    }, {
+      $sort: {
+        dayOfTheWeek: 1,
+        brand: 1,
+        contract: 1,
+      },
+    }, {
+      $group: {
+        _id: { $concat: ['$brand', '$contract', '$dayOfTheWeekString'] },
+        brand: {
+          $first: '$brand',
+        },
+        contract: {
+          $first: '$contract',
+        },
+        dayOfTheWeek: {
+          $first: '$dayOfTheWeek',
+        },
+        counter: {
+          $sum: '$counter',
+        },
+        nbDelivs: {
+          $sum: '$nbDelivs',
+        },
+        nbKms: {
+          $sum: '$nbKms',
+        },
+        gains: {
+          $sum: '$gains',
+        },
+        duration: {
+          $sum: '$duration',
+        },
+        counterMorning: {
+          $sum: '$counterMorning',
+        },
+        nbDelivsMorning: {
+          $sum: '$nbDelivsMorning',
+        },
+        nbKmsMorning: {
+          $sum: '$nbKmsMorning',
+        },
+        gainsMorning: {
+          $sum: '$gainsMorning',
+        },
+        durationMorning: {
+          $sum: '$durationMorning',
+        },
+        counterLunch: {
+          $sum: '$counterLunch',
+        },
+        nbDelivsLunch: {
+          $sum: '$nbDelivsLunch',
+        },
+        nbKmsLunch: {
+          $sum: '$nbKmsLunch',
+        },
+        gainsLunch: {
+          $sum: '$gainsLunch',
+        },
+        durationLunch: {
+          $sum: '$durationLunch',
+        },
+        counterAfternoon: {
+          $sum: '$counterAfternoon',
+        },
+        nbDelivsAfternoon: {
+          $sum: '$nbDelivsAfternoon',
+        },
+        nbKmsAfternoon: {
+          $sum: '$nbKmsAfternoon',
+        },
+        gainsAfternoon: {
+          $sum: '$gainsAfternoon',
+        },
+        durationAfternoon: {
+          $sum: '$durationAfternoon',
+        },
+        counterDinner: {
+          $sum: '$counterDinner',
+        },
+        nbDelivsDinner: {
+          $sum: '$nbDelivsDinner',
+        },
+        nbKmsDinner: {
+          $sum: '$nbKmsDinner',
+        },
+        gainsDinner: {
+          $sum: '$gainsDinner',
+        },
+        durationDinner: {
+          $sum: '$durationDinner',
+        },
+        counterNight: {
+          $sum: '$counterNight',
+        },
+        nbDelivsNight: {
+          $sum: '$nbDelivsNight',
+        },
+        nbKmsNight: {
+          $sum: '$nbKmsNight',
+        },
+        gainsNight: {
+          $sum: '$gainsNight',
+        },
+        durationNight: {
+          $sum: '$durationNight',
+        },
+      },
+    }]);
+    return undefined;
+  }
+  this.stop();
+  return this.ready();
+});

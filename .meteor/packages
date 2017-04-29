@@ -54,3 +54,5 @@ alethes:lodash
 meteorhacks:kadira
 meteorhacks:zones
 reactive-dict
+meteorhacks:kadira-profiler
+kadira:debug

@@ -1,6 +1,6 @@
 {
   "kadira": {
-    "appId": "XXXXXXXXXXXXXXXXX", 
+    "appId": "XXXXXXXXXXXXXXXXX",
     "appSecret": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
   },
   "public": {
@@ -12,15 +12,15 @@
     "barelyAccurateThreshold": 10,
     "accurateThreshold": 20,
     "morningStartHour": "06:00",
-    "morningEndHour": "10:59",
+    "morningEndHour": "11:00",
     "lunchStartHour": "11:00",
     "lunchEndHour": "14:30",
-    "afternoonStartHour": "14:31",
-    "afternoonEndHour": "18:29",
+    "afternoonStartHour": "14:30",
+    "afternoonEndHour": "18:30",
     "dinnerStartHour": "18:30",
-    "dinnerEndHour": "23:29",
+    "dinnerEndHour": "23:30",
     "nightStartHour": "23:30",
-    "nightEndHour": "05:59",
+    "nightEndHour": "06:00",
     "toastDuration": 4000
   },
   "private": {

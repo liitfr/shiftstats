@@ -13,6 +13,11 @@ Help us ! The more users there are, the more accurate the data will be.
 // "les stats permettront de projeter de nouvelles politique tarifaires: ex: vaut il mieux rouler au fixe ou au variable ?"
 // Sur la page de création : Tu pourras modifier ton shift à tout moment
 // Ta ville ne figure pas dans cette liste ? contacte nous.
+// nb courses : une course double compte double, triple compte triple etc
+// nb km : obligatoire, de l'heure de début de ton shift à la fin
+// utilise strava (bientôt nous integrerons les données strava à l'appli)
+// gains : obligatoire: inclus les gains liés au shift  (dont les bonus week-ends montées, badges, pluie, jour spécial) et uniquement au shift
+// (pas d'opé spé marketing, recrutement, etc) compter les commissions type uber
 
 ## How to ?
 

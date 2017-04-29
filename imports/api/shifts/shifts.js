@@ -39,15 +39,20 @@ const calcDuration = (startHour, endHour) => {
 };
 
 const distribute = (startShiftStr, endShiftStr, startPeriodStr, endPeriodStr, ratio) => {
-  const startShiftInt = parseInt(startShiftStr.replace(':', ''), 10);
-  const endShiftInt = parseInt(endShiftStr.replace(':', ''), 10);
-  const startPeriodInt = parseInt(startPeriodStr.replace(':', ''), 10);
-  const endPeriodInt = parseInt(endPeriodStr.replace(':', ''), 10);
+  const startShiftInt = parseInt(applyMorningOffset(startShiftStr).replace(':', ''), 10);
+  const endShiftInt = parseInt(applyMorningOffset(endShiftStr).replace(':', ''), 10);
+  const startPeriodInt = parseInt(applyMorningOffset(startPeriodStr).replace(':', ''), 10);
+  let endPeriodInt = parseInt(applyMorningOffset(endPeriodStr).replace(':', ''), 10);
+  if (endPeriodInt === 0) {
+    endPeriodInt = 2400;
+  }
   if (startShiftInt < endPeriodInt && endShiftInt > startPeriodInt) {
-    return calcDuration(
-      startShiftInt >= startPeriodInt ? startShiftStr : startPeriodStr,
-      endShiftInt <= endPeriodInt ? endShiftStr : endPeriodStr) /
-      ratio ? calcDuration(startShiftStr, endShiftStr) : 1;
+    let calcRatio = calcDuration(startShiftInt >= startPeriodInt ? startShiftStr : startPeriodStr,
+      endShiftInt <= endPeriodInt ? endShiftStr : endPeriodStr);
+    if (ratio) {
+      calcRatio /= calcDuration(startShiftStr, endShiftStr);
+    }
+    return calcRatio;
   }
   return 0;
 };
@@ -438,6 +443,24 @@ const ShiftsSchema = new SimpleSchema({
     },
   },
   //----------------------------------------------------------------------------
+  dayOfTheWeekString: {
+    type: String,
+    label: () => TAPi18n.__('schemas.shifts.dayoftheweek.label'),
+    autoValue() {
+      if (this.field('date').isSet) {
+        const year = Math.floor(this.field('date').value / 10000);
+        const month = Math.floor((this.field('date').value - (year * 10000)) / 100);
+        const day = this.field('date').value - (year * 10000) - (month * 100);
+        return moment(new Date(year, month, day)).day().toString();
+      }
+      this.unset();
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
   month: {
     type: SimpleSchema.Integer,
     label: () => TAPi18n.__('schemas.shifts.month.label'),
@@ -621,7 +644,7 @@ const ShiftsSchema = new SimpleSchema({
   },
   //----------------------------------------------------------------------------
   counterMorning: {
-    type: SimpleSchema.Integer,
+    type: Number,
     label: () => TAPi18n.__('schemas.shifts.counter.label'),
     autoValue() {
       if (this.field('startHour').isSet && this.field('endHour').isSet) {
@@ -635,7 +658,7 @@ const ShiftsSchema = new SimpleSchema({
   },
   //----------------------------------------------------------------------------
   nbDelivsMorning: {
-    type: SimpleSchema.Integer,
+    type: Number,
     label: () => TAPi18n.__('schemas.shifts.nbdelivs.label'),
     autoValue() {
       if (this.field('startHour').isSet && this.field('endHour').isSet && this.field('nbDelivs').isSet) {
@@ -677,7 +700,7 @@ const ShiftsSchema = new SimpleSchema({
   },
   //----------------------------------------------------------------------------
   durationMorning: {
-    type: SimpleSchema.Integer,
+    type: Number,
     label: () => TAPi18n.__('schemas.shifts.duration.label'),
     autoValue() {
       if (this.field('startHour').isSet && this.field('endHour').isSet) {
@@ -691,7 +714,7 @@ const ShiftsSchema = new SimpleSchema({
   },
   //----------------------------------------------------------------------------
   counterLunch: {
-    type: SimpleSchema.Integer,
+    type: Number,
     label: () => TAPi18n.__('schemas.shifts.counter.label'),
     autoValue() {
       if (this.field('startHour').isSet && this.field('endHour').isSet) {
@@ -705,7 +728,7 @@ const ShiftsSchema = new SimpleSchema({
   },
   //----------------------------------------------------------------------------
   nbDelivsLunch: {
-    type: SimpleSchema.Integer,
+    type: Number,
     label: () => TAPi18n.__('schemas.shifts.nbdelivs.label'),
     autoValue() {
       if (this.field('startHour').isSet && this.field('endHour').isSet && this.field('nbDelivs').isSet) {
@@ -747,7 +770,7 @@ const ShiftsSchema = new SimpleSchema({
   },
   //----------------------------------------------------------------------------
   durationLunch: {
-    type: SimpleSchema.Integer,
+    type: Number,
     label: () => TAPi18n.__('schemas.shifts.duration.label'),
     autoValue() {
       if (this.field('startHour').isSet && this.field('endHour').isSet) {
@@ -761,7 +784,7 @@ const ShiftsSchema = new SimpleSchema({
   },
   //----------------------------------------------------------------------------
   counterAfternoon: {
-    type: SimpleSchema.Integer,
+    type: Number,
     label: () => TAPi18n.__('schemas.shifts.counter.label'),
     autoValue() {
       if (this.field('startHour').isSet && this.field('endHour').isSet) {
@@ -775,7 +798,7 @@ const ShiftsSchema = new SimpleSchema({
   },
   //----------------------------------------------------------------------------
   nbDelivsAfternoon: {
-    type: SimpleSchema.Integer,
+    type: Number,
     label: () => TAPi18n.__('schemas.shifts.nbdelivs.label'),
     autoValue() {
       if (this.field('startHour').isSet && this.field('endHour').isSet && this.field('nbDelivs').isSet) {
@@ -817,7 +840,7 @@ const ShiftsSchema = new SimpleSchema({
   },
   //----------------------------------------------------------------------------
   durationAfternoon: {
-    type: SimpleSchema.Integer,
+    type: Number,
     label: () => TAPi18n.__('schemas.shifts.duration.label'),
     autoValue() {
       if (this.field('startHour').isSet && this.field('endHour').isSet) {
@@ -831,7 +854,7 @@ const ShiftsSchema = new SimpleSchema({
   },
   //----------------------------------------------------------------------------
   counterDinner: {
-    type: SimpleSchema.Integer,
+    type: Number,
     label: () => TAPi18n.__('schemas.shifts.counter.label'),
     autoValue() {
       if (this.field('startHour').isSet && this.field('endHour').isSet) {
@@ -845,7 +868,7 @@ const ShiftsSchema = new SimpleSchema({
   },
   //----------------------------------------------------------------------------
   nbDelivsDinner: {
-    type: SimpleSchema.Integer,
+    type: Number,
     label: () => TAPi18n.__('schemas.shifts.nbdelivs.label'),
     autoValue() {
       if (this.field('startHour').isSet && this.field('endHour').isSet && this.field('nbDelivs').isSet) {
@@ -887,7 +910,7 @@ const ShiftsSchema = new SimpleSchema({
   },
   //----------------------------------------------------------------------------
   durationDinner: {
-    type: SimpleSchema.Integer,
+    type: Number,
     label: () => TAPi18n.__('schemas.shifts.duration.label'),
     autoValue() {
       if (this.field('startHour').isSet && this.field('endHour').isSet) {
@@ -901,7 +924,7 @@ const ShiftsSchema = new SimpleSchema({
   },
   //----------------------------------------------------------------------------
   counterNight: {
-    type: SimpleSchema.Integer,
+    type: Number,
     label: () => TAPi18n.__('schemas.shifts.counter.label'),
     autoValue() {
       if (this.field('startHour').isSet && this.field('endHour').isSet) {
@@ -915,7 +938,7 @@ const ShiftsSchema = new SimpleSchema({
   },
   //----------------------------------------------------------------------------
   nbDelivsNight: {
-    type: SimpleSchema.Integer,
+    type: Number,
     label: () => TAPi18n.__('schemas.shifts.nbdelivs.label'),
     autoValue() {
       if (this.field('startHour').isSet && this.field('endHour').isSet && this.field('nbDelivs').isSet) {
@@ -957,7 +980,7 @@ const ShiftsSchema = new SimpleSchema({
   },
   //----------------------------------------------------------------------------
   durationNight: {
-    type: SimpleSchema.Integer,
+    type: Number,
     label: () => TAPi18n.__('schemas.shifts.duration.label'),
     autoValue() {
       if (this.field('startHour').isSet && this.field('endHour').isSet) {
@@ -1053,6 +1076,7 @@ Shifts.adminFields = {
   customerLabel: 1,
   date: 1,
   dayOfTheWeek: 1,
+  dayOfTheWeekString: 1,
   month: 1,
   monthString: 1,
   startHour: 1,
