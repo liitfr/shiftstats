@@ -384,6 +384,27 @@ const ShiftsSchema = new SimpleSchema({
     },
   },
   //----------------------------------------------------------------------------
+  color: {
+    type: String,
+    regEx: /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/,
+    label: () => TAPi18n.__('schemas.customers.color.label'),
+    autoValue() {
+      if (this.isInsert && this.field('customer').isSet) {
+        return Customers.findOne({
+          _id: this.field('customer').value,
+        }, {
+          fields: {
+            color: 1,
+          },
+        }).color;
+      }
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
   customerLabel: {
     type: String,
     label: () => TAPi18n.__('schemas.customers.label.label'),
@@ -433,7 +454,7 @@ const ShiftsSchema = new SimpleSchema({
         const year = Math.floor(this.field('date').value / 10000);
         const month = Math.floor((this.field('date').value - (year * 10000)) / 100);
         const day = this.field('date').value - (year * 10000) - (month * 100);
-        return moment(new Date(year, month, day)).day();
+        return moment(new Date(year, month - 1, day)).day();
       }
       this.unset();
       return undefined;
@@ -451,7 +472,7 @@ const ShiftsSchema = new SimpleSchema({
         const year = Math.floor(this.field('date').value / 10000);
         const month = Math.floor((this.field('date').value - (year * 10000)) / 100);
         const day = this.field('date').value - (year * 10000) - (month * 100);
-        return moment(new Date(year, month, day)).day().toString();
+        return moment(new Date(year, month - 1, day)).day().toString();
       }
       this.unset();
       return undefined;
@@ -1073,6 +1094,7 @@ Shifts.adminFields = {
   timezoneOffset: 1,
   brand: 1,
   contract: 1,
+  color: 1,
   customerLabel: 1,
   date: 1,
   dayOfTheWeek: 1,

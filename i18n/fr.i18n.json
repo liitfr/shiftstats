@@ -296,6 +296,10 @@
       "label": {
         "label": "Client"
       },
+      "color": {
+        "label": "Couleur hexa",
+        "placeholder": "Choisissez une couleur"
+      },
       "shiftsCounter": {
         "label": "Nombre de shifts"
       },

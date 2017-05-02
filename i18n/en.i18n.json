@@ -293,6 +293,10 @@
         "label": "Contract name",
         "placeholder": "Enter a contract name for customer"
       },
+      "color": {
+        "label": "Hexa color",
+        "placeholder": "Pick a color"
+      },
       "label": {
         "label": "Customer"
       },

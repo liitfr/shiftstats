@@ -8,6 +8,8 @@ import { Customers } from '../../../api/customers/customers.js';
 import '../loader/loader.js';
 import './list-customers.html';
 
+// TODO : performances are really, really bad ...
+
 Template.listCustomers.onCreated(function listCustomersOnCreated() {
   const template = this;
   template.autorun(() => {

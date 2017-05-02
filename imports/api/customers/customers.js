@@ -256,6 +256,17 @@ const CustomersSchema = new SimpleSchema({
     },
   },
   //----------------------------------------------------------------------------
+  color: {
+    type: String,
+    regEx: /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/,
+    label: () => TAPi18n.__('schemas.customers.color.label'),
+    autoform: {
+      type: 'color',
+      class: 'color-select',
+      placeholder: () => TAPi18n.__('schemas.customers.color.placeholder'),
+    },
+  },
+  //----------------------------------------------------------------------------
   label: {
     type: String,
     label: () => TAPi18n.__('schemas.customers.label.label'),
@@ -400,6 +411,7 @@ Customers.adminFields = {
   timezoneOffset: 1,
   brand: 1,
   contract: 1,
+  color: 1,
   label: 1,
   shiftsCounter: 1,
   couriersCounter: 1,
@@ -419,6 +431,7 @@ Customers.publicFields = {
   timezoneOffset: 1,
   brand: 1,
   contract: 1,
+  color: 1,
   label: 1,
 };
 

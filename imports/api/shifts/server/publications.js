@@ -81,11 +81,17 @@ Meteor.publish('shifts.analytics.compare', function shiftsAnalyticsCompare(city,
     }, {
       $group: {
         _id: { $concat: ['$brand', '$contract', '$dayOfTheWeekString'] },
+        customer: {
+          $first: '$customer',
+        },
         brand: {
           $first: '$brand',
         },
         contract: {
           $first: '$contract',
+        },
+        color: {
+          $first: '$color',
         },
         dayOfTheWeek: {
           $first: '$dayOfTheWeek',
