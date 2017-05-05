@@ -2,6 +2,8 @@ import { AutoForm } from 'meteor/aldeed:autoform';
 import { moment } from 'meteor/momentjs:moment';
 import { TAPi18n } from 'meteor/tap:i18n';
 
+// TODO : switch to https://github.com/mozfet/meteor-autoform-materialize when mature
+
 AutoForm.addInputType('datepicker', {
   template: 'afInputDatePicker',
   valueIn: function valueIn(val) {
@@ -29,7 +31,7 @@ Template.afInputDatePicker.onRendered(() => {
       format: TAPi18n.__('components.pickadate.format'),
       closeOnSelect: true,
       closeOnClear: true,
-      // TODO : isn't generic ....
+      // TODO : isn't generic at all ....
       max: new Date(),
       onSet(ele) {
         if (ele.select) {

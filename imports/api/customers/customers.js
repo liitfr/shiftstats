@@ -17,7 +17,12 @@ const Customers = new Mongo.Collection('customers');
 // Schema
 //----------------------------------------------------------------------------
 
-// TODO : i18n for distancies unit
+// TODO : i18n for distances unit
+// TODO : application on mobile !
+// TODO : evol chart
+// TODO : 2 messages : tu peux modifier ton shift à tout moment + ton client ou ta ville n'est pas présent ? contacte nous
+// TODO : logo / favicon
+// TODO : fast render and prod and etc
 
 const CustomersSchema = new SimpleSchema({
   country: {
@@ -373,7 +378,11 @@ const CustomersSchema = new SimpleSchema({
   tracker: Tracker,
 });
 
-CustomersSchema.addDocValidator((customer) => {
+CustomersSchema.addDocValidator((customerp) => {
+  let customer = customerp;
+  if (_.has(customer, '$set')) {
+    customer = customer.$set;
+  }
   if (_.has(customer, 'country') && _.has(customer, 'city') && _.has(customer, 'brand') && _.has(customer, 'contract')) {
     const alreadyExists = !!Customers.findOne({
       country: customer.country,

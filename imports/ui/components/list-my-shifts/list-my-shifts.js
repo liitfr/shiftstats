@@ -13,23 +13,22 @@ import '../loader/loader.js';
 
 import './list-my-shifts.html';
 
-// TODO : put Order of query in client side
 // TODO : loader for both substricptions !
+// TODO : sort in client side
 
 const _ = lodash;
 
 Template.listMyShifts.onCreated(function listMyShiftsOnCreated() {
-  // TODO : rename these variables by *RV
-  this.monthToDisplay = new ReactiveVar();
-  this.dataAvailable = new ReactiveVar(false);
+  this.monthToDisplayRV = new ReactiveVar();
+  this.dataAvailableRV = new ReactiveVar(false);
 });
 
 Template.listMyShifts.helpers({
-  monthToDisplay() {
-    return Template.instance().monthToDisplay;
+  monthToDisplayRV() {
+    return Template.instance().monthToDisplayRV;
   },
-  dataAvailable() {
-    return Template.instance().dataAvailable;
+  dataAvailableRV() {
+    return Template.instance().dataAvailableRV;
   },
 });
 
@@ -42,13 +41,13 @@ Template.myMonthsList.onCreated(function myMonthsListOnCreated() {
       template.autorun(() => {
         const me = Meteor.users.findOne();
         if (me.shiftsCounter > 0) {
-          template.data.dataAvailable.set(true);
+          template.data.dataAvailableRV.set(true);
         } else {
-          template.data.dataAvailable.set(false);
+          template.data.dataAvailableRV.set(false);
         }
         const lastMonth = _.max(Object.keys(_.omit(me.months, counter => counter <= 0)));
-        // TODO : do not set if there's already a monthToDisplay set & counter > 0
-        template.data.monthToDisplay.set(lastMonth === -Infinity ? undefined : lastMonth);
+        // TODO : move to last month only if there's no more data in current month !
+        template.data.monthToDisplayRV.set(lastMonth === -Infinity ? undefined : lastMonth);
         Tracker.afterFlush(() => {
           template.$('select').material_select();
         });
@@ -63,7 +62,7 @@ Template.myMonthsList.onDestroyed(function myMonthsListOnDestroyed() {
 
 Template.myMonthsList.helpers({
   isSelected(testedMonth) {
-    return testedMonth === Template.instance().data.monthToDisplay.get();
+    return testedMonth === Template.instance().data.monthToDisplayRV.get();
   },
   myMonths() {
     return _.map(_.sortBy(Object.keys(_.omit(Meteor.users.findOne().months,
@@ -73,13 +72,13 @@ Template.myMonthsList.helpers({
     }));
   },
   dataAvailable() {
-    return Template.instance().data.dataAvailable.get();
+    return Template.instance().data.dataAvailableRV.get();
   },
 });
 
 Template.myMonthsList.events({
   'change #my-months-list': function changeMyMonthsList(event, templateInstance) {
-    templateInstance.data.monthToDisplay.set(event.target.value);
+    templateInstance.data.monthToDisplayRV.set(event.target.value);
   },
 });
 
@@ -90,21 +89,14 @@ Template.myCustomersInMonth.onCreated(function myCustomersInMonthOnCreated() {
   template.shiftToModifyRV = new ReactiveVar();
   template.shiftToDeleteRV = new ReactiveVar();
   template.autorun(() => {
-    if (template.data.dataAvailable.get() && template.data.monthToDisplay.get() !== undefined) {
-      template.subscribe('shifts.mine', template.data.monthToDisplay.get());
+    if (template.data.dataAvailableRV.get() && template.data.monthToDisplayRV.get() !== undefined) {
+      template.subscribe('shifts.mine', template.data.monthToDisplayRV.get());
     }
   });
 });
 
 Template.myCustomersInMonth.onRendered(function myCustomersInMonthOnRendered() {
   this.$('.modal').modal();
-  // TODO : make a component for timepicker
-  this.$('.timepicker').pickatime({
-    autoclose: true,
-    twelvehour: false,
-    default: '',
-    donetext: 'OK',
-  });
 });
 
 Template.myCustomersInMonth.helpers({
@@ -127,10 +119,10 @@ Template.myCustomersInMonth.helpers({
     return Template.instance().shiftToDeleteRV.get();
   },
   buttonContent() {
-    return Spacebars.SafeString(`${TAPi18n.__('components.formNewShift.buttonContent')} <i class="material-icons right">send</i>`);
+    return Spacebars.SafeString(`${TAPi18n.__('components.listMyShifts.updateButtonContent')} <i class="material-icons right">send</i>`);
   },
   dataAvailable() {
-    return Template.instance().data.dataAvailable.get();
+    return Template.instance().data.dataAvailableRV.get();
   },
 });
 

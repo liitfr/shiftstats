@@ -3,6 +3,8 @@
   "private": true,
   "scripts": {
     "start": "meteor run",
+    "lint": "eslint .",
+    "pretest": "npm run lint --silent",
     "postinstall": "cp node_modules/materialize-css/js/date_picker/picker.js node_modules/materialize-css/bin && cp -rf node_modules/materialize-css/fonts public"
   },
   "dependencies": {
@@ -12,6 +14,8 @@
     "country-data": "0.0.31",
     "currencies": "0.0.2",
     "d3": "^4.8.0",
+    "d3-extended": "^1.2.10",
+    "d3-tip": "^0.7.1",
     "materialize-clockpicker": "^1.0.1",
     "materialize-css": "^0.98.1",
     "meteor-node-stubs": "^0.2.6",

@@ -1,8 +1,9 @@
 {
-  "presentation": "Inscrivez-vous <b>gratuitement</b> pour partager <b>anonymement</b> vos statistiques avec la communauté des coursiers. Ces informations permettront de générer des statistiques qui vous aideront, toi et tous les coursiers à choisir le client qui vous permettra, par exemple, de gagner le plus d'argent, le plus rapidement possible, et en roulant le moins possible ! Aidez-nous ! Plus il y aura d'utilisateurs, plus les données seront exactes.",
-  "underConstruction": "Cette page est en cours de développement. Si tu as les compétences pour nous venir en aide, n'hésite pas à nous contacter pour faire avancer les choses !",
+  "presentation": "Inscrivez-vous <b>gratuitement</b> pour partager <b>anonymement</b> vos statistiques avec la communauté des coursiers. Ces informations permettront de générer des statistiques qui vous aideront, toi et tous les coursiers à choisir le client qui vous permettra, par exemple, de gagner le plus d'argent, le plus rapidement possible, et en roulant le moins possible ! Aidez-nous ! Plus il y aura d'utilisateurs, plus les données seront exactes.<br/><br/>Nous recherchons des volontaires pour maintenir l'application et développer de nouvelles fonctionnalités. Si tu as les compétences pour nous venir en aide, n'hésite pas à nous contacter !",
+  "underConstruction": "Cette page nécessite des développements. Si tu as les compétences pour nous venir en aide, n'hésite pas à nous contacter pour faire avancer les choses !",
   "components": {
     "pickadate": {
+      "daysOfTheWeekOffset": "1",
       "monthsFull": {
         "0": "Janvier",
         "1": "Février",
@@ -66,7 +67,7 @@
     "formNewShift": {
       "title": "Déclarer un nouveau shift",
       "courier": "Coursier",
-      "buttonContent": "Mettre à jour"
+      "buttonContent": "Créer"
     },
     "listCustomers": {
       "warning": "Attention: la modification ou la suppression d'un client implique une mise à jour de la base des shifts. Ce traitement peut être très long en fonction de la taille de la base ! Attention également, la suppression d'un client implique la suppression de tous les shifts qui lui étaient rattachés !",
@@ -97,6 +98,8 @@
       "nbdelivs": "Livraisons",
       "nbkms": "Kilomètres",
       "gains": "Gains",
+      "deleteButtonContent": "Supprimer",
+      "updateButtonContent": "Mettre à jour",
       "confirmationTitle": "Confirmation",
       "confirmationLabel": "Es-tu sûr de vouloir supprimer ce shift ?",
       "confirmationYes": "Oui",
@@ -181,7 +184,14 @@
       }
     },
     "chartCompare": {
-      "title": "Compare les clients de ta ville"
+      "title": "Compare les clients de ta ville",
+      "noData": "Aucune donnée disponible pour ces filtres",
+      "tip": {
+        "value": "Valeur",
+        "shiftsCounter": "Nombre de shifts",
+        "totalDuration": "Durée totale",
+        "quality": "Qualité des données"
+      }
     },
     "chartEvol": {
       "title": "Contrôle l'évolution des gains avec tes clients"

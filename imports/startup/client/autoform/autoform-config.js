@@ -6,6 +6,9 @@ import { TAPi18n } from 'meteor/tap:i18n';
 import './date-picker/date-picker.html';
 import './date-picker/date-picker.js';
 
+import './time-picker/time-picker.html';
+import './time-picker/time-picker.js';
+
 Template.autoForm.onRendered(function autoFormOnRendered() {
   this.$('select').material_select();
 });

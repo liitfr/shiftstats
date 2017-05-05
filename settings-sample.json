@@ -8,9 +8,12 @@
     "brandList": ["Deliveroo", "Foodora", "UberEats"],
     "contactUs": "https://www.facebook.com/groups/544977725666207/",
     "defaultLanguage": "fr",
-    "notAccurateThreshold": 0,
-    "barelyAccurateThreshold": 10,
-    "accurateThreshold": 20,
+    "dataquality": {
+      "badThreshold": 0,
+      "averageThreshold": 10,
+      "goodThreshold": 20,
+      "minDuration": 60
+    },
     "morningStartHour": "06:00",
     "morningEndHour": "11:00",
     "lunchStartHour": "11:00",

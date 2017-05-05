@@ -1,6 +1,26 @@
 <template name="chartCompare">
+  {{#if Template.subscriptionsReady}}
+    {{> compareChart chartFiltersRD=chartFiltersRD}}
+  {{else}}
+    {{> loader ""}}
+  {{/if}}
+</template>
+
+<!-- ======================================================================= -->
+
+<template name="compareChart">
   <div id="chartCompare">
     <h2>{{_ "components.chartCompare.title"}}</h2>
-    <svg></svg>
+    {{# if dataAvailable}}
+      {{> compareChartSvg chartFiltersRD=chartFiltersRD shiftsDataRV=shiftsDataRV dataAvailableRV=dataAvailableRV}}
+    {{else}}
+      <p class="flow-text warning">{{_ "components.chartCompare.noData"}}</p>
+    {{/if}}
   </div>
+</template>
+
+<!-- ======================================================================= -->
+
+<template name="compareChartSvg">
+  <svg></svg>
 </template>

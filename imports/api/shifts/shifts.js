@@ -11,9 +11,7 @@ import { _ } from 'meteor/underscore';
 import { Customers } from '../customers/customers.js';
 
 // TODO : index on analytics fields
-// TODO : message about the shortest the shift is the better it is
-// TODO : complete fields lists
-// TODO : verify if all fields are really necessary and think about their format (date for example).
+// TODO : how to ventilate kpis in period ?
 
 const Shifts = new Mongo.Collection('shifts');
 
@@ -518,7 +516,7 @@ const ShiftsSchema = new SimpleSchema({
     label: () => TAPi18n.__('schemas.shifts.starthour.label'),
     autoform: {
       afFieldInput: {
-        type: 'time',
+        type: 'timepicker',
         class: 'timepicker',
       },
     },
@@ -530,7 +528,7 @@ const ShiftsSchema = new SimpleSchema({
     label: () => TAPi18n.__('schemas.shifts.endhour.label'),
     autoform: {
       afFieldInput: {
-        type: 'time',
+        type: 'timepicker',
         class: 'timepicker',
       },
     },
@@ -1050,7 +1048,11 @@ const ShiftsSchema = new SimpleSchema({
   tracker: Tracker,
 });
 
-ShiftsSchema.addDocValidator((shift) => {
+ShiftsSchema.addDocValidator((shiftp) => {
+  let shift = shiftp;
+  if (_.has(shift, '$set')) {
+    shift = shift.$set;
+  }
   if (_.has(shift, 'startHour') && _.has(shift, 'endHour')) {
     if (shift.startHour === shift.endHour) {
       return [
