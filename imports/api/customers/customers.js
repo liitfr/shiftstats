@@ -21,7 +21,7 @@ const Customers = new Mongo.Collection('customers');
 // TODO : application on mobile !
 // TODO : evol chart
 // TODO : 2 messages : tu peux modifier ton shift à tout moment + ton client ou ta ville n'est pas présent ? contacte nous
-// TODO : logo / favicon
+// TODO : logo / favicon / splash
 // TODO : fast render and prod and etc
 
 const CustomersSchema = new SimpleSchema({

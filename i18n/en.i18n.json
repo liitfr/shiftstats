@@ -1,6 +1,7 @@
 {
   "presentation": "Register <b>for free</b> to share your stats <b>anonymously</b> with the courier community. This information will generate statistics that will help you and all the couriers to choose the customer that will allow you, for example, to earn the most money, as fast as possible, and to ride as little as possible ! Help us ! The more users there are, the more accurate the data will be.<br/><br/>We are looking for volunteers to maintain the application and develop new features. If you have the skills to help us, do not hesitate to contact us!",
   "underConstruction": "This page needs development. If you have the skills to help us, do not hesitate to contact us to get things moving!",
+  "noConnection": "Cannot connect to the server !",
   "components": {
     "pickadate": {
       "daysOfTheWeekOffset": "0",

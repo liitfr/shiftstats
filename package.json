@@ -16,9 +16,13 @@
     "d3": "^4.8.0",
     "d3-extended": "^1.2.10",
     "d3-tip": "^0.7.1",
+    "faker": "^4.1.0",
     "materialize-clockpicker": "^1.0.1",
     "materialize-css": "^0.98.1",
     "meteor-node-stubs": "^0.2.6",
+    "nightmare": "^2.10.0",
+    "shell-source": "^1.1.0",
+    "shelljs": "^0.7.7",
     "simpl-schema": "^0.2.3",
     "timezones.json": "^1.2.0"
   },

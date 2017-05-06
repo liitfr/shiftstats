@@ -14,14 +14,16 @@ import './chart-controls.html';
 Template.chartControls.onCreated(function chartControlsOnCreated() {
   // TODO : we should manage default values in one single place
   // (today it's defined both in chart-controls.js & chart-controls.html)
-  this.data.chartFiltersRD.set('city', SessionAmplify.get('shiftstats-user-favorite-city'));
-  this.data.chartFiltersRD.set('history', 'rollingMonth');
-  this.data.chartFiltersRD.set('startDate', parseInt(moment().add(-31, 'd').format('YYYYMMDD'), 10));
-  this.data.chartFiltersRD.set('endDate', parseInt(moment().add(-1, 'd').format('YYYYMMDD'), 10));
-  this.data.chartFiltersRD.set('kpi', 'gainsperhour');
-  this.data.chartFiltersRD.set('period', 'dinner');
-  this.data.chartFiltersRD.set('payroll-activated', false);
-  this.data.chartFiltersRD.set('payroll-percentage', 25);
+  this.data.chartFiltersRD.setDefault({
+    city: SessionAmplify.get('shiftstats-user-favorite-city'),
+    history: 'rollingMonth',
+    startDate: parseInt(moment().add(-31, 'd').format('YYYYMMDD'), 10),
+    endDate: parseInt(moment().add(-1, 'd').format('YYYYMMDD'), 10),
+    kpi: 'gainsperhour',
+    period: 'dinner',
+    'payroll-activated': false,
+    'payroll-percentage': 25,
+  });
 });
 
 Template.chartControls.onRendered(function chartControlsOnRendered() {

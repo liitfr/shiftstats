@@ -10,7 +10,12 @@
     </div>
   </header>
   <main class="container">
-    {{> Template.dynamic template=main}}
+    {{# if connected}}
+      {{> Template.dynamic template=main}}
+    {{else}}
+      <p class="flow-text warning">{{_ "noConnection"}}</p>
+      {{> loader ""}}
+    {{/if}}
   </main>
   <footer class="page-footer blue lighten-2">
     {{> footer ""}}

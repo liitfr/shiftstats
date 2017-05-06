@@ -5,6 +5,7 @@
   },
   "public": {
     "appName": "ShiftStats",
+    "connectionIssueTimeout": 5000,
     "brandList": ["Deliveroo", "Foodora", "UberEats"],
     "contactUs": "https://www.facebook.com/groups/544977725666207/",
     "defaultLanguage": "fr",

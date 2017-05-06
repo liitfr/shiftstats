@@ -1,5 +1,3 @@
-// LIIT : Had to switch order of execution :
-// SimpleSchema.extendOptions(['autoform']) needs to be executed first
-
+// TODO : add unit test & acceptance tests
 import '../imports/startup/both';
 import '../imports/startup/server';

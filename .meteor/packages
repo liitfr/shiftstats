@@ -23,36 +23,94 @@ less@2.7.9                    # Leaner CSS language
 
 practicalmeteor:mocha             # A package for writing and running your meteor app and package tests with mocha
 johanbrook:publication-collector  # Test a Meteor publication by collecting its output
-aldeed:collection2-core
-aldeed:autoform
-tap:i18n
-aldeed:schema-deny
-kadira:dochead
-ongoworks:security
-accounts-password@1.3.6
+
+################################################################################
+## ADDED PACKAGES : START
+################################################################################
+
+# ACCOUNTS
+accounts-password
 alanning:roles
-accounts-facebook@1.1.1
-service-configuration@1.0.11
+accounts-facebook
 softwarerero:accounts-t9n
-accounts-ui@1.1.9
+accounts-ui
 useraccounts:flow-routing
 useraccounts:materialize
-cunneen:mailgun
-msavin:mongol
-reywood:publish-composite
-momentjs:moment
+
+# DATA
+aldeed:collection2-core
+# reywood:publish-composite
 jcbernack:reactive-aggregate
 dburles:collection-helpers
 matb33:collection-hooks
+# jeanfredrik:denormalize
+# mdg:validated-method
+# mdg:validation-error
+
+# I18N
+tap:i18n
+
+# MOBILE
+# crosswalk
+# chriswessels:hammer
+# launch-screen
+
+# MONITORING
+meteorhacks:kadira
+meteorhacks:zones
+meteorhacks:kadira-profiler
+kadira:debug
+
+# PRODUCTION
+ddp-rate-limiter
+app-prod-security
+# juliancwirko:postcss
+
+# REST APIS
+simple:rest-accounts-password
+simple:rest
+
+# ROUTING
+# arillo:flow-router-helpers
+# zimme:active-route
+
+# SECURITY
+aldeed:schema-deny
+ongoworks:security
+browser-policy
+force-ssl
+audit-argument-checks
+
+# SERVICES
+service-configuration
+cunneen:mailgun
+
+# TESTING
+msavin:mongol
+# practicalmeteor:sinon
+# xolvio:cleaner
+# practicalmeteor:chai
+# dispatch:mocha
+# dburles:factory
+# shell-server
+# hwillson:stub-collections
+
+# UI
+aldeed:autoform
+kadira:dochead
+momentjs:moment
 amplify
 mrt:session-amplify
 rzymek:moment-locale-fr
-jeanfredrik:denormalize
 fourseven:scss
-lbee:moment-helpers
+# lbee:moment-helpers
+reactive-dict
+# aldeed:template-extension
+# percolate:momentum
+
+# UTILS
 alethes:lodash
-meteorhacks:kadira
-meteorhacks:zones
-reactive-dict@1.1.8
-meteorhacks:kadira-profiler
-kadira:debug
+
+################################################################################
+## ADDED PACKAGES : END
+################################################################################
