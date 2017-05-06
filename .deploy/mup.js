@@ -7,7 +7,7 @@ module.exports = {
       // pem: './path/to/pem'
       // password: 'server-password'
       // or neither for authenticate from ssh-agent
-    }
+    },
   },
 
   meteor: {
@@ -44,14 +44,14 @@ module.exports = {
 
     // Show progress bar while uploading bundle to server
     // You might need to disable it on CI servers
-    enableUploadProgressBar: false
+    enableUploadProgressBar: false,
   },
 
   mongo: {
     port: 27017,
     version: '3.4.1',
     servers: {
-      one: {}
-    }
-  }
+      one: {},
+    },
+  },
 };

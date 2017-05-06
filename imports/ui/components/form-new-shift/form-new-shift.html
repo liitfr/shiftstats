@@ -1,4 +1,6 @@
 <template name="formNewShift">
   <h2>{{_ "components.formNewShift.title"}}</h2>
+  <p class="flow-text">{{_ "components.formNewShift.updateCustomersMessage"}}</p>
   {{> quickForm collection=Shifts id="insertShiftForm" type="insert" buttonContent=buttonContent}}
+  <p class="flow-text">{{_ "components.formNewShift.updateShiftsMessage"}}</p>
 </template>
