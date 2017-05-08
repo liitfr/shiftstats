@@ -76,9 +76,17 @@ Template.chartControls.events({
   },
   'change .select-history': function changeSelectHistory(event, templateInstance) {
     templateInstance.data.chartFiltersRD.set('history', $(event.target).val());
-    if ($(event.target).val() === 'rollingMonth') {
-      this.data.chartFiltersRD.set('startDate', parseInt(moment().add(-31, 'd').format('YYYYMMDD'), 10));
-      this.data.chartFiltersRD.set('endDate', parseInt(moment().add(-1, 'd').format('YYYYMMDD'), 10));
+    switch ($(event.target).val()) {
+      case 'rollingMonth':
+        templateInstance.data.chartFiltersRD.set('startDate', parseInt(moment().add(-31, 'd').format('YYYYMMDD'), 10));
+        templateInstance.data.chartFiltersRD.set('endDate', parseInt(moment().add(-1, 'd').format('YYYYMMDD'), 10));
+        break;
+      case 'lastWeek':
+        templateInstance.data.chartFiltersRD.set('startDate', parseInt(moment().subtract(1, 'weeks').startOf('isoWeek').format('YYYYMMDD'), 10));
+        templateInstance.data.chartFiltersRD.set('endDate', parseInt(moment().subtract(1, 'weeks').endOf('isoWeek').format('YYYYMMDD'), 10));
+        break;
+      default:
+        throw new Error('Non supported use case');
     }
   },
   'change .radio-kpi': function changeRadioKpi(event, templateInstance) {

@@ -71,7 +71,6 @@
       "buttonContent": "Submit",
       "updateCustomersMessage": "Your city, your client or your contract are not on this list? Do not hesitate to contact us!",
       "updateShiftsMessage": "You can modify the data of your shifts at any time by going to your history."
-
     },
     "listCustomers": {
       "warning": "Warning: modifying or deleting a client involves updating the base of the shifts. This treatment can be very long depending on the size of the base! Attention also, the removal of a customer implies the removal of all the shifts attached to it!",
@@ -136,9 +135,9 @@
     },
     "nav": {
       "newshift": "Save <span class=\"full-text-nav\">new </span>shift",
-      "myshifts": "<span class=\"full-text-nav\">Your shifts </span>history",
+      "myshifts": "<span class=\"full-text-nav\">Your shifts </span>History",
       "stats": "Stat<span class=\"full-text-nav\">istic</span>s",
-      "presentation": "App presentation",
+      "presentation": "<span class=\"full-text-nav\">Instruction </span>Manual",
       "account": "My account",
       "logout": "Logout"
     },
@@ -160,7 +159,8 @@
       "history": {
         "label": "History level",
         "placeholder": "Choose an history level",
-        "rollingMonth": "Rolling month"
+        "rollingMonth": "Rolling month",
+        "lastWeek": "Last week"
       },
       "kpi": {
         "title": "KPI",
@@ -188,9 +188,13 @@
       }
     },
     "chartCompare": {
-      "title": "Compare customers in your city",
+      "title": "Comparator",
+      "periodFrom": "For the period from",
+      "periodTo": "to",
+      "participants": "participant(s)",
       "noData": "No data available for these filters",
       "tip": {
+        "customer": "Customer",
         "value": "Value",
         "shiftsCounter": "Number of shifts",
         "totalDuration": "Total duration",
@@ -198,7 +202,15 @@
       }
     },
     "chartEvol": {
-      "title": "Check your customer's gains evolution"
+      "title": "Follow-up",
+      "noData": "No data available for these filters",
+      "tip": {
+        "customer": "Customer",
+        "value": "Value",
+        "shiftsCounter": "Number of shifts",
+        "totalDuration": "Total duration",
+        "quality": "Data quality"
+      }
     },
     "instructionManual": "<p class=\"flow-text\"><strong>Below, important information to read before using the application. It is essential to understand that the quality of the statistics displayed depends directly on the veracity of the data you will capture. Do not invent. Any profile that does not respect these principles will be deleted.</strong></p><h3>Saving a Shift</h3><p class=\"flow-text\">A day begins and finishes at 6:00 am, and a shift can not take place over more than one day. You can declare a shift from 23:00 to 05:00 for example, while a shift from 05:00 to 07:00 will not be valid. We advise you to declare shifts as short as possible. We will explain in the \"statistics\" section why. Avoid, therefore, to declare shifts continuous from 11:00 to 23:00 for example, but created in several, shorter.</p><p class=\"flow-text\">You can declare a shift at any date as long as it is the current date or a past date.</p><p class=\"flow-text\"><b>The number of deliveries</b> that you declare must be a whole number greater than or equal to 0. If you have performed a double race as can be the case with Deliveroo for example, accounts in good 2!</p><p class=\"flow-text\"><b>The number of kilometers</b> you declare is a decimal number greater than or equal to 0.00. Be careful, this is the actual and total distance you have traveled from the beginning of your shift to the end of your shift. Do not use the information provided by your customer (often calculated as the crow flies and incomplete) but those of your odometer or an application such as Strava or Google Map. Do not fill this field at random! Soon we will allow you to automatically integrate the data of your account Strava with the application ShiftStats.</p><p class=\"flow-text\"><b>The winnings</b> you declare are a decimal number greater than or equal to 0.00. These are the gains communicated by your customer related to the shift that you have realized. These gains correspond to your turnover (turnover) for a shift: that is to say the gross amounts that appear on your invoices. The winnings you declare in the application must include everything related to the shift and only to that one. For example: the various bonuses (weekend, rain, drop, badges, special days, ...) will have to be included.</p><p class=\"flow-text\">On the other hand, they do not include earnings not directly related to your shift such as parental bonuses, marketing operations, recruitment, training, administration, etc.</p><p class=\"flow-text\">Finally, they must report deductions made by certain customers such as Uber who levy a certain% of your turnover. However, they should not mention deductions such as bonds and other deductions due to degradation of order, forgetfulness, ... operated by certain customers.</p><p class=\"flow-text\">If you have any doubts while entering your shifts, do not hesitate to contact us!</p><h3>Review your winnings and modify or delete your shifts</h3><p class=\"flow-text\">You can get an assessment of your activity on the history page of your shifts. Soon we will provide you with export functions to facilitate the administrative management of your activity. On this screen, you can also edit the data of an existing shift at any time or delete it directly. The deletion is final.</p><h3>Statistics</h3><p class=\"flow-text\">For analysis purposes, a day is divided into 5 periods:</p><ul><li>- In the morning from 06:00 to 11:00</li><li>- Lunch from 11:00 to 14:30</li><li>- The afternoon from 14:30 to 18:30</li><li>- In the evening from 18:30 to 23:30</li><li>- The night from 23:30 to 06:00</li></ul><p class=\"flow-text\">In the current application operation, the shift data is homogeneously distributed over these periods. So if you declare a shift:</p><ul><li>- from 13h30 to 15h00</li><li>- 3 deliveries</li><li>- 15 kms</li><li>- 17.25 euros</li></ul><p class=\"flow-text\">The application considers that you have:</p><ul><li>- Midday: worked 1 hour, made 2 deliveries for 10 km and you won 11.5 euros</li><li>- In the afternoon: worked 1/2 hour, carried out 1 delivery for 5 km and you won 5.75 euros.</li></ul><p class=\"flow-text\">So that the displayed statistics are as accurate as possible, we advise against declared long continuous shifts, but rather to declare short shifts, representative of the 5 periods of analysis.</p><p class=\"flow-text\">The tool can analyze the following seven indicators:</p><ul><li>- kms / race</li><li>- gains / km</li><li>- win / race</li><li>- earnings / hour</li><li>- races / hour</li><li>- kms / hour</li></ul><p class=\"flow-text\">You can choose to compare the different customers in your city (\"Compare\" button) or to observe the evolution of these indicators over time (\"Evolution\" button).</p><p class=\"flow-text\">The data can be filtered by:</p><ul><li>- City</li><li>- Period: All day, Morning, Midday, Afternoon, Evening, Night</li><li>- Historical level: for the moment, the only level of available history is \"Rolling Month\", that is, from D-31 to D-1.</li></ul><p class=\"flow-text\">In a future version of the application, the notion of \"data quality\" will be put in place and will enable you to know if enough couriers have participated to guarantee figures representing the reality of the terrain and the variety of situations (sample representative).</p><p class=\"flow-text\">The analytical tools will allow the courier community to answer a range of questions such as:</p><ul><li>- Who is the best customer for the race? on time ?</li><li>- Who is the customer who makes the most money by rolling the least?</li><li>- When a customer wants to change his tariff conditions, what will be the true impacts on the revenue of the couriers?</li></ul><p class=\"flow-text\"><strong>These analytical tools will enable the courier community and the various unions to develop a realistic diagnosis of their activity and to build a solid argument against their customers and public opinion.</strong></p><p class=\"flow-text\">Friends, it's up to you to play.<br/>The ShiftStats team.</p>"
   },

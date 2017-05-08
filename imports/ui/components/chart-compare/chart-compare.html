@@ -12,6 +12,7 @@
   <div id="chartCompare">
     <h2>{{_ "components.chartCompare.title"}}</h2>
     {{# if dataAvailable}}
+      <p class="flow-text">{{details}}</p>
       {{> compareChartSvg chartFiltersRD=chartFiltersRD shiftsDataRV=shiftsDataRV dataAvailableRV=dataAvailableRV}}
     {{else}}
       <p class="flow-text warning">{{_ "components.chartCompare.noData"}}</p>
@@ -22,5 +23,6 @@
 <!-- ======================================================================= -->
 
 <template name="compareChartSvg">
-  <svg></svg>
+  <svg id="chart"></svg>
+  <svg id="legend"></svg>
 </template>

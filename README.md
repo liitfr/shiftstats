@@ -115,5 +115,7 @@ If you experience troubles with Materialize, please run `npm install` to execute
 
 # Todo
 
+manual : simulateur de charges + parler des pourboires
 Strava API
 Exports comptables
+Rapports d'accidents

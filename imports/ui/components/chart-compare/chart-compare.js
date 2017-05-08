@@ -1,23 +1,27 @@
 import * as d3 from 'd3';
 import d3Tip from 'd3-tip';
 import d3Extended from 'd3-extended';
+import { moment } from 'meteor/momentjs:moment';
 import { ReactiveVar } from 'meteor/reactive-var';
 import { TAPi18n } from 'meteor/tap:i18n';
 
 import { Customers } from '../../../api/customers/customers.js';
-import { Shifts } from '../../../api/shifts/shifts.js';
 
 import '../loader/loader.js';
 import './chart-compare.html';
 
-// TODO : animations
+const StatsCompare = new Mongo.Collection('statsCompare');
+const StatsNbParticipants = new Mongo.Collection('statsNbParticipants');
+
 // TODO : data quality
 // TODO : ajouter niveaux historiques
+// TODO : when data is updated / added / deleted, whole chart should get redrawn !
 
 Template.chartCompare.onCreated(function chartCompareOnCreated() {
   const template = this;
   template.autorun(() => {
     template.subscribe('shifts.analytics.compare', this.data.chartFiltersRD.get('city'), this.data.chartFiltersRD.get('startDate'), this.data.chartFiltersRD.get('endDate'));
+    template.subscribe('shifts.analytics.nbParticipants', this.data.chartFiltersRD.get('city'), this.data.chartFiltersRD.get('startDate'), this.data.chartFiltersRD.get('endDate'));
   });
 });
 
@@ -32,7 +36,7 @@ Template.compareChart.onCreated(function compareChartOnCreated() {
 Template.compareChart.onRendered(function compareChartOnRendered() {
   const template = this;
   template.autorun(() => {
-    template.shiftsDataRV.set(Shifts.find({}, {
+    template.shiftsDataRV.set(StatsCompare.find({}, {
       sort: {
         dayOfTheWeek: 1,
         brand: 1,
@@ -56,6 +60,9 @@ Template.compareChart.helpers({
   },
   shiftsDataRV() {
     return Template.instance().shiftsDataRV;
+  },
+  details() {
+    return `${TAPi18n.__('components.chartCompare.periodFrom')} ${moment(this.chartFiltersRD.get('startDate').toString()).format(TAPi18n.__('components.pickadate.format').toUpperCase())} ${TAPi18n.__('components.chartCompare.periodTo')} ${moment(this.chartFiltersRD.get('endDate').toString()).format(TAPi18n.__('components.pickadate.format').toUpperCase())} : ${StatsNbParticipants.findOne().counter} ${TAPi18n.__('components.chartCompare.participants')}`;
   },
 });
 
@@ -145,21 +152,21 @@ Template.compareChartSvg.onCreated(function compareChartSvgOnCreated() {
         break;
       case 'gainsperhour':
         if (gains !== 0 && duration !== 0) {
-          result = gains / duration;
+          result = gains / (duration / 60);
         } else {
           result = 0;
         }
         break;
       case 'delivsperhour':
         if (nbDelivs !== 0 && duration !== 0) {
-          result = nbDelivs / duration;
+          result = nbDelivs / (duration / 60);
         } else {
           result = 0;
         }
         break;
       case 'kmsperhour':
         if (nbKms !== 0 && duration !== 0) {
-          result = nbKms / duration;
+          result = nbKms / (duration / 60);
         } else {
           result = 0;
         }
@@ -171,6 +178,7 @@ Template.compareChartSvg.onCreated(function compareChartSvgOnCreated() {
       counter,
       duration,
       kpi: result,
+      customer: `${d.brand} > ${d.contract}`,
     };
   };
 });
@@ -179,14 +187,16 @@ Template.compareChartSvg.onRendered(function compareChartSvgOnRendered() {
   const template = this;
   const viewBoxWidth = 900;
   const viewBoxHeight = 500;
-  const svg = d3.select('svg').attr('preserveAspectRatio', 'xMinYMin meet').attr('viewBox', `0 0 ${viewBoxWidth} ${viewBoxHeight}`).attr('width', '100%');
+  const svgChart = d3.select('#chart').attr('preserveAspectRatio', 'xMinYMin meet').attr('viewBox', `0 0 ${viewBoxWidth} ${viewBoxHeight}`).attr('width', '100%');
   const margin = { top: 20, right: 20, bottom: 30, left: 40 };
   const width = +viewBoxWidth - margin.left - margin.right;
   const height = +viewBoxHeight - margin.top - margin.bottom;
-  const g = svg.append('g').attr('transform', `translate(${margin.left}, ${margin.top})`);
+  const gChart = svgChart.append('g').attr('transform', `translate(${margin.left}, ${margin.top})`);
   const x0 = d3.scaleBand().rangeRound([0, width]).paddingInner(0.1);
   const x1 = d3.scaleBand().padding(0.05);
   const y = d3.scaleLinear().rangeRound([height, 0]);
+  const svgLegend = d3.select('#legend');
+  const gLegend = svgLegend.append('g');
   template.autorun(() => {
     if (template.data.dataAvailableRV.get()) {
       const data = template.data.shiftsDataRV.get();
@@ -200,15 +210,15 @@ Template.compareChartSvg.onRendered(function compareChartSvgOnRendered() {
         const hours = Math.floor(tips.duration / 60);
         const minutes = `0${tips.duration % 60}`.slice(-2);
         tips.duration = `${hours}h${minutes}`;
-        return `${TAPi18n.__('components.chartCompare.tip.value')}: ${tips.kpi}<br/>${TAPi18n.__('components.chartCompare.tip.shiftsCounter')}: ${tips.counter}<br/>${TAPi18n.__('components.chartCompare.tip.totalDuration')}: ${tips.duration}<br/>${TAPi18n.__('components.chartCompare.tip.quality')}: <span style='color:green'>N/A</span>`;
+        return `${TAPi18n.__('components.chartCompare.tip.customer')}: ${tips.customer}<br/>${TAPi18n.__('components.chartCompare.tip.value')} : ${tips.kpi}<br/>${TAPi18n.__('components.chartCompare.tip.shiftsCounter')}: ${tips.counter}<br/>${TAPi18n.__('components.chartCompare.tip.totalDuration')}: ${tips.duration}<br/>${TAPi18n.__('components.chartCompare.tip.quality')}: <span style='color:green'>N/A</span>`;
       });
-      g.call(tip);
+      gChart.call(tip);
       x0.domain(days);
       x1.domain(customersId).rangeRound([0, x0.bandwidth()]);
       y.domain([0, d3.max(data, d => template.computeData(d).kpi)]).nice();
-      g.selectAll('rect').remove();
-      g.selectAll('g').remove();
-      g.append('g')
+      gChart.selectAll('rect').remove();
+      gChart.selectAll('g').remove();
+      gChart.append('g')
         .selectAll('g')
         .data(days)
         .enter()
@@ -220,17 +230,22 @@ Template.compareChartSvg.onRendered(function compareChartSvgOnRendered() {
         .append('rect')
         .attr('class', 'bar')
         .attr('x', d => x1(d.customer))
-        .attr('y', d => y(template.computeData(d).kpi))
+        .attr('y', height)
         .attr('width', x1.bandwidth())
-        .attr('height', d => height - y(template.computeData(d).kpi))
+        .attr('height', 0)
         .attr('fill', d => d.color)
         .on('mouseover', tip.show)
-        .on('mouseout', tip.hide);
-      g.append('g')
+        .on('mouseout', tip.hide)
+        .transition()
+        .duration(1000)
+        .delay((d, i) => i * 100)
+        .attr('y', d => y(template.computeData(d).kpi))
+        .attr('height', d => height - y(template.computeData(d).kpi));
+      gChart.append('g')
         .attr('class', 'axis')
         .attr('transform', `translate(0, ${height})`)
         .call(d3.axisBottom(x0).tickFormat(d => week[d]));
-      g.append('g')
+      gChart.append('g')
         .attr('class', 'axis')
         .call(d3.axisLeft(y).ticks())
         .append('text')
@@ -242,26 +257,24 @@ Template.compareChartSvg.onRendered(function compareChartSvgOnRendered() {
         .attr('text-anchor', 'start')
         .text(TAPi18n.__(`components.chartControls.kpi.${this.data.chartFiltersRD.get('kpi')}`));
         // TODO : remove ALL styles to css
-      const legend = g.append('g')
+      // TODO : legend should support large number of customers. Maybe 2 columns ? Now overflow is visible.
+      const legend = gLegend.append('g')
         .attr('id', 'legend')
         .attr('font-family', 'sans-serif')
         .attr('font-size', 10)
-        .attr('text-anchor', 'end')
         .attr('fill', 'black')
         .selectAll('g')
         .data(customers)
         .enter()
         .append('g')
         .attr('transform', (d, i) => `translate(0, ${i * 20})`);
-        // .on('mouseover', () => d3.select('#legend').moveToFront())
-        // .on('mouseout', () => d3.select('#legend').moveToBack());
       legend.append('rect')
-        .attr('x', width - 19)
+        .attr('x', 0)
         .attr('width', 19)
         .attr('height', 19)
         .attr('fill', d => d.color);
       legend.append('text')
-        .attr('x', width - 24)
+        .attr('x', 24)
         .attr('y', 9.5)
         .attr('dy', '0.32em')
         .text(d => `${d.brand} > ${d.contract}`);

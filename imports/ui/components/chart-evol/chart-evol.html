@@ -1,4 +1,26 @@
 <template name="chartEvol">
-  <h2>{{_ "components.chartEvol.title"}}</h2>
-  <p class="flow-text">{{_ "underConstruction"}}</p>
+  {{#if Template.subscriptionsReady}}
+    {{> evolChart chartFiltersRD=chartFiltersRD}}
+  {{else}}
+    {{> loader ""}}
+  {{/if}}
+</template>
+
+<!-- ======================================================================= -->
+
+<template name="evolChart">
+  <div id="chartEvol">
+    <h2>{{_ "components.chartEvol.title"}}</h2>
+    {{# if dataAvailable}}
+      {{> evolChartSvg chartFiltersRD=chartFiltersRD shiftsDataRV=shiftsDataRV dataAvailableRV=dataAvailableRV}}
+    {{else}}
+      <p class="flow-text warning">{{_ "components.chartEvol.noData"}}</p>
+    {{/if}}
+  </div>
+</template>
+
+<!-- ======================================================================= -->
+
+<template name="evolChartSvg">
+  <svg></svg>
 </template>
