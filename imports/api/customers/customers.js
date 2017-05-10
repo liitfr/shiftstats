@@ -33,12 +33,19 @@ const CustomersSchema = new SimpleSchema({
     autoform: {
       type: 'select',
       firstOption: () => TAPi18n.__('schemas.customers.country.placeholder'),
-      options: () => Countries.find({}, { sort: {
-        name: 1,
-      } }).map(country => ({
-        label: country.name,
-        value: country._id,
-      })),
+      options: () => {
+        if (Meteor.isClient) {
+          Tracker.afterFlush(() => {
+            $('select[name$="country"]').material_select();
+          });
+        }
+        return Countries.find({}, { sort: {
+          name: 1,
+        } }).map(country => ({
+          label: country.name,
+          value: country._id,
+        }));
+      },
     },
   },
   //----------------------------------------------------------------------------
@@ -119,6 +126,11 @@ const CustomersSchema = new SimpleSchema({
       type: 'select',
       firstOption: () => TAPi18n.__('schemas.customers.city.placeholder'),
       options: () => {
+        if (Meteor.isClient) {
+          Tracker.afterFlush(() => {
+            $('select[name$="city"]').material_select();
+          });
+        }
         const countryField = Countries.findOne({
           _id: AutoForm.getFieldValue('country'),
         }, {
@@ -177,12 +189,19 @@ const CustomersSchema = new SimpleSchema({
     autoform: {
       type: 'select',
       firstOption: () => TAPi18n.__('schemas.customers.timezone.placeholder'),
-      options: () => Timezones.find({}, { sort: {
-        text: 1,
-      } }).map(timezone => ({
-        label: timezone.text,
-        value: timezone._id,
-      })),
+      options: () => {
+        if (Meteor.isClient) {
+          Tracker.afterFlush(() => {
+            $('select[name$="timezone"]').material_select();
+          });
+        }
+        return Timezones.find({}, { sort: {
+          text: 1,
+        } }).map(timezone => ({
+          label: timezone.text,
+          value: timezone._id,
+        }));
+      },
     },
   },
   //----------------------------------------------------------------------------
@@ -238,10 +257,17 @@ const CustomersSchema = new SimpleSchema({
     autoform: {
       type: 'select',
       firstOption: () => TAPi18n.__('schemas.customers.brand.placeholder'),
-      options: () => Meteor.settings.public.brandList.map(brand => ({
-        label: brand,
-        value: brand,
-      })),
+      options: () => {
+        if (Meteor.isClient) {
+          Tracker.afterFlush(() => {
+            $('select[name$="brand"]').material_select();
+          });
+        }
+        return Meteor.settings.public.brandList.map(brand => ({
+          label: brand,
+          value: brand,
+        }));
+      },
     },
   },
   //----------------------------------------------------------------------------
