@@ -444,6 +444,21 @@ const ShiftsSchema = new SimpleSchema({
     },
   },
   //----------------------------------------------------------------------------
+  dateString: {
+    type: String,
+    label: () => TAPi18n.__('schemas.shifts.date.label'),
+    autoValue() {
+      if (this.field('date').isSet) {
+        return this.field('date').value.toString();
+      }
+      this.unset();
+      return undefined;
+    },
+    autoform: {
+      omit: true,
+    },
+  },
+  //----------------------------------------------------------------------------
   dayOfTheWeek: {
     type: SimpleSchema.Integer,
     label: () => TAPi18n.__('schemas.shifts.dayoftheweek.label'),
@@ -1099,6 +1114,7 @@ Shifts.adminFields = {
   color: 1,
   customerLabel: 1,
   date: 1,
+  dateString: 1,
   dayOfTheWeek: 1,
   dayOfTheWeekString: 1,
   month: 1,

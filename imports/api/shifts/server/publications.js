@@ -352,6 +352,13 @@ Meteor.publish('shifts.analytics.evol', function shiftsAnalyticsEvol(city, start
           $sum: '$durationNight',
         },
       },
+    }, {
+      $group: {
+        _id: '$customer',
+        statsPerDay: {
+          $push: '$$CURRENT',
+        },
+      },
     }], { clientCollection: 'statsEvol' });
     return undefined;
   }

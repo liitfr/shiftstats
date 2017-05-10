@@ -203,6 +203,9 @@
     },
     "chartEvol": {
       "title": "Suivi",
+      "periodFrom": "Pour la période du",
+      "periodTo": "au",
+      "participants": "participant(s)",      
       "noData": "Aucune donnée disponible pour ces filtres",
       "tip": {
         "customer": "Client",

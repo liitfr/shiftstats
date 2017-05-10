@@ -6,17 +6,14 @@ import { ReactiveVar } from 'meteor/reactive-var';
 import { TAPi18n } from 'meteor/tap:i18n';
 
 import { Customers } from '../../../api/customers/customers.js';
+import { StatsCompare, StatsNbParticipants } from '../../../api/client-collections.js';
 
 import '../loader/loader.js';
 import './chart-compare.html';
 
-const StatsCompare = new Mongo.Collection('statsCompare');
-const StatsNbParticipants = new Mongo.Collection('statsNbParticipants');
-
 // TODO : data quality
 // TODO : ajouter niveaux historiques
-// TODO : when all data deleted : error in console !
-// TODO : bug in display sometimes : bar is 100% of day width
+// TODO : bug in display : sometimes bar is 100% of day width
 
 Template.chartCompare.onCreated(function chartCompareOnCreated() {
   const template = this;
@@ -63,7 +60,13 @@ Template.compareChart.helpers({
     return Template.instance().shiftsDataRV;
   },
   details() {
-    return `${TAPi18n.__('components.chartCompare.periodFrom')} ${moment(this.chartFiltersRD.get('startDate').toString()).format(TAPi18n.__('components.pickadate.format').toUpperCase())} ${TAPi18n.__('components.chartCompare.periodTo')} ${moment(this.chartFiltersRD.get('endDate').toString()).format(TAPi18n.__('components.pickadate.format').toUpperCase())} : ${StatsNbParticipants.findOne().counter} ${TAPi18n.__('components.chartCompare.participants')}`;
+    let nbParticipants = StatsNbParticipants.findOne();
+    if (nbParticipants) {
+      nbParticipants = nbParticipants.counter;
+    } else {
+      nbParticipants = 0;
+    }
+    return `${TAPi18n.__('components.chartCompare.periodFrom')} ${moment(this.chartFiltersRD.get('startDate').toString()).format(TAPi18n.__('components.pickadate.format').toUpperCase())} ${TAPi18n.__('components.chartCompare.periodTo')} ${moment(this.chartFiltersRD.get('endDate').toString()).format(TAPi18n.__('components.pickadate.format').toUpperCase())} : ${nbParticipants} ${TAPi18n.__('components.chartCompare.participants')}`;
   },
 });
 

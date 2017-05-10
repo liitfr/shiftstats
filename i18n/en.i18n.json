@@ -203,6 +203,9 @@
     },
     "chartEvol": {
       "title": "Follow-up",
+      "periodFrom": "For the period from",
+      "periodTo": "to",
+      "participants": "participant(s)",      
       "noData": "No data available for these filters",
       "tip": {
         "customer": "Customer",

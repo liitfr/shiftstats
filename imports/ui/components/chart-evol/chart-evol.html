@@ -12,9 +12,12 @@
   <div id="chartEvol">
     <h2>{{_ "components.chartEvol.title"}}</h2>
     {{# if dataAvailable}}
-      {{> evolChartSvg chartFiltersRD=chartFiltersRD shiftsDataRV=shiftsDataRV dataAvailableRV=dataAvailableRV}}
+      <p class="flow-text">{{details}}</p>
+      {{#each customer in shiftsData}}
+        {{> evolChartSvg chartFiltersRD=chartFiltersRD customer=customer dataAvailableRV=dataAvailableRV}}
+      {{/each}}
     {{else}}
-      <p class="flow-text warning">{{_ "components.chartEvol.noData"}}</p>
+      <p class="flow-text warning">{{_ "components.chartCompare.noData"}}</p>
     {{/if}}
   </div>
 </template>
@@ -22,5 +25,6 @@
 <!-- ======================================================================= -->
 
 <template name="evolChartSvg">
-  <svg></svg>
+  <svg id="chart"></svg>
+  <!-- <svg id="legend"></svg> -->
 </template>

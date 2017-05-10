@@ -8,6 +8,7 @@ import { TAPi18n } from 'meteor/tap:i18n';
 import { Tracker } from 'meteor/tracker';
 
 import { Shifts } from '../../../api/shifts/shifts.js';
+import { ShiftsMine } from '../../../api/client-collections.js';
 
 import '../loader/loader.js';
 
@@ -16,7 +17,6 @@ import './list-my-shifts.html';
 // TODO : loader for both substricptions !
 // TODO : sort in client side
 
-const ShiftsMine = new Meteor.Collection('shiftsMine');
 const _ = lodash;
 
 Template.listMyShifts.onCreated(function listMyShiftsOnCreated() {
