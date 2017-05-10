@@ -15,7 +15,8 @@ const StatsNbParticipants = new Mongo.Collection('statsNbParticipants');
 
 // TODO : data quality
 // TODO : ajouter niveaux historiques
-// TODO : when data is updated / added / deleted, whole chart should get redrawn !
+// TODO : when all data deleted : error in console !
+// TODO : bug in display sometimes : bar is 100% of day width
 
 Template.chartCompare.onCreated(function chartCompareOnCreated() {
   const template = this;
@@ -187,18 +188,44 @@ Template.compareChartSvg.onRendered(function compareChartSvgOnRendered() {
   const template = this;
   const viewBoxWidth = 900;
   const viewBoxHeight = 500;
-  const svgChart = d3.select('#chart').attr('preserveAspectRatio', 'xMinYMin meet').attr('viewBox', `0 0 ${viewBoxWidth} ${viewBoxHeight}`).attr('width', '100%');
   const margin = { top: 20, right: 20, bottom: 30, left: 40 };
   const width = +viewBoxWidth - margin.left - margin.right;
   const height = +viewBoxHeight - margin.top - margin.bottom;
+  const svgChart = d3.select('#chart').attr('preserveAspectRatio', 'xMinYMin meet').attr('viewBox', `0 0 ${viewBoxWidth} ${viewBoxHeight}`).attr('width', '100%');
   const gChart = svgChart.append('g').attr('transform', `translate(${margin.left}, ${margin.top})`);
   const x0 = d3.scaleBand().rangeRound([0, width]).paddingInner(0.1);
   const x1 = d3.scaleBand().padding(0.05);
   const y = d3.scaleLinear().rangeRound([height, 0]);
-  const svgLegend = d3.select('#legend');
+  const svgLegend = d3.select('#legend').attr('preserveAspectRatio', 'xMinYMin meet').attr('width', '100%');
   const gLegend = svgLegend.append('g');
+  let currentLanguage = TAPi18n.getLanguage();
+  gChart
+    .append('g')
+    .attr('class', 'axis y')
+    .append('text')
+    .attr('id', 'axis-y-title')
+    .attr('x', 2)
+    .attr('y', y(y.ticks().pop()) + 0.5)
+    .attr('dy', '0.32em')
+    .attr('fill', '#000')
+    .attr('font-weight', 'bold')
+    .attr('text-anchor', 'start');
+  gChart
+    .append('g')
+    .attr('class', 'axis x')
+    .attr('transform', `translate(0, ${height})`);
+  gLegend
+    .append('g')
+    .attr('id', 'legend')
+    .attr('font-family', 'sans-serif')
+    .attr('font-size', 10)
+    .attr('fill', 'black');
   template.autorun(() => {
     if (template.data.dataAvailableRV.get()) {
+      if (TAPi18n.getLanguage() !== currentLanguage) {
+        gChart.selectAll('rect').remove();
+        currentLanguage = TAPi18n.getLanguage();
+      }
       const data = template.data.shiftsDataRV.get();
       const customers = Customers.find({ city: this.data.chartFiltersRD.get('city') }, {}).fetch();
       const customersId = _.map(customers, customer => customer._id);
@@ -216,64 +243,67 @@ Template.compareChartSvg.onRendered(function compareChartSvgOnRendered() {
       x0.domain(days);
       x1.domain(customersId).rangeRound([0, x0.bandwidth()]);
       y.domain([0, d3.max(data, d => template.computeData(d).kpi)]).nice();
-      gChart.selectAll('rect').remove();
-      gChart.selectAll('g').remove();
-      gChart.append('g')
-        .selectAll('g')
-        .data(days)
-        .enter()
-        .append('g')
-        .attr('transform', d => `translate(${x0(d)},0)`)
-        .selectAll('rect')
-        .data(day => _.filter(data, d => d.dayOfTheWeek === day))
+      gChart
+        .selectAll('.bar')
+        .data(data, d => d._id)
+        .exit()
+        .transition()
+        .duration(1000)
+        .delay((d, i) => i * 100)
+        .attr('y', height)
+        .attr('height', 0)
+        .remove();
+      gChart
+        .selectAll('.bar')
+        .data(data, d => d._id)
         .enter()
         .append('rect')
         .attr('class', 'bar')
+        .attr('transform', d => `translate(${x0(d.dayOfTheWeek)},0)`)
         .attr('x', d => x1(d.customer))
         .attr('y', height)
         .attr('width', x1.bandwidth())
         .attr('height', 0)
         .attr('fill', d => d.color)
         .on('mouseover', tip.show)
-        .on('mouseout', tip.hide)
+        .on('mouseout', tip.hide);
+      gChart
+        .selectAll('.bar')
+        .data(data, d => d._id)
         .transition()
         .duration(1000)
         .delay((d, i) => i * 100)
         .attr('y', d => y(template.computeData(d).kpi))
         .attr('height', d => height - y(template.computeData(d).kpi));
-      gChart.append('g')
-        .attr('class', 'axis')
-        .attr('transform', `translate(0, ${height})`)
-        .call(d3.axisBottom(x0).tickFormat(d => week[d]));
-      gChart.append('g')
-        .attr('class', 'axis')
+      gChart
+        .select('.axis.x')
+        .call(d3.axisBottom(x0)
+        .tickFormat(d => week[d]));
+      gChart
+        .select('.axis.y')
+        .transition()
+        .duration(1000)
         .call(d3.axisLeft(y).ticks())
-        .append('text')
-        .attr('x', 2)
-        .attr('y', y(y.ticks().pop()) + 0.5)
-        .attr('dy', '0.32em')
-        .attr('fill', '#000')
-        .attr('font-weight', 'bold')
-        .attr('text-anchor', 'start')
+        .select('#axis-y-title')
         .text(TAPi18n.__(`components.chartControls.kpi.${this.data.chartFiltersRD.get('kpi')}`));
         // TODO : remove ALL styles to css
-      // TODO : legend should support large number of customers. Maybe 2 columns ? Now overflow is visible.
-      const legend = gLegend.append('g')
-        .attr('id', 'legend')
-        .attr('font-family', 'sans-serif')
-        .attr('font-size', 10)
-        .attr('fill', 'black')
+      // TODO : legend should support large number of customers.
+      // Maybe 2 columns ? Now overflow is visible.
+      const legend = gLegend
+        .select('g')
         .selectAll('g')
         .data(customers)
         .enter()
         .append('g')
         .attr('transform', (d, i) => `translate(0, ${i * 20})`);
-      legend.append('rect')
+      legend
+        .append('rect')
         .attr('x', 0)
         .attr('width', 19)
         .attr('height', 19)
         .attr('fill', d => d.color);
-      legend.append('text')
+      legend
+        .append('text')
         .attr('x', 24)
         .attr('y', 9.5)
         .attr('dy', '0.32em')
