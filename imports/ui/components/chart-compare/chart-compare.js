@@ -5,6 +5,7 @@ import { moment } from 'meteor/momentjs:moment';
 import { ReactiveVar } from 'meteor/reactive-var';
 import { TAPi18n } from 'meteor/tap:i18n';
 
+import { computeData } from '../../../utils/stats-computation.js';
 import { Customers } from '../../../api/customers/customers.js';
 import { StatsCompare, StatsNbParticipants } from '../../../api/client-collections.js';
 
@@ -14,6 +15,8 @@ import './chart-compare.html';
 // TODO : data quality
 // TODO : ajouter niveaux historiques
 // TODO : bug in display : sometimes bar is 100% of day width
+// TODO : put currency in charts
+// TODO : put distance units in charts
 
 Template.chartCompare.onCreated(function chartCompareOnCreated() {
   const template = this;
@@ -72,124 +75,16 @@ Template.compareChart.helpers({
 
 // -----------------------------------------------------------------------------
 
-Template.compareChartSvg.onCreated(function compareChartSvgOnCreated() {
+Template.compareChartSvg.onCreated(() => {
   d3.tip = d3Tip;
   d3Extended(d3);
-  const template = this;
-  template.computeData = (d) => {
-    let counter;
-    let nbDelivs;
-    let nbKms;
-    let gains;
-    let duration;
-    let result;
-    switch (this.data.chartFiltersRD.get('period')) {
-      case 'fullday':
-        counter = d.counter;
-        nbDelivs = d.nbDelivs;
-        nbKms = d.nbKms;
-        gains = d.gains;
-        duration = d.duration;
-        break;
-      case 'morning':
-        counter = d.counterMorning;
-        nbDelivs = d.nbDelivsMorning;
-        nbKms = d.nbKmsMorning;
-        gains = d.gainsMorning;
-        duration = d.durationMorning;
-        break;
-      case 'lunch':
-        counter = d.counterLunch;
-        nbDelivs = d.nbDelivsLunch;
-        nbKms = d.nbKmsLunch;
-        gains = d.gainsLunch;
-        duration = d.durationLunch;
-        break;
-      case 'afternoon':
-        counter = d.counterAfternoon;
-        nbDelivs = d.nbDelivsAfternoon;
-        nbKms = d.nbKmsAfternoon;
-        gains = d.gainsAfternoon;
-        duration = d.durationAfternoon;
-        break;
-      case 'dinner':
-        counter = d.counterDinner;
-        nbDelivs = d.nbDelivsDinner;
-        nbKms = d.nbKmsDinner;
-        gains = d.gainsDinner;
-        duration = d.durationDinner;
-        break;
-      case 'night':
-        counter = d.counterNight;
-        nbDelivs = d.nbDelivsNight;
-        nbKms = d.nbKmsNight;
-        gains = d.gainsNight;
-        duration = d.durationNight;
-        break;
-      default:
-        throw new Error('Non supported use case');
-    }
-    if (this.data.chartFiltersRD.get('payroll-activated')) {
-      gains *= (1 - (this.data.chartFiltersRD.get('payroll-percentage') / 100));
-    }
-    switch (this.data.chartFiltersRD.get('kpi')) {
-      case 'kmperdeliv':
-        if (nbKms !== 0 && nbDelivs !== 0) {
-          result = nbKms / nbDelivs;
-        } else {
-          result = 0;
-        }
-        break;
-      case 'gainsperkm':
-        if (gains !== 0 && nbKms !== 0) {
-          result = gains / nbKms;
-        } else {
-          result = 0;
-        }
-        break;
-      case 'gainsperdeliv':
-        if (gains !== 0 && nbDelivs !== 0) {
-          result = gains / nbDelivs;
-        } else {
-          result = 0;
-        }
-        break;
-      case 'gainsperhour':
-        if (gains !== 0 && duration !== 0) {
-          result = gains / (duration / 60);
-        } else {
-          result = 0;
-        }
-        break;
-      case 'delivsperhour':
-        if (nbDelivs !== 0 && duration !== 0) {
-          result = nbDelivs / (duration / 60);
-        } else {
-          result = 0;
-        }
-        break;
-      case 'kmsperhour':
-        if (nbKms !== 0 && duration !== 0) {
-          result = nbKms / (duration / 60);
-        } else {
-          result = 0;
-        }
-        break;
-      default:
-        throw new Error('Non supported use case');
-    }
-    return {
-      counter,
-      duration,
-      kpi: result,
-      customer: `${d.brand} > ${d.contract}`,
-    };
-  };
 });
 
 Template.compareChartSvg.onRendered(function compareChartSvgOnRendered() {
   const template = this;
-  const viewBoxWidth = 900;
+  // ---------------------------------------------------------------------------
+  // Statics
+  const viewBoxWidth = 960;
   const viewBoxHeight = 500;
   const margin = { top: 20, right: 20, bottom: 30, left: 40 };
   const width = +viewBoxWidth - margin.left - margin.right;
@@ -223,6 +118,8 @@ Template.compareChartSvg.onRendered(function compareChartSvgOnRendered() {
     .attr('font-family', 'sans-serif')
     .attr('font-size', 10)
     .attr('fill', 'black');
+  // ---------------------------------------------------------------------------
+  // Dynamics
   template.autorun(() => {
     if (template.data.dataAvailableRV.get()) {
       if (TAPi18n.getLanguage() !== currentLanguage) {
@@ -234,8 +131,10 @@ Template.compareChartSvg.onRendered(function compareChartSvgOnRendered() {
       const customersId = _.map(customers, customer => customer._id);
       const days = _.map([0, 1, 2, 3, 4, 5, 6], day => (day + parseInt(TAPi18n.__('components.pickadate.daysOfTheWeekOffset'), 10)) % 7);
       const week = _.map(TAPi18n.__('components.pickadate.weekdaysFull', { returnObjectTrees: true }), day => day);
+      // -----------------------------------------------------------------------
+      // Tips
       const tip = d3.tip().attr('class', 'd3-tip').offset([-10, 0]).html((d) => {
-        const tips = template.computeData(d);
+        const tips = computeData(d, template.data.chartFiltersRD);
         tips.kpi = Math.round(tips.kpi * 100) / 100;
         const hours = Math.floor(tips.duration / 60);
         const minutes = `0${tips.duration % 60}`.slice(-2);
@@ -243,9 +142,26 @@ Template.compareChartSvg.onRendered(function compareChartSvgOnRendered() {
         return `${TAPi18n.__('components.chartCompare.tip.customer')}: ${tips.customer}<br/>${TAPi18n.__('components.chartCompare.tip.value')} : ${tips.kpi}<br/>${TAPi18n.__('components.chartCompare.tip.shiftsCounter')}: ${tips.counter}<br/>${TAPi18n.__('components.chartCompare.tip.totalDuration')}: ${tips.duration}<br/>${TAPi18n.__('components.chartCompare.tip.quality')}: <span style='color:green'>N/A</span>`;
       });
       gChart.call(tip);
+      // -----------------------------------------------------------------------
+      // X axis
       x0.domain(days);
       x1.domain(customersId).rangeRound([0, x0.bandwidth()]);
-      y.domain([0, d3.max(data, d => template.computeData(d).kpi)]).nice();
+      gChart
+        .select('.axis.x')
+        .call(d3.axisBottom(x0)
+        .tickFormat(d => week[d]));
+      // -----------------------------------------------------------------------
+      // Y axis
+      y.domain([0, d3.max(data, d => computeData(d, template.data.chartFiltersRD).kpi)]).nice();
+      gChart
+        .select('.axis.y')
+        .transition()
+        .duration(1000)
+        .call(d3.axisLeft(y).ticks())
+        .select('#axis-y-title')
+        .text(TAPi18n.__(`components.chartControls.kpi.${this.data.chartFiltersRD.get('kpi')}`));
+      // -----------------------------------------------------------------------
+      // Bars
       gChart
         .selectAll('.bar')
         .data(data, d => d._id)
@@ -276,22 +192,13 @@ Template.compareChartSvg.onRendered(function compareChartSvgOnRendered() {
         .transition()
         .duration(1000)
         .delay((d, i) => i * 100)
-        .attr('y', d => y(template.computeData(d).kpi))
-        .attr('height', d => height - y(template.computeData(d).kpi));
-      gChart
-        .select('.axis.x')
-        .call(d3.axisBottom(x0)
-        .tickFormat(d => week[d]));
-      gChart
-        .select('.axis.y')
-        .transition()
-        .duration(1000)
-        .call(d3.axisLeft(y).ticks())
-        .select('#axis-y-title')
-        .text(TAPi18n.__(`components.chartControls.kpi.${this.data.chartFiltersRD.get('kpi')}`));
-        // TODO : remove ALL styles to css
+        .attr('y', d => y(computeData(d, template.data.chartFiltersRD).kpi))
+        .attr('height', d => height - y(computeData(d, template.data.chartFiltersRD).kpi));
+      // TODO : remove ALL styles to css
       // TODO : legend should support large number of customers.
       // Maybe 2 columns ? Now overflow is visible.
+      // -----------------------------------------------------------------------
+      // Legend
       const legend = gLegend
         .select('g')
         .selectAll('g')

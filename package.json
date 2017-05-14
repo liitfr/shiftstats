@@ -15,6 +15,7 @@
     "currencies": "0.0.2",
     "d3": "^4.8.0",
     "d3-extended": "^1.2.10",
+    "d3-line-chunked": "^1.4.1",
     "d3-tip": "^0.7.1",
     "faker": "^4.1.0",
     "materialize-clockpicker": "^1.0.1",

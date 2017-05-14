@@ -61,6 +61,16 @@
       "labelMonthSelect": "Sélectionner un mois",
       "labelYearSelect": "Sélectionner une année"
     },
+    "d3TimeFormat": {
+      "dateTime": "%A, le %e %B %Y, %X",
+      "date": "%d/%m/%Y",
+      "time": "%H:%M:%S",
+      "periods": ["AM", "PM"],
+      "days": ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"],
+      "shortDays": ["dim.", "lun.", "mar.", "mer.", "jeu.", "ven.", "sam."],
+      "months": ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"],
+      "shortMonths": ["janv.", "févr.", "mars", "avr.", "mai", "juin", "juil.", "août", "sept.", "oct.", "nov.", "déc."]
+    },
     "formNewCustomer": {
       "title": "Création d'un nouveau client",
       "buttonContent": "Créer"
@@ -205,10 +215,11 @@
       "title": "Suivi",
       "periodFrom": "Pour la période du",
       "periodTo": "au",
-      "participants": "participant(s)",      
+      "participants": "participant(s)",
       "noData": "Aucune donnée disponible pour ces filtres",
       "tip": {
         "customer": "Client",
+        "date": "Date",
         "value": "Valeur",
         "shiftsCounter": "Nombre de shifts",
         "totalDuration": "Durée totale",

@@ -241,7 +241,7 @@ Meteor.publish('shifts.analytics.evol', function shiftsAnalyticsEvol(city, start
       $sort: {
         brand: 1,
         contract: 1,
-        dateString: 1,
+        dateString: -1,
       },
     }, {
       $group: {
@@ -355,6 +355,15 @@ Meteor.publish('shifts.analytics.evol', function shiftsAnalyticsEvol(city, start
     }, {
       $group: {
         _id: '$customer',
+        brand: {
+          $first: '$brand',
+        },
+        contract: {
+          $first: '$contract',
+        },
+        color: {
+          $first: '$color',
+        },
         statsPerDay: {
           $push: '$$CURRENT',
         },

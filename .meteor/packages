@@ -56,10 +56,10 @@ tap:i18n
 # launch-screen
 
 # MONITORING
-meteorhacks:kadira
-meteorhacks:zones
-meteorhacks:kadira-profiler
-kadira:debug
+# meteorhacks:kadira
+# meteorhacks:zones
+# meteorhacks:kadira-profiler
+# kadira:debug
 
 # PRODUCTION
 ddp-rate-limiter
@@ -107,6 +107,7 @@ fourseven:scss
 reactive-dict
 # aldeed:template-extension
 # percolate:momentum
+kevbuk:moment-range
 
 # UTILS
 alethes:lodash

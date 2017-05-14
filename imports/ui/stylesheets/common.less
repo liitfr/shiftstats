@@ -56,15 +56,15 @@ h3 {
   width: 100%;
 }
 
-#chartCompare .axis {
-  // font-size: 0.8em;
-
+#chartCompare .axis,
+#chartEvol .axis, {
   .domain {
     display: none;
   }
 }
 
-#chartCompare > svg#chart {
+#chartCompare > svg#chart,
+#chartEvol > svg.chart, {
   border: solid 1px #eee;
   border-bottom: solid 1px #ccc;
 }
@@ -99,4 +99,18 @@ h3 {
   margin: -1px 0 0 0;
   top: 100%;
   left: 0;
+}
+
+#chartEvol {
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+  }
+
+  .dot {
+    fill: white;
+    stroke-width: 2px;
+  }
 }
