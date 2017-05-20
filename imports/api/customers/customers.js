@@ -19,7 +19,6 @@ const Customers = new Mongo.Collection('customers');
 
 // TODO : i18n for distances unit
 // TODO : application on mobile !
-// TODO : evol chart
 // TODO : logo / favicon / splash
 // TODO : fast render and prod and etc
 
@@ -498,6 +497,7 @@ Customers.helpers({
 //----------------------------------------------------------------------------
 
 Customers.after.update((userId, doc, fieldNames) => {
+  // LIIT : don't forget it'll still be visible by clients
   if (Meteor.isServer) {
     const setShifts = {};
     fieldNames.forEach((field) => {
@@ -517,6 +517,7 @@ Customers.after.update((userId, doc, fieldNames) => {
 });
 
 Customers.after.remove((userId, doc) => {
+  // LIIT : don't forget it'll still be visible by clients
   if (Meteor.isServer) {
     Shifts.remove({
       customer: doc._id,

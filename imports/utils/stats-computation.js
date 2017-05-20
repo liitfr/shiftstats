@@ -1,5 +1,5 @@
 import { moment } from 'meteor/momentjs:moment';
-import { DateRange } from 'meteor/kevbuk:moment-range';
+import 'meteor/kevbuk:moment-range';
 
 const computeData = (d, chartFiltersRD) => {
   let counter;

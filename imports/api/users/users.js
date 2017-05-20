@@ -50,6 +50,7 @@ Meteor.users.helpers({
 //----------------------------------------------------------------------------
 
 Meteor.users.after.update((userId, doc, fieldNames, modifier) => {
+  // LIIT : don't forget it'll still be visible by clients
   if (Meteor.isServer && _.indexOf(fieldNames, 'customers') !== -1) {
     _.each(modifier.$inc, (counterInc, id) => {
       const field = id.split('.')[0];
@@ -76,6 +77,7 @@ Meteor.users.after.update((userId, doc, fieldNames, modifier) => {
 });
 
 Meteor.users.after.remove((userId, doc) => {
+  // LIIT : don't forget it'll still be visible by clients
   if (Meteor.isServer) {
     Shifts.direct.remove({
       courier: doc._id,

@@ -135,7 +135,7 @@ Template.evolChartSvg.onRendered(function evolChartSvgOnRendered() {
         const hours = Math.floor(tips.duration / 60);
         const minutes = `0${tips.duration % 60}`.slice(-2);
         tips.duration = `${hours}h${minutes}`;
-        return `${TAPi18n.__('components.chartEvol.tip.customer')}: ${tips.customer}<br/>${TAPi18n.__('components.chartEvol.tip.date')}: ${moment(d.dateString).format(TAPi18n.__('components.pickadate.format').toUpperCase())}<br/>${TAPi18n.__('components.chartEvol.tip.value')} : ${tips.kpi}<br/>${TAPi18n.__('components.chartEvol.tip.shiftsCounter')}: ${tips.counter}<br/>${TAPi18n.__('components.chartEvol.tip.totalDuration')}: ${tips.duration}<br/>${TAPi18n.__('components.chartEvol.tip.quality')}: <span style='color:green'>N/A</span>`;
+        return `${TAPi18n.__('components.chartEvol.tip.date')}: ${moment(d.dateString).format(TAPi18n.__('components.pickadate.format').toUpperCase())}<br/>${TAPi18n.__('components.chartEvol.tip.value')} : ${tips.kpi}<br/>${TAPi18n.__('components.chartEvol.tip.shiftsCounter')}: ${tips.counter}<br/>${TAPi18n.__('components.chartEvol.tip.totalDuration')}: ${tips.duration}<br/>${TAPi18n.__('components.chartEvol.tip.quality')}: <span style='color:green'>N/A</span>`;
       });
       svgChart.call(tip);
       // -----------------------------------------------------------------------

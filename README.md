@@ -105,13 +105,55 @@ If you want to have detailed information, execute `export METEOR_PROFILE=1` befo
 
 `meteor reset`
 
-## Manage mail gun account
+## Services
+
+### Manage mail gun account
 
 go to https://app.mailgun.com/app/domains
+
+### Facebook
+
+go to https://developers.facebook.com/apps/191735237982113/dashboard/
 
 ## Materialize
 
 If you experience troubles with Materialize, please run `npm install` to execute postinstall script.
+
+## Deployment
+
+### Digital Ocean
+
+Please read following tutorials :
+- https://www.digitalocean.com/community/tutorials/how-to-create-your-first-digitalocean-droplet-virtual-server
+- https://www.digitalocean.com/community/tutorials/how-to-use-ssh-keys-with-digitalocean-droplets
+- https://www.digitalocean.com/community/tutorials/how-to-edit-the-sudoers-file-on-ubuntu-and-centos
+- https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-14-04
+- https://www.digitalocean.com/community/tutorials/how-to-protect-ssh-with-fail2ban-on-ubuntu-14-04
+- https://www.digitalocean.com/community/tutorials/how-to-connect-to-your-droplet-with-ssh
+- https://www.digitalocean.com/community/tutorials/how-to-configure-ssh-key-based-authentication-on-a-linux-server
+- https://www.digitalocean.com/community/tutorials/additional-recommended-steps-for-new-ubuntu-14-04-servers
+- https://www.digitalocean.com/community/tutorials/how-to-deploy-a-meteor-js-application-on-ubuntu-14-04-with-nginx
+
+### Production
+
+Renew certificate :
+check and empty log
+sudo apt-get update !
+mongo backup (/etc/cron.d/mongodb-backup)
+NON? activate mailgun in /etc/init/shiftstats.conf
+#### Setup a container
+DEBUG=mup* mup setup --verbose
+#### Deploy a container
+DEBUG=mup* mup deploy --verbose
+#### Remove a container
+1. local : `mup stop`
+2. server : `docker ps -a` then `docker stop XXX` then `docker rm XXX`
+#### SSH keys with passphrase
+1. Start ssh agent with eval $(ssh-agent)
+2. Add your ssh key with ssh-add <path-to-key>
+3. You'll be asked to enter the passphrase to the key
+4. After that, simply invoke mup commands and they'll just work
+5. Once you've deployed your app, kill ssh agent with ssh-agent -k
 
 # Todo
 
@@ -119,3 +161,7 @@ manual : simulateur de charges + parler des pourboires
 Strava API
 Exports comptables
 Rapports d'accidents
+technologie : meteor / blaze / d3js / materialize / mongo / nginx / docker
+calcul automatique des gains
+ssl en prod
+tutoriel evol + semaine derniere

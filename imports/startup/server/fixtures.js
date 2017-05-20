@@ -63,7 +63,8 @@ Meteor.startup(() => {
   // ---------------------------------------------------------------------------
   // Cities
   if (Cities.find().count() === 0) {
-    _.each(cities, (city) => {
+    const bigCities = cities.filter(city => city.population >= 100000);
+    _.each(bigCities, (city) => {
       Cities.insert({
         name: city.name,
         country: city.country,

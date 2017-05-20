@@ -1195,6 +1195,7 @@ Shifts.helpers({
 //----------------------------------------------------------------------------
 
 Shifts.after.insert((userId, doc) => {
+  // LIIT : don't forget it'll still be visible by clients
   if (Meteor.isServer) {
     const incUser = {
       shiftsCounter: 1,
@@ -1213,6 +1214,7 @@ Shifts.after.insert((userId, doc) => {
 });
 
 Shifts.after.update(function shiftsAfterUpdate(userId, doc, fieldNames) {
+  // LIIT : don't forget it'll still be visible by clients
   if (Meteor.isServer) {
     const incUser = {};
     if (_.indexOf(fieldNames, 'nbDelivs') !== -1) {
@@ -1241,6 +1243,7 @@ Shifts.after.update(function shiftsAfterUpdate(userId, doc, fieldNames) {
 }, { fetchPrevious: true });
 
 Shifts.after.remove((userId, doc) => {
+  // LIIT : don't forget it'll still be visible by clients
   if (Meteor.isServer) {
     const incUser = {
       shiftsCounter: -1,
