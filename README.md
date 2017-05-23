@@ -164,4 +164,4 @@ To do on a regular basis in production environment:
 - Renew SSL certificate
 - Check and empty logs
 - `sudo apt-get update`
-- database backup (/etc/cron.d/mongodb-backup)
+- database backup (`/etc/cron.d/mongodb-backup`)
