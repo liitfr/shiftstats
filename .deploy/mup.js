@@ -1,14 +1,16 @@
+const settings = require('./settings.json');
+
 module.exports = {
   servers: {
     one: {
-      host: Meteor.settings.private.mupHost,
-      username: Meteor.settings.private.mupUsername,
-      pem: '~/.ssh/id_rsa',
+      host: settings.private.mupHost,
+      username: settings.private.mupUsername,
+      pem: settings.private.mupPem,
     },
   },
   meteor: {
     name: 'shiftstats',
-    path: '/home/mathias/dev-web/shiftstats',
+    path: settings.private.mupPath,
     servers: {
       one: {},
     },
@@ -27,7 +29,7 @@ module.exports = {
     enableUploadProgressBar: true,
     ssl: {
       autogenerate: {
-        email: 'hoffmann.mathias@gmail.com',
+        email: settings.private.mupEmail,
         domains: 'shiftstats.info,www.shiftstats.info',
       },
     },

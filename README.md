@@ -160,8 +160,14 @@ If you experience troubles with Materialize, please run `npm install` to execute
 
 ## Production
 
-To do on a regular basis in production environment:
+If you face a `Permission denied (publickey,gssapi-keyex,gssapi-with-mic).` when trying to connect to remote server, run :   
+`ssh -o "IdentitiesOnly yes" -i ~/.ssh/yourprivate_id root@server-ip`
+
+On a regular basis in production environment, you should:
 - Renew SSL certificate
 - Check and empty logs
-- `sudo apt-get update`
+- `sudo apt-get update` & `sudo apt-get upgrade`
 - database backup (`/etc/cron.d/mongodb-backup`)
+
+Accessing the Database:   
+`docker exec -it mongodb mongo <appName>`
