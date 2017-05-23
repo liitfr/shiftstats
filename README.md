@@ -13,6 +13,7 @@ We are looking for volunteers to maintain the application and develop new featur
 **Below, important information to read before using the application. It is essential to understand that the quality of the statistics displayed depends directly on the veracity of the data you will capture. Do not invent. Any profile that does not respect these principles will be deleted.**
 
 ### Saving a Shift
+
 A day begins and finishes at 6:00 am, and a shift can not take place over more than one day. You can declare a shift from 23:00 to 05:00 for example, while a shift from 05:00 to 07:00 will not be valid. We advise you to declare shifts as short as possible. We will explain in the "statistics" section why. Avoid, therefore, to declare shifts continuous from 11:00 to 23:00 for example, but created in several, shorter.
 
 You can declare a shift at any date as long as it is the current date or a past date.
@@ -25,14 +26,16 @@ You can declare a shift at any date as long as it is the current date or a past 
 
 On the other hand, they do not include earnings not directly related to your shift such as parental bonuses, marketing operations, recruitment, training, administration, etc.
 
-Finally, they must report deductions made by certain customers such as Uber who levy a certain% of your turnover. However, they should not mention deductions such as bonds and other deductions due to degradation of order, forgetfulness, ... operated by certain customers.
+Finally, they must report deductions made by certain customers such as Uber who levy a certain% of your turnover. However, they should not mention deductions such as bonds and other deductions due to degradation of order, forgetfulness, ... operated by certain customers. Also, they should not include customers' tips, whether paid by hand or via the website during order.
 
 If you have any doubts while entering your shifts, do not hesitate to contact us!
 
 ### Review your winnings and modify or delete your shifts
+
 You can get an assessment of your activity on the history page of your shifts. Soon we will provide you with export functions to facilitate the administrative management of your activity. On this screen, you can also edit the data of an existing shift at any time or delete it directly. The deletion is final.
 
 ### Statistics
+
 For analysis purposes, a day is divided into 5 periods:
 
 - In the morning from 06:00 to 11:00
@@ -70,7 +73,9 @@ The data can be filtered by:
 
 - City
 - Period: All day, Morning, Midday, Afternoon, Evening, Night
-- Historical level: for the moment, the only level of available history is "Rolling Month", that is, from D-31 to D-1.
+- Historical level: for the moment, the only levels of available history are "Rolling Month", that is, from D-31 to D-1; and "Last week"
+
+The load simulator allows you to choose whether the displayed amounts are gross or net of charges. You can adjust the value as a percentage of these loads by using the cursor.
 
 In a future version of the application, the notion of "data quality" will be put in place and will enable you to know if enough couriers have participated to guarantee figures representing the reality of the terrain and the variety of situations (sample representative).
 
@@ -82,10 +87,20 @@ The analytical tools will allow the courier community to answer a range of quest
 
 **These analytical tools will enable the courier community and the various unions to develop a realistic diagnosis of their activity and to build a solid argument against their customers and public opinion.**
 
-Friends, it's up to you to play.
+Friends, it's up to you.
 The ShiftStats team.
 
 # Technical concerns
+
+## Technologies used
+
+- Meteor
+- Blaze
+- D3js
+- Materialize
+- Mongo
+- Nginx
+- Docker
 
 ## Run tests
 
@@ -121,47 +136,32 @@ If you experience troubles with Materialize, please run `npm install` to execute
 
 ## Deployment
 
-### Digital Ocean
+### Setup a container
 
-Please read following tutorials :
-- https://www.digitalocean.com/community/tutorials/how-to-create-your-first-digitalocean-droplet-virtual-server
-- https://www.digitalocean.com/community/tutorials/how-to-use-ssh-keys-with-digitalocean-droplets
-- https://www.digitalocean.com/community/tutorials/how-to-edit-the-sudoers-file-on-ubuntu-and-centos
-- https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-14-04
-- https://www.digitalocean.com/community/tutorials/how-to-protect-ssh-with-fail2ban-on-ubuntu-14-04
-- https://www.digitalocean.com/community/tutorials/how-to-connect-to-your-droplet-with-ssh
-- https://www.digitalocean.com/community/tutorials/how-to-configure-ssh-key-based-authentication-on-a-linux-server
-- https://www.digitalocean.com/community/tutorials/additional-recommended-steps-for-new-ubuntu-14-04-servers
-- https://www.digitalocean.com/community/tutorials/how-to-deploy-a-meteor-js-application-on-ubuntu-14-04-with-nginx
+`DEBUG=mup* mup setup --verbose`
 
-### Production
+### Deploy a container
 
-Renew certificate :
-check and empty log
-sudo apt-get update !
-mongo backup (/etc/cron.d/mongodb-backup)
-NON? activate mailgun in /etc/init/shiftstats.conf
-#### Setup a container
-DEBUG=mup* mup setup --verbose
-#### Deploy a container
-DEBUG=mup* mup deploy --verbose
-#### Remove a container
+`DEBUG=mup* mup deploy --verbose`  
+(do not use debug is you want to deploy with production tasks such as minification)
+
+### Remove a container
+
 1. local : `mup stop`
 2. server : `docker ps -a` then `docker stop XXX` then `docker rm XXX`
-#### SSH keys with passphrase
-1. Start ssh agent with eval $(ssh-agent)
-2. Add your ssh key with ssh-add <path-to-key>
+
+### SSH keys with passphrase
+
+1. Start ssh agent with `eval $(ssh-agent)`
+2. Add your ssh key with `ssh-add ~/.ssh/id_rsa`
 3. You'll be asked to enter the passphrase to the key
 4. After that, simply invoke mup commands and they'll just work
-5. Once you've deployed your app, kill ssh agent with ssh-agent -k
+5. Once you've deployed your app, kill ssh agent with `ssh-agent -k`
 
-# Todo
+## Production
 
-manual : simulateur de charges + parler des pourboires
-Strava API
-Exports comptables
-Rapports d'accidents
-technologie : meteor / blaze / d3js / materialize / mongo / nginx / docker
-calcul automatique des gains
-ssl en prod
-tutoriel evol + semaine derniere
+To do on a regular basis in production environment:
+- Renew SSL certificate
+- Check and empty logs
+- `sudo apt-get update`
+- database backup (/etc/cron.d/mongodb-backup)

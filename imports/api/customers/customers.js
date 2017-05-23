@@ -17,11 +17,6 @@ const Customers = new Mongo.Collection('customers');
 // Schema
 //----------------------------------------------------------------------------
 
-// TODO : i18n for distances unit
-// TODO : application on mobile !
-// TODO : logo / favicon / splash
-// TODO : fast render and prod and etc
-
 const CustomersSchema = new SimpleSchema({
   country: {
     type: String,
@@ -489,8 +484,6 @@ Customers.helpers({
     }, {});
   },
 });
-
-// TODO : should I do every task before and return false if error ?
 
 //----------------------------------------------------------------------------
 // Hooks

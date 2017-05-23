@@ -10,8 +10,6 @@ import { TAPi18n } from 'meteor/tap:i18n';
 
 import { computeData, addMissingDays } from '../../../utils/stats-computation.js';
 
-// TODO : transition duration : 1000
-
 import { StatsEvol, StatsNbParticipants } from '../../../api/client-collections.js';
 
 import '../loader/loader.js';
@@ -43,7 +41,6 @@ Template.evolChart.onRendered(function evolChartOnRendered() {
         dateString: -1,
       },
     }).fetch());
-    // TODO : doesn't work when counter is 0.
     if (_.isEmpty(template.shiftsDataRV.get())) {
       template.dataAvailableRV.set(false);
     } else {

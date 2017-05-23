@@ -14,9 +14,6 @@ import '../loader/loader.js';
 
 import './list-my-shifts.html';
 
-// TODO : loader for both substricptions !
-// TODO : sort in client side
-
 const _ = lodash;
 
 Template.listMyShifts.onCreated(function listMyShiftsOnCreated() {
@@ -47,7 +44,6 @@ Template.myMonthsList.onCreated(function myMonthsListOnCreated() {
           template.data.dataAvailableRV.set(false);
         }
         const lastMonth = _.max(Object.keys(_.omit(me.months, counter => counter <= 0)));
-        // TODO : move to last month only if there's no more data in current month !
         template.data.monthToDisplayRV.set(lastMonth === -Infinity ? undefined : lastMonth);
         Tracker.afterFlush(() => {
           template.$('select').material_select();

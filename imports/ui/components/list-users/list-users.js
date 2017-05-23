@@ -43,7 +43,6 @@ Template.usersList.events({
 });
 
 // -----------------------------------------------------------------------------
-// TODO : gains in multiple currencies
 Template.usersItem.helpers({
   formatedCreatedAt() {
     return moment(this.user.createdAt).format(TAPi18n.__('components.pickadate.format').toUpperCase());

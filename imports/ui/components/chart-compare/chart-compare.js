@@ -12,12 +12,6 @@ import { StatsCompare, StatsNbParticipants } from '../../../api/client-collectio
 import '../loader/loader.js';
 import './chart-compare.html';
 
-// TODO : data quality
-// TODO : ajouter niveaux historiques
-// TODO : bug in display : sometimes bar is 100% of day width
-// TODO : put currency in charts
-// TODO : put distance units in charts
-
 Template.chartCompare.onCreated(function chartCompareOnCreated() {
   const template = this;
   template.autorun(() => {
@@ -194,9 +188,6 @@ Template.compareChartSvg.onRendered(function compareChartSvgOnRendered() {
         .delay((d, i) => i * 100)
         .attr('y', d => y(computeData(d, template.data.chartFiltersRD).kpi))
         .attr('height', d => height - y(computeData(d, template.data.chartFiltersRD).kpi));
-      // TODO : remove ALL styles to css
-      // TODO : legend should support large number of customers.
-      // Maybe 2 columns ? Now overflow is visible.
       // -----------------------------------------------------------------------
       // Legend
       const legend = gLegend

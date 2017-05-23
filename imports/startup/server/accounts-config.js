@@ -13,7 +13,3 @@ Accounts.onCreateUser((options, user) => {
   myUser.customers = {};
   return myUser;
 });
-
-// TODO : mail for english user
-// BUG : account UI when redefine password isn't materialized but bootstrap ...
-// TODO : add favorite city & favorite language in user
