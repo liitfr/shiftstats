@@ -28,8 +28,6 @@ Users.adminFields = {
   updatedAt: 1,
 };
 
-// TODO : rename months & customers to something less generic, more verbose
-
 //----------------------------------------------------------------------------
 // Helpers
 //----------------------------------------------------------------------------

@@ -11,8 +11,6 @@ import '../../components/footer/footer.js';
 
 import './body.html';
 
-// TODO : use momentum + hammerjs
-
 const showConnectionIssueRV = new ReactiveVar(false);
 Meteor.startup(() => {
   setTimeout(() => {

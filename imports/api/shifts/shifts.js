@@ -10,9 +10,6 @@ import { _ } from 'meteor/underscore';
 
 import { Customers } from '../customers/customers.js';
 
-// TODO : index on analytics fields
-// TODO : how to ventilate kpis in period ?
-
 const Shifts = new Mongo.Collection('shifts');
 
 const applyMorningOffset = (time) => {

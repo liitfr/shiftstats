@@ -7,13 +7,7 @@ import { Customers } from '../../../api/customers/customers.js';
 
 import './chart-controls.html';
 
-// TODO : loaders when subscription ready !
-// TODO : should we import { $ } wherever it is used ?
-// TODO : historique ? toujours, année, mois, semaine s-1, semaine courante, ... ?
-
 Template.chartControls.onCreated(function chartControlsOnCreated() {
-  // TODO : we should manage default values in one single place
-  // (today it's defined both in chart-controls.js & chart-controls.html)
   this.data.chartFiltersRD.setDefault({
     city: SessionAmplify.get('shiftstats-user-favorite-city'),
     history: 'rollingMonth',

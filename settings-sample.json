@@ -39,6 +39,8 @@
     "mailgunUsername": "XXX@XXX.XXX.XXX",
     "mailgunPassword": "00000000000000000000000000000000",
     "mailgunNoReplyMail": "<no-reply@shiftstats.fr>",
+    "mupHost": "XXX.XXX.XXX.XXX",
+    "mupUsername": "XXXXX",
     "usersFixtures": [
       {
         "username": "XXXX XXXX",
