@@ -41,6 +41,9 @@
     "mailgunNoReplyMail": "<no-reply@shiftstats.fr>",
     "mupHost": "XXX.XXX.XXX.XXX",
     "mupUsername": "XXXXX",
+    "mupPem": "/XXXX/XXXXXXX/.XXX/XX_XXX",
+    "mupPath": "/XXXX/XXXXXXX/XXXXXXX/shiftstats",
+    "mupEmail": "XXXXX.XXXXX@XXXX.XXX",
     "usersFixtures": [
       {
         "username": "XXXX XXXX",
