@@ -1,5 +1,7 @@
 # ShiftStats
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/6003f9844b694c7f9fee1f46280601ef)](https://www.codacy.com/app/liitfr/shiftstats?utm_source=github.com&utm_medium=referral&utm_content=liitfr/shiftstats&utm_campaign=badger)
+
 ## What is that ?
 
 Register **for free** to share your stats **anonymously** with the courier community.  
