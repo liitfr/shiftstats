@@ -1,5 +1,7 @@
 # ShiftStats
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/liitfr/shiftstats.svg)](https://greenkeeper.io/)
+
 [![tests](http://img.shields.io/travis/liitfr/shiftstats/master.svg?style=flat)](https://travis-ci.org/liitfr/shiftstats) [![dependencies](http://img.shields.io/david/liitfr/shiftstats.svg?style=flat)](https://david-dm.org/liitfr/shiftstats) [![coverage](https://img.shields.io/coveralls/liitfr/shiftstats.svg?style=flat)](https://coveralls.io/github/liitfr/shiftstats?branch=master) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/6003f9844b694c7f9fee1f46280601ef)](https://www.codacy.com/app/liitfr/shiftstats?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=liitfr/shiftstats&amp;utm_campaign=Badge_Grade)
 
 ## What is that ?
