@@ -152,6 +152,10 @@ If you experience troubles with Materialize, please run `npm install` to execute
 1. local : `mup stop`
 2. server : `docker ps -a` then `docker stop XXX` then `docker rm XXX`
 
+### Reconfig
+
+1. local : `mup reconfig`
+
 ### SSH keys with passphrase
 
 1. Start ssh agent with `eval $(ssh-agent)`

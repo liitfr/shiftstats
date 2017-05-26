@@ -25,6 +25,7 @@
 
 ## Design & UX
 
+- In shift page creation : divide customer field into three fields city / customer / contract
 - Create a logo
 - Create a favicon
 - Create a splashscreen

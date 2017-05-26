@@ -6,7 +6,7 @@
   "public": {
     "appName": "ShiftStats",
     "connectionIssueTimeout": 5000,
-    "brandList": ["Deliveroo", "Foodora", "UberEats"],
+    "brandList": ["Allo Resto", "Deliveroo", "Foodora", "Stuart", "UberEats"],
     "contactUs": "https://www.facebook.com/Shiftstats",
     "defaultLanguage": "fr",
     "dataquality": {
