@@ -1,3 +1,6 @@
+import { Meteor } from 'meteor/meteor';
+import { check } from 'meteor/check';
+
 Meteor.startup(() => {
   Meteor.Mailgun.config({
     username: Meteor.settings.private.mailgunUsername,

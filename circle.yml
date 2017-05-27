@@ -25,4 +25,4 @@ test:
   pre:
     - mkdir -p $CIRCLE_TEST_REPORTS/cucumber
   override:
-    - ./tests/acceptance_run
+    - ./tests/acceptance_run.sh

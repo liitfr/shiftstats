@@ -1,3 +1,5 @@
+import { ServiceConfiguration } from 'meteor/service-configuration';
+
 ServiceConfiguration.configurations.remove({
   service: 'facebook',
 });
