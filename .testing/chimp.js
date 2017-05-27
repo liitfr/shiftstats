@@ -11,7 +11,7 @@ const isCi = process.argv[2] === '--ci';
 const startTestApp = (onStarted, options) => {
   processes.start({
     name: 'Test App',
-    command: 'meteor --settings .testing/settings.json --port=3100',
+    command: `meteor --settings ${srcDir}/.testing/settings.json --port=3100`,
     waitForMessage: 'App running at: http://localhost:3100',
     options: {
       cwd: srcDir,
