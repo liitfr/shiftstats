@@ -89,8 +89,8 @@ cunneen:mailgun
 msavin:mongol
 # practicalmeteor:sinon
 # xolvio:cleaner
-# practicalmeteor:chai
-# dispatch:mocha
+practicalmeteor:chai
+dispatch:mocha
 # dburles:factory
 # shell-server
 # hwillson:stub-collections
