@@ -2,10 +2,15 @@
   "name": "shiftstats",
   "private": true,
   "scripts": {
-    "start": "meteor run",
-    "lint": "eslint .",
+    "start": "meteor",
     "pretest": "npm run lint --silent",
-    "postinstall": "cp node_modules/materialize-css/js/date_picker/picker.js node_modules/materialize-css/bin && cp -rf node_modules/materialize-css/fonts public"
+    "test": "TEST_BROWSER_DRIVER=nightmare meteor test --once --driver-package dispatch:mocha --settings settings-test.json",
+    "test-app": "TEST_BROWSER_DRIVER=nightmare meteor test --full-app --once --driver-package dispatch:mocha --settings settings-test.json",
+    "test-watch": "meteor test --driver-package practicalmeteor:mocha --settings settings-test.json",
+    "test-app-watch": "meteor test --full-app --driver-package practicalmeteor:mocha --settings settings-test.json",
+    "test-watch-terminal": "TEST_WATCH=1 TEST_BROWSER_DRIVER=nightmare meteor test --driver-package dispatch:mocha --settings settings-test.json",
+    "test-app-watch-terminal": "TEST_WATCH=1 TEST_BROWSER_DRIVER=nightmare meteor test --full-app --driver-package dispatch:mocha --settings settings-test.json",
+    "lint": "eslint ."
   },
   "dependencies": {
     "all-the-cities": "^2.0.0",

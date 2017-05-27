@@ -1,0 +1,71 @@
+{
+  "kadira": {
+    "appId": "",
+    "appSecret": ""
+  },
+  "public": {
+    "appName": "ShiftStats",
+    "connectionIssueTimeout": 5000,
+    "brandList": ["Allo Resto", "Deliveroo", "Foodora", "Stuart", "UberEats"],
+    "contactUs": "https://www.facebook.com/Shiftstats",
+    "defaultLanguage": "fr",
+    "dataquality": {
+      "badThreshold": 0,
+      "averageThreshold": 10,
+      "goodThreshold": 20,
+      "minDuration": 60
+    },
+    "morningStartHour": "06:00",
+    "morningEndHour": "11:00",
+    "lunchStartHour": "11:00",
+    "lunchEndHour": "14:30",
+    "afternoonStartHour": "14:30",
+    "afternoonEndHour": "18:30",
+    "dinnerStartHour": "18:30",
+    "dinnerEndHour": "23:30",
+    "nightStartHour": "23:30",
+    "nightEndHour": "06:00",
+    "toastDuration": 4000
+  },
+  "private": {
+    "adminUserName": "Henri Jalbert",
+    "adminEmail": "HenriJalbert@dayrep.com",
+    "adminPassword": "eez0poh2aePoo",
+    "adminFirstName": "Henri",
+    "adminLastName": "Jalbert",
+    "adminCompany": "Mission G",
+    "serviceFbAppId": "",
+    "serviceFbSecret": "",
+    "mailgunUsername": "",
+    "mailgunPassword": "",
+    "mailgunNoReplyMail": "",
+    "mupHost": "",
+    "mupUsername": "",
+    "mupPem": "",
+    "mupPath": "",
+    "mupEmail": "",
+    "usersFixtures": [
+      {
+        "username": "Varden Renaud",
+        "email": "VardenRenaud@teleworm.us",
+        "password": "mu6So9thae3",
+        "isAdmin": false
+      }, {
+        "username": "Marshall Lécuyer",
+        "email": "MarshallLecuyer@teleworm.us",
+        "password": "meiJah8w",
+        "isAdmin": true
+      }, {
+        "username": "Millard Lanteigne",
+        "email": "MillardLanteigne@armyspy.com",
+        "password": "ooVeek7zo",
+        "isAdmin": false
+      }, {
+        "username": "Gilles Laprise",
+        "email": "GillesLaprise@teleworm.us",
+        "password": "doo3chucohJ",
+        "isAdmin": false
+      }
+    ]
+  }
+}
