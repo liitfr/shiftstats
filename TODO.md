@@ -10,6 +10,7 @@
 - `bcrypt` makes deploy step fail. Keep it under `devDependencies` until this problem is solved.
 - In `chart-evol.js`, transition duration doesn't works. We should set it to 1000. However this behavior works if we use `d3js` by including it in head scripts. Investigate and maybe create an issue for `d3-line-chunked`.
 - In chart components, no data message isn't displayed when counter equals 0.
+- In compare chart legend, customers list isn't ordered by customer's name !
 
 ## Tests
 
