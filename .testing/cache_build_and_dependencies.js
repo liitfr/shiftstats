@@ -8,7 +8,10 @@ const srcDir = baseDir;
 
 const cacheMeteor = () => {
   console.log('Caching build & dependencies (can take a while the first time)');
-  const childProcess = spawn('meteor', ['--raw-logs'], {
+  const childProcess = spawn('meteor', [
+    '--raw-logs',
+    `--settings ${srcDir}/.testing/settings.json`,
+  ], {
     cwd: srcDir,
     env: process.env,
   });
