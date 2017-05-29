@@ -2,3 +2,5 @@ node_modules/
 settings-production.json
 settings-development.json
 .deploy/settings.json
+.coveralls.yml
+.nyc_output

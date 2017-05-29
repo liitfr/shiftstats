@@ -122,6 +122,10 @@ If you want to have detailed information, execute `export METEOR_PROFILE=1` befo
 
 `meteor reset`
 
+## Kill local Meteor server
+
+`kill -9 ``ps ax | grep node | grep meteor | awk '{print $1}'`
+
 ## Services
 
 ### Manage mail gun account
